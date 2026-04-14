@@ -1,229 +1,33 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>にゃんログ | やさしく記録して、診察につなぐ</title>
-  <meta name="description" content="にゃんログは、気分・服薬・気になったことをやさしく記録するためのサービスです。答えを決めつけず、日々の変化を見える形にして、診察や相談に役立つ材料へつなげます。">
-  <meta name="robots" content="index,follow">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <style>
-    :root{
-      --cream:#fdf8f3;--sand:#f7f1e8;--brand:#2d6a4f;--brand-soft:#e8f5ef;--ink:#2c2118;
-      --muted:#8b7355;--line:#eadfce;--purple:#5b54c7;--purple-soft:#eef0ff;
-      --amber:#d97706;--amber-soft:#fff8e7;--white:#fff;
-      --shadow:0 20px 60px rgba(44,33,24,.10);--shadow-sm:0 8px 24px rgba(44,33,24,.08);
-      --max:1180px;
-    }
-    *{box-sizing:border-box} html{scroll-behavior:smooth}
-    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Noto Sans JP",sans-serif;background:var(--cream);color:var(--ink);line-height:1.65}
-    a{text-decoration:none;color:inherit}
-    .container{width:min(var(--max),calc(100% - 32px));margin-inline:auto}
-    .site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(234,223,206,.8);background:rgba(253,248,243,.88);backdrop-filter:blur(16px)}
-    .site-header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 0}
-    .brand{display:flex;align-items:center;gap:12px}.brand-icon{width:46px;height:46px;border-radius:18px;display:grid;place-items:center;background:var(--brand);color:#fff;font-size:24px;box-shadow:0 10px 24px rgba(45,106,79,.22)}
-    .brand-title{font-size:20px;font-weight:900;color:var(--brand)} .brand-sub{font-size:12px;font-weight:700;color:var(--muted);margin-top:2px}
-    .nav{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.nav-link{font-size:14px;font-weight:800;color:#6b5a45}.nav-link:hover{color:var(--brand)}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:18px;font-weight:900;transition:.2s ease;border:1px solid transparent;cursor:pointer}
-    .btn:hover{transform:translateY(-1px)} .btn-primary{background:var(--brand);color:#fff;padding:14px 22px;box-shadow:0 16px 34px rgba(45,106,79,.20)}
-    .btn-secondary{background:#fff;color:var(--ink);border-color:#d8cbbb;padding:14px 22px}.btn-small{padding:10px 16px;border-radius:14px;font-size:14px}
-    .hero{position:relative;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at top left, rgba(45,106,79,.14), transparent 32%),radial-gradient(circle at top right, rgba(91,84,199,.12), transparent 28%),linear-gradient(to bottom, rgba(255,255,255,.35), transparent);pointer-events:none}
-    .blob{position:absolute;border-radius:999px;filter:blur(50px);opacity:.9;pointer-events:none}.blob1{width:260px;height:260px;left:-70px;top:90px;background:#fff3cf}.blob2{width:320px;height:320px;right:-40px;top:-20px;background:#e8f5ef}
-    .hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:56px 0 88px}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.9);border:1px solid #d8cbbb;color:var(--muted);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:900;box-shadow:var(--shadow-sm)}
-    h1{margin:18px 0 0;font-size:clamp(42px, 7vw, 72px);line-height:1.05;letter-spacing:-.03em;font-weight:900}.accent{color:var(--brand)}
-    .hero-copy{max-width:640px;margin-top:22px;font-size:18px;font-weight:800;color:#6b5a45;line-height:1.9}
-    .cta-row,.sub-links{display:flex;gap:12px;flex-wrap:wrap}.cta-row{margin-top:30px}.sub-links{margin-top:14px}
-    .pill-link,.chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:999px;padding:10px 14px;box-shadow:var(--shadow-sm);font-size:14px;font-weight:900;color:var(--muted)}
-    .stats{margin-top:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:640px}
-    .stat{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow-sm)}
-    .stat-value{font-size:30px;font-weight:900;line-height:1}.green{color:var(--brand)}.purple{color:var(--purple)}.amber{color:var(--amber)}
-    .stat-label{margin-top:8px;font-size:12px;font-weight:800;color:var(--muted);line-height:1.5}
-    .phone-wrap{position:relative}.floating-note{position:absolute;top:-16px;right:-10px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--shadow-sm);font-size:14px;font-weight:900;color:var(--brand);z-index:2}
-    .phone{max-width:420px;margin:0 auto;border-radius:34px;background:#fff;border:1px solid var(--line);padding:16px;box-shadow:var(--shadow)}
-    .phone-inner{border-radius:28px;background:linear-gradient(180deg,#fffdfb 0%,#f8f0e6 100%);padding:16px}.phone-top{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--brand);color:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 12px 22px rgba(45,106,79,.18)}
-    .phone-brand{display:flex;align-items:center;gap:12px}.phone-brand-icon{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.14);font-size:24px}
-    .phone-brand-title{font-size:16px;font-weight:900}.phone-brand-date{font-size:12px;font-weight:800;color:rgba(255,255,255,.84)}
-    .phone-cards{margin-top:14px;display:grid;gap:12px}.phone-card{background:#fff;border-radius:20px;padding:16px;box-shadow:var(--shadow-sm);border:1px solid #efe3d5}
-    .phone-card-label{font-size:13px;font-weight:900;color:var(--muted);margin-bottom:12px}.choice-grid-3,.choice-grid-2{display:grid;gap:8px;text-align:center;font-size:13px;font-weight:900}
-    .choice-grid-3{grid-template-columns:repeat(3,1fr)} .choice-grid-2{grid-template-columns:repeat(2,1fr)}
-    .choice{border-radius:16px;padding:12px 8px;background:#f5ede0;color:var(--muted)} .active-purple{background:var(--purple-soft);color:var(--purple)} .active-green{background:var(--brand-soft);color:var(--brand)}
-    .tag-row{display:flex;flex-wrap:wrap;gap:8px}.tag{border-radius:999px;padding:9px 12px;font-size:12px;font-weight:900;background:#f5ede0;color:var(--muted)} .tag.active{background:var(--amber-soft);color:var(--amber)}
-    .cat-message{border-radius:20px;border:1px solid #b7dfc9;background:var(--brand-soft);color:#1a4a35;padding:16px;font-size:14px;font-weight:900;line-height:1.8}
-    .section{padding:88px 0}.section-white{background:#fff}.section-head{max-width:720px;margin-bottom:38px}
-    .section-kicker{font-size:13px;letter-spacing:.18em;font-weight:900;color:var(--muted);margin-bottom:12px}.section-title{font-size:clamp(32px, 5vw, 48px);line-height:1.15;letter-spacing:-.02em;font-weight:900;margin:0}
-    .section-desc{margin-top:16px;font-size:17px;line-height:1.9;font-weight:800;color:#6b5a45}
-    .feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--shadow-sm)} .card.soft{background:var(--cream)}
-    .icon-box{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;background:#f5ede0;font-size:28px;color:var(--brand);margin-bottom:18px}
-    .card h3{margin:0;font-size:24px;font-weight:900;line-height:1.3}.card p{margin:14px 0 0;color:#6b5a45;font-size:15px;font-weight:800;line-height:1.85}
-    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.step-no{font-size:58px;font-weight:900;line-height:1;color:var(--brand);margin-bottom:18px}
-    .safety-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:start}.safety-main{border-radius:34px;background:var(--brand);color:#fff;padding:40px;box-shadow:0 26px 60px rgba(45,106,79,.20)}
-    .safety-main .section-kicker{color:rgba(255,255,255,.72)} .safety-main .section-desc{color:rgba(255,255,255,.90)} .badge-row{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
-    .badge{background:rgba(255,255,255,.10);color:#fff;border-radius:999px;padding:10px 14px;font-size:14px;font-weight:900}
-    .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.faq-list{display:grid;gap:16px}.faq-item{background:var(--cream);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:var(--shadow-sm)}
-    .faq-q{font-size:22px;font-weight:900;line-height:1.4}.faq-a{margin-top:12px;color:#6b5a45;font-size:15px;font-weight:800;line-height:1.85}
-    .cta-box{overflow:hidden;border-radius:36px;border:1px solid #d8cbbb;background:linear-gradient(135deg,#fff 0%,#f7f1e8 45%,#eef6f1 100%);padding:44px 28px;text-align:center;box-shadow:var(--shadow)}
-    .cta-icon{width:64px;height:64px;border-radius:24px;display:grid;place-items:center;margin:0 auto;background:var(--brand);color:#fff;font-size:34px;box-shadow:0 14px 30px rgba(45,106,79,.20)}
-    .cta-title{margin-top:22px;font-size:clamp(30px,4.4vw,46px);line-height:1.15;letter-spacing:-.02em;font-weight:900}.cta-copy{max-width:760px;margin:16px auto 0;color:#6b5a45;font-size:17px;font-weight:800;line-height:1.9}
-    .cta-help{margin-top:14px;font-size:14px;font-weight:800;color:var(--muted)} .cta-help a{color:var(--brand);text-decoration:underline;text-underline-offset:4px}
-    .site-footer{border-top:1px solid var(--line);background:var(--cream)} .site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 0;color:var(--muted);font-size:14px;font-weight:800}
-    @media (max-width:1080px){.feature-grid{grid-template-columns:repeat(2,1fr)}.hero-grid,.safety-grid{grid-template-columns:1fr}.steps,.service-grid{grid-template-columns:1fr}}
-    @media (max-width:760px){.nav{display:none}.container{width:min(var(--max),calc(100% - 24px))}.hero-grid{gap:34px;padding:34px 0 64px}.cta-row,.sub-links{flex-direction:column}.stats,.feature-grid{grid-template-columns:1fr}.section{padding:64px 0}.site-footer-inner{flex-direction:column;align-items:flex-start}.floating-note{position:static;margin:0 auto 12px;width:max-content}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>にゃんログ</title>
+<link rel="icon" href="favicon.png">
+<style>
+body{font-family:sans-serif;margin:0;background:#f5f5f5}
+.container{max-width:480px;margin:auto;background:#fff;min-height:100vh;padding:20px}
+.btn{
+display:block;
+margin:20px 0;
+padding:16px;
+text-align:center;
+background:#2d6a4f;
+color:#fff;
+border-radius:12px;
+text-decoration:none;
+font-weight:bold;
+}
+</style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container site-header-inner">
-      <div class="brand">
-        <div class="brand-icon">🐱</div>
-        <div><div class="brand-title">にゃんログ</div><div class="brand-sub">やさしく記録して、診察につなぐ</div></div>
-      </div>
-      <nav class="nav">
-        <a href="./app.html" class="btn btn-primary btn-small">はじめる</a>
-        <a href="#features" class="nav-link">特徴</a>
-        <a href="#how" class="nav-link">使い方</a>
-        <a href="#safety" class="nav-link">安心設計</a>
-        <a href="#faq" class="nav-link">FAQ</a>
-      </nav>
-    </div>
-  </header>
+<div class="container">
+<h1>🐱 にゃんログ</h1>
+<p>やさしく記録して、診察につなげる</p>
 
-  <main>
-    <section class="hero">
-      <div class="blob blob1"></div><div class="blob blob2"></div>
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow">✨ 毎日の状態を、曖昧なまま記録できる</div>
-          <h1>記録はアプリ、<br><span class="accent">結論は医師へ。</span></h1>
-          <p class="hero-copy">にゃんログは、気分・服薬・気になったことをやさしく記録するためのサービスです。答えを決めつけず、日々の変化を見える形にして、診察や相談に役立つ材料へつなげます。</p>
-          <div class="cta-row">
-            <a href="./app.html" class="btn btn-primary">今すぐはじめる →</a>
-            <a href="#how" class="btn btn-secondary">デモを見る</a>
-          </div>
-          <div class="sub-links">
-            <a href="#how" class="pill-link">使い方ガイド →</a>
-            <a href="mailto:demo@example.com" class="pill-link">お問い合わせ →</a>
-          </div>
-          <div class="sub-links" style="margin-top:22px">
-            <span class="chip">気分記録</span><span class="chip">服薬チェック</span><span class="chip">傾向の見返し</span><span class="chip">診察前の整理</span>
-          </div>
-          <div class="stats">
-            <div class="stat"><div class="stat-value green">3秒</div><div class="stat-label">迷わず記録しやすい入力体験</div></div>
-            <div class="stat"><div class="stat-value purple">やさしく</div><div class="stat-label">断定しない見せ方を重視</div></div>
-            <div class="stat"><div class="stat-value amber">見返せる</div><div class="stat-label">履歴とまとめで傾向がわかる</div></div>
-          </div>
-        </div>
-        <div class="phone-wrap">
-          <div class="floating-note">✅ 今日の記録が続けやすい</div>
-          <div class="phone"><div class="phone-inner">
-            <div class="phone-top">
-              <div class="phone-brand">
-                <div class="phone-brand-icon">🐱</div>
-                <div><div class="phone-brand-title">にゃんログ</div><div class="phone-brand-date">2026年4月14日（火）</div></div>
-              </div><div>🕒</div>
-            </div>
-            <div class="phone-cards">
-              <div class="phone-card"><div class="phone-card-label">😊 今日の気分</div><div class="choice-grid-3"><div class="choice active-purple">😄 元気</div><div class="choice">😐 普通</div><div class="choice">😔 しんどい</div></div></div>
-              <div class="phone-card"><div class="phone-card-label">💊 お薬</div><div class="choice-grid-2"><div class="choice active-green">✅ 飲んだ</div><div class="choice">❌ 飲んでない</div></div></div>
-              <div class="phone-card"><div class="phone-card-label">📌 気になったこと</div><div class="tag-row"><span class="tag active">集中できない</span><span class="tag">不安</span><span class="tag">体がだるい</span></div></div>
-              <div class="cat-message">記録できたにゃ。続けるだけで、あとから変化が見えやすくなるにゃ。</div>
-            </div>
-          </div></div>
-        </div>
-      </div>
-    </section>
+<a href="./app.html" class="btn">今すぐはじめる →</a>
 
-    <section id="features" class="section">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">FEATURES</div>
-          <h2 class="section-title">にゃんログの特徴</h2>
-          <p class="section-desc">無理なく続けられる入力体験と、曖昧さを残したまま整理できる仕組みを大切にしています。</p>
-        </div>
-        <div class="feature-grid">
-          <article class="card"><div class="icon-box">🐾</div><h3>毎日の記録がかんたん</h3><p>気分、お薬、気になったことを、迷わず軽く残せます。長い文章を書かなくても大丈夫です。</p></article>
-          <article class="card"><div class="icon-box">🩺</div><h3>結論は出さず、整理に徹する</h3><p>診断や治療判断を行わず、日々の状態を見える形に整えて、診察や相談につなげます。</p></article>
-          <article class="card"><div class="icon-box">📖</div><h3>見返しやすい振り返り</h3><p>履歴やサマリーで最近の傾向を確認できます。本人にも、支える人にもやさしい設計です。</p></article>
-          <article class="card"><div class="icon-box">🔒</div><h3>安心感のある使い心地</h3><p>外に答えを押しつけず、曖昧さを残したまま記録できる距離感を大切にしています。</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section id="how" class="section section-white">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">HOW IT WORKS</div>
-          <h2 class="section-title">使い方は、シンプルに3ステップ</h2>
-        </div>
-        <div class="steps">
-          <article class="card soft"><div class="step-no">01</div><h3>今日の気分を選ぶ</h3><p>元気・普通・しんどい、のように、その日の感覚を直感的に記録します。</p></article>
-          <article class="card soft"><div class="step-no">02</div><h3>お薬と気になることを残す</h3><p>服薬の有無や、不安、だるさ、眠れなさなどを必要な分だけ選べます。</p></article>
-          <article class="card soft"><div class="step-no">03</div><h3>履歴とまとめを見る</h3><p>記録がたまると、最近の傾向がやわらかく整理され、診察前の見返しにも役立ちます。</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section id="safety" class="section">
-      <div class="container safety-grid">
-        <div class="safety-main">
-          <div class="section-kicker">SAFETY DESIGN</div>
-          <h2 class="section-title">答えを決めつけない、安心の距離感</h2>
-          <p class="section-desc">にゃんログは、医療的な結論を出すためのものではありません。その日の状態を残し、後から見返しやすくし、医師や支援者との会話を支えることを目的にしています。</p>
-          <div class="badge-row"><span class="badge">診断しない</span><span class="badge">断定しない</span><span class="badge">記録を支える</span></div>
-        </div>
-        <div style="display:grid;gap:16px">
-          <article class="card"><div class="icon-box">💚</div><h3>やること</h3><p>気分・服薬・気になる変化の記録、履歴の整理、傾向の見返し、診察前の確認。</p></article>
-          <article class="card"><div class="icon-box" style="color:var(--amber)">🛡️</div><h3>やらないこと</h3><p>診断、断定的な助言、治療判断の代行。あくまで記録と整理を支える立場に徹します。</p></article>
-          <article class="card"><div class="icon-box" style="color:var(--purple)">🩺</div><h3>向いている場面</h3><p>日々の変化を忘れず残したいとき、診察で話す材料をまとめたいとき、支援者と状態を共有したいとき。</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="service-grid">
-          <article class="card"><div class="section-kicker">START</div><h3>今すぐ使い始める</h3><p>毎日の記録をすぐ始めたい方向けの導線です。気分・服薬・気になったことを、その場で記録できます。</p><div style="margin-top:22px"><a href="./app.html" class="btn btn-primary btn-small">アプリを開く →</a></div></article>
-          <article class="card"><div class="section-kicker">DEMO</div><h3>まずはデモで体験</h3><p>導入前に画面や流れを確認したい方向けです。実際の記録イメージや振り返り方を見られます。</p><div style="margin-top:22px"><a href="#how" class="btn btn-secondary btn-small">デモを見る →</a></div></article>
-          <article class="card"><div class="section-kicker">CONTACT</div><h3>相談・お問い合わせ</h3><p>活用方法の相談、説明依頼、連携のご相談はこちらから。まずは気軽にお問い合わせいただけます。</p><div style="margin-top:22px"><a href="mailto:demo@example.com" class="btn btn-secondary btn-small">問い合わせる →</a></div></article>
-        </div>
-      </div>
-    </section>
-
-    <section id="faq" class="section section-white">
-      <div class="container" style="max-width:980px">
-        <div class="section-head" style="text-align:center;margin-inline:auto">
-          <div class="section-kicker">FAQ</div>
-          <h2 class="section-title">よくある質問</h2>
-        </div>
-        <div class="faq-list">
-          <article class="faq-item"><div class="faq-q">Q. にゃんログは診断してくれますか？</div><div class="faq-a">A. いいえ。にゃんログは診断や治療判断をするものではありません。日々の状態を記録し、医師や支援者との会話を助けるためのサービスです。</div></article>
-          <article class="faq-item"><div class="faq-q">Q. 文章を書くのが苦手でも使えますか？</div><div class="faq-a">A. 使えます。選択中心で記録できるので、ひとことメモがなくても続けやすい設計です。</div></article>
-          <article class="faq-item"><div class="faq-q">Q. 誰のためのサービスですか？</div><div class="faq-a">A. ご本人はもちろん、ご家族、ヘルパー、看護師など、日々の変化を見守る人にも役立つように考えています。</div></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="cta-box">
-          <div class="cta-icon">🐱</div>
-          <h2 class="cta-title">毎日の記録を、もっとやさしく。</h2>
-          <p class="cta-copy">にゃんログは、がんばりすぎずに続けられる記録体験を目指しています。曖昧さを消しすぎず、でも見返しやすく。そんなちょうどよさを形にしました。</p>
-          <div class="cta-row" style="justify-content:center">
-            <a href="./app.html" class="btn btn-primary">今すぐはじめる →</a>
-            <a href="#how" class="btn btn-secondary">デモを見る</a>
-          </div>
-          <div class="cta-help">導入相談やご質問は <a href="mailto:demo@example.com">お問い合わせ</a> からどうぞ。</div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container site-footer-inner">
-      <div>© にゃんログ</div>
-      <div>記録はやさしく、判断は慎重に。</div>
-    </div>
-  </footer>
+</div>
 </body>
 </html>
