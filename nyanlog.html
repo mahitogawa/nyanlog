@@ -456,13 +456,8 @@ textarea::placeholder{color:#c4b49a;font-weight:700}
   transition:.15s;
 }
 .ai-btn:active{transform:scale(.96)}
-.ai-btn .ai-icon{font-size:22px}
-.ai-favicon{
-  width:28px;
-  height:28px;
-  object-fit:contain;
-  display:block;
-}
+.ai-btn .ai-icon{font-size:28px;line-height:1}
+
 .stamp-ov{
   position:fixed;inset:0;pointer-events:none;
   display:flex;align-items:center;justify-content:center;
@@ -564,16 +559,13 @@ textarea::placeholder{color:#c4b49a;font-weight:700}
     </div>
     <div class="ai-btns">
       <button class="ai-btn" onclick="openAI('https://claude.ai')">
-        <img class="ai-favicon" src="claude-favicon.png" alt="Claude">
-        <span>Claude</span>
+        <span class="ai-icon">🧠🐱</span><span>Claude</span>
       </button>
       <button class="ai-btn" onclick="openAI('https://gemini.google.com')">
-        <img class="ai-favicon" src="gemini-favicon.png" alt="Gemini">
-        <span>Gemini</span>
+        <span class="ai-icon">✨🐱</span><span>Gemini</span>
       </button>
       <button class="ai-btn" onclick="openAI('https://chatgpt.com')">
-        <img class="ai-favicon" src="chatgpt-favicon.png" alt="ChatGPT">
-        <span>ChatGPT</span>
+        <span class="ai-icon">🤖🐱</span><span>ChatGPT</span>
       </button>
     </div>
     <div id="aiCopyMsg" style="text-align:center;font-size:14px;font-weight:900;color:var(--brand);margin-top:10px;min-height:20px"></div>
@@ -852,26 +844,35 @@ function buildAiLink(today){
 // ワンタップ：コピー＋開く
 function openAI(url){
   const msg=document.getElementById('aiCopyMsg');
+  const successText='✅ コピーして開いたにゃ！貼り付けてにゃ🐱';
+  const failText='⚠️ 開いたけどコピーできなかったにゃ。手動でコピーしてにゃ。';
+
+  const openWindow=()=>window.open(url,'_blank','noopener');
+
   navigator.clipboard.writeText(aiPromptText).then(()=>{
-    msg.textContent='✅ コピーしたにゃ！貼り付けてにゃ🐱';
+    msg.textContent=successText;
     setTimeout(()=>{msg.textContent='';},3000);
-    window.open(url,'_blank','noopener');
+    openWindow();
   }).catch(()=>{
-    // clipboard APIが使えない環境（HTTP等）はフォールバック
     try{
       const ta=document.createElement('textarea');
       ta.value=aiPromptText;
-      ta.style.position='fixed';ta.style.opacity='0';
+      ta.style.position='fixed';
+      ta.style.opacity='0';
+      ta.style.left='-9999px';
       document.body.appendChild(ta);
-      ta.focus();ta.select();
-      document.execCommand('copy');
+      ta.focus();
+      ta.select();
+      const copied=document.execCommand('copy');
       document.body.removeChild(ta);
-      msg.textContent='✅ コピーしたにゃ！貼り付けてにゃ🐱';
+
+      msg.textContent=copied ? successText : failText;
       setTimeout(()=>{msg.textContent='';},3000);
     }catch(e){
-      msg.textContent='⚠️ コピーできなかったにゃ。手動でコピーしてにゃ。';
+      msg.textContent=failText;
+      setTimeout(()=>{msg.textContent='';},3000);
     }
-    window.open(url,'_blank','noopener');
+    openWindow();
   });
 }
 function buildSumNurse(records, range){
