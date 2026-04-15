@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>こころの病気とは | にゃんログ</title>
+<meta name="description" content="うつ病・双極性障害・不安症・発達障害など、代表的なこころの病気を症状・困りごと・対策とともにわかりやすく解説。記録アプリ「にゃんログ」で毎日の変化を診察につなげましょう。"/>
+<meta name="robots" content="index,follow"/>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="にゃんログ">
+<meta property="og:title" content="こころの病気とは | にゃんログ">
+<meta property="og:description" content="うつ病・双極性障害・不安症・発達障害など、代表的なこころの病気を症状・困りごと・対策とともにわかりやすく解説。記録アプリ「にゃんログ」で毎日の変化を診察につなげましょう。">
+<meta property="og:url" content="https://mahitogawa.github.io/nyanlog/kokoro.html">
+<meta property="og:image" content="https://mahitogawa.github.io/nyanlog/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://mahitogawa.github.io/nyanlog/kokoro.html">
+<link rel="icon" type="image/png" href="favicon.png"/>
+<style>
+:root{
+  --cream:#fdf8f3;--sand:#f7f1e8;--brand:#2d6a4f;--brand-soft:#e8f5ef;
+  --ink:#2c2118;--muted:#8b7355;--line:#eadfce;
+  --purple:#5b54c7;--purple-soft:#eef0ff;
+  --blue:#1d6db5;--blue-soft:#e8f1fb;
+  --amber:#d97706;--amber-soft:#fff8e7;
+  --danger:#c0392b;--danger-soft:#fdecea;
+  --teal:#0f7173;--teal-soft:#e0f5f5;
+  --shadow:0 20px 60px rgba(44,33,24,.10);--shadow-sm:0 8px 24px rgba(44,33,24,.08);
+  --max:960px;--radius:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--cream);color:var(--ink);line-height:1.7}
+a{text-decoration:none;color:inherit}
+.container{width:min(var(--max),calc(100% - 32px));margin-inline:auto}
+
+/* ヘッダー */
+.site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(234,223,206,.8);background:rgba(253,248,243,.92);backdrop-filter:blur(16px)}
+.site-header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:var(--brand);color:#fff;font-size:20px}
+.brand-title{font-size:18px;font-weight:900;color:var(--brand)}
+.brand-sub{font-size:11px;font-weight:700;color:var(--muted);margin-top:1px}
+.btn-primary{background:var(--brand);color:#fff;padding:12px 20px;border-radius:14px;font-weight:900;font-size:14px;display:inline-flex;align-items:center;gap:6px;border:none;cursor:pointer;font-family:inherit;transition:.15s}
+
+/* ヒーロー */
+.hero{background:linear-gradient(160deg,#3c3489 0%,#5b54c7 60%,#7b74d7 100%);padding:56px 0 64px;color:#fff}
+.hero-kicker{font-size:13px;font-weight:900;letter-spacing:.14em;color:rgba(255,255,255,.7);margin-bottom:14px}
+.hero-title{font-size:clamp(32px,6vw,52px);font-weight:900;line-height:1.15;letter-spacing:-.02em;margin-bottom:18px}
+.hero-title span{color:#c4bcff}
+.hero-desc{font-size:17px;font-weight:700;color:rgba(255,255,255,.85);line-height:1.85;max-width:640px;margin-bottom:28px}
+.hero-note{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:14px 18px;font-size:14px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.6;max-width:560px}
+
+/* セクション */
+.section{padding:72px 0}
+.section-white{background:#fff}
+.section-kicker{font-size:12px;font-weight:900;letter-spacing:.16em;color:var(--muted);margin-bottom:12px}
+.section-title{font-size:clamp(26px,4vw,38px);font-weight:900;line-height:1.2;letter-spacing:-.02em;margin-bottom:16px}
+.section-desc{font-size:16px;font-weight:700;color:#6b5a45;line-height:1.85;max-width:720px}
+
+/* アコーディオン */
+.cat-wrap{margin-top:28px;display:grid;gap:10px}
+.cat-btn{
+  width:100%;text-align:left;
+  border-radius:18px;padding:18px 20px;
+  cursor:pointer;border:1.5px solid var(--line);
+  background:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:.15s;font-family:inherit;
+}
+.cat-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.cat-btn.open{border-radius:18px 18px 0 0;border-bottom-color:transparent}
+.cat-left{display:flex;align-items:center;gap:14px}
+.cat-icon{font-size:24px;width:28px;text-align:center;flex-shrink:0}
+.cat-name{font-size:18px;font-weight:900;color:var(--ink)}
+.cat-count{font-size:13px;font-weight:700;color:var(--muted);margin-top:2px}
+.chevron{font-size:14px;color:var(--muted);transition:.2s;flex-shrink:0}
+.cat-btn.open .chevron{transform:rotate(180deg)}
+.cat-items{
+  display:none;
+  border:1.5px solid var(--line);
+  border-top:none;
+  border-radius:0 0 18px 18px;
+  overflow:hidden;
+  background:#fff;
+}
+.cat-items.show{display:block}
+.disease-item{
+  padding:20px 20px 20px 62px;
+  border-bottom:1px solid var(--line);
+  cursor:pointer;
+  transition:.15s;
+}
+.disease-item:last-child{border-bottom:none}
+.disease-item:hover{background:var(--cream)}
+.disease-name{font-size:16px;font-weight:900;margin-bottom:5px}
+.disease-sub{font-size:13px;font-weight:700;color:var(--muted);line-height:1.6}
+.disease-detail{display:none;margin-top:14px;background:var(--cream);border-radius:12px;padding:14px;border:1px solid var(--line)}
+.disease-item.open .disease-detail{display:block}
+.detail-section{margin-bottom:12px}
+.detail-section:last-child{margin-bottom:0}
+.detail-label{font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.08em;margin-bottom:5px}
+.detail-body{font-size:14px;font-weight:700;color:#3d2f20;line-height:1.75}
+.detail-tips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.detail-tip{font-size:12px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:var(--ink)}
+
+/* にゃんログCTA */
+.nyanlog-cta{background:var(--brand);border-radius:28px;padding:40px;color:#fff}
+.nyanlog-cta h2{font-size:clamp(24px,4vw,34px);font-weight:900;line-height:1.2;margin-bottom:14px}
+.nyanlog-cta p{font-size:16px;font-weight:700;color:rgba(255,255,255,.85);line-height:1.85;margin-bottom:24px}
+.nyanlog-features{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:28px}
+.nyanlog-feature{background:rgba(255,255,255,.12);border-radius:14px;padding:14px;font-size:14px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.6;border:1px solid rgba(255,255,255,.15)}
+.nyanlog-feature strong{display:block;font-size:15px;font-weight:900;color:#a8f0c8;margin-bottom:4px}
+.btn-white{background:#fff;color:var(--brand);padding:16px 28px;font-size:16px;border-radius:16px;font-weight:900;display:inline-flex;align-items:center;gap:8px;transition:.15s;border:none;cursor:pointer;font-family:inherit}
+.btn-white:hover{transform:translateY(-2px)}
+
+/* フッター */
+.site-footer{border-top:1px solid var(--line);background:var(--cream)}
+.site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 0;color:var(--muted);font-size:13px;font-weight:700}
+.footer-links{display:flex;gap:20px}
+
+/* レスポンシブ */
+@media(max-width:760px){
+  .nyanlog-features{grid-template-columns:1fr}
+  .section{padding:48px 0}
+  .hero{padding:40px 0 48px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container site-header-inner">
+    <a href="./index.html" class="brand">
+      <div class="brand-icon">🐱</div>
+      <div>
+        <div class="brand-title">にゃんログ</div>
+        <div class="brand-sub">やさしく記録して、診察につなぐ</div>
+      </div>
+    </a>
+    <a href="./nyanlog.html" class="btn-primary">🐾 記録をはじめる</a>
+  </div>
+</header>
+
+<!-- ヒーロー -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-kicker">MENTAL HEALTH</div>
+    <h1 class="hero-title">こころの病気を、<br><span>正しく知る。</span></h1>
+    <p class="hero-desc">うつ病・双極性障害・不安症・発達障害など、こころの病気は誰にでも起こりえます。正しく知ることが、適切な支援への第一歩です。</p>
+    <div class="hero-note">
+      <span style="font-size:20px">💙</span>
+      <div>こころの病気は、性格の弱さや意志の問題ではありません。<br>適切な治療とサポートで、多くの人が回復しています。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 疾患一覧 -->
+<section class="section section-white">
+  <div class="container">
+    <div class="section-kicker">DISEASE LIST</div>
+    <h2 class="section-title">こころの病気 一覧</h2>
+    <p class="section-desc">カテゴリをタップして疾患を確認。疾患名をタップすると症状・困りごと・対策の詳細が見られます。</p>
+
+    <div class="cat-wrap">
+
+      <!-- 気分障害 -->
+      <button class="cat-btn" onclick="toggleCat(this,'cat1')">
+        <div class="cat-left">
+          <span class="cat-icon">🌧</span>
+          <div><div class="cat-name">気分障害（感情障害）</div><div class="cat-count">2つの疾患</div></div>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="cat-items" id="cat1">
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">うつ病</div>
+          <div class="disease-sub">気分の落ち込み、意欲・エネルギーの低下が続く状態</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">気分の落ち込み、何もする気になれない、眠れない・眠りすぎる、食欲の変化、集中できない、疲れやすい、自分を責める気持ち。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">朝起きられない。仕事や家事が手につかない。「怠けている」と誤解されやすい。外出が億劫になる。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">😔 気分の波を毎日記録</span>
+                <span class="detail-tip">😴 睡眠・食欲の変化</span>
+                <span class="detail-tip">💊 服薬の継続確認</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">双極性障害（躁うつ病）</div>
+          <div class="disease-sub">躁状態（気分が高まる）と鬱状態を繰り返す</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">【躁状態】気分が異常に高い、眠らなくても元気、衝動的な行動、お金を使いすぎる。【鬱状態】うつ病と同様の落ち込み。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">躁状態のときに問題行動を起こしやすい。気分の波が激しく生活が不安定になる。薬を飲み忘れやすい。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">📊 気分の高低を毎日記録</span>
+                <span class="detail-tip">😴 睡眠時間の変化</span>
+                <span class="detail-tip">💊 服薬の継続が特に重要</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 統合失調症 -->
+      <button class="cat-btn" onclick="toggleCat(this,'cat2')">
+        <div class="cat-left">
+          <span class="cat-icon">🌀</span>
+          <div><div class="cat-name">統合失調症</div><div class="cat-count">1つの疾患</div></div>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="cat-items" id="cat2">
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">統合失調症</div>
+          <div class="disease-sub">幻覚・妄想・思考のまとまりにくさが主な症状</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">【陽性症状】幻聴・幻覚、妄想（監視されているなど）、まとまりのない言動。【陰性症状】意欲低下、感情が平板になる、引きこもり。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">人間関係が難しくなる。服薬を続けることが大切だが忘れやすい。再発を繰り返しやすい。症状に気づきにくいことがある。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">💊 服薬の継続が最重要</span>
+                <span class="detail-tip">😴 睡眠の乱れに注意</span>
+                <span class="detail-tip">😔 気分・意欲の変化</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 不安症 -->
+      <button class="cat-btn" onclick="toggleCat(this,'cat3')">
+        <div class="cat-left">
+          <span class="cat-icon">😰</span>
+          <div><div class="cat-name">不安症（不安障害）</div><div class="cat-count">4つの疾患</div></div>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="cat-items" id="cat3">
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">パニック症（パニック障害）</div>
+          <div class="disease-sub">突然の強い不安・動悸・息苦しさなどの発作が起きる</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">突然の激しい動悸・息切れ・めまい・発汗。「このまま死ぬかも」という強い恐怖感。発作を恐れて外出を避けるようになる（広場恐怖）。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">電車・人混みなどで発作が起きやすい。外出できなくなる。仕事や外食を避けるようになる。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">⚡ 発作の日時・状況</span>
+                <span class="detail-tip">😰 不安レベルの変化</span>
+                <span class="detail-tip">🚶 外出できたか</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">強迫症（強迫性障害・OCD）</div>
+          <div class="disease-sub">意に反して繰り返す思考や行動が止められない</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">【強迫観念】鍵を閉めたか不安、汚染への恐れなど。【強迫行為】何度も確認する、手を洗い続けるなど。やめたくてもやめられない。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">確認行為に時間がかかり外出・仕事に遅れる。家族を巻き込んでしまう。本人も苦しんでいる。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">🔁 強迫行為の回数・時間</span>
+                <span class="detail-tip">😔 苦痛レベルの変化</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">社交不安症（社交不安障害）</div>
+          <div class="disease-sub">人前で強い不安・恥ずかしさを感じる</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">人前で話す・食べる・書くなどの場面で強い不安と身体症状（赤面・震え・動悸）が出る。恥ずかしい思いをすることへの強い恐れ。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">会議や発表が苦手。外食・電話が怖い。就職活動や職場で困る。「内気」と誤解されやすい。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">😰 不安を感じた場面</span>
+                <span class="detail-tip">🚶 回避した状況</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">全般不安症（GAD）</div>
+          <div class="disease-sub">特定の原因がなく、様々なことへの過度な不安が続く</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">仕事・家族・健康など様々なことへの過度な心配が止められない。疲れやすい、集中できない、眠れない、筋肉の緊張。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">常に何かが心配で休まらない。身体的な疲労・頭痛も起きやすい。「心配性」と誤解されやすい。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">😟 不安の強さを毎日記録</span>
+                <span class="detail-tip">😴 睡眠の質</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ストレス関連 -->
+      <button class="cat-btn" onclick="toggleCat(this,'cat4')">
+        <div class="cat-left">
+          <span class="cat-icon">⚡</span>
+          <div><div class="cat-name">ストレス関連障害</div><div class="cat-count">2つの疾患</div></div>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="cat-items" id="cat4">
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">適応障害</div>
+          <div class="disease-sub">特定のストレスにより心身に不調が出る状態</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">特定の状況（職場・学校・家庭など）でのストレスにより、抑うつ・不安・行動上の問題が起きる。ストレスから離れると改善しやすい。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">職場に行けなくなる。特定の人と会えない。「甘え」と誤解されやすい。早期に適切な対処が重要。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">😔 気分の変化</span>
+                <span class="detail-tip">🏢 出勤・外出できたか</span>
+                <span class="detail-tip">😴 睡眠・食欲</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">PTSD（心的外傷後ストレス障害）</div>
+          <div class="disease-sub">強いトラウマ体験後に続く症状</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">フラッシュバック（体験が突然よみがえる）、悪夢、トラウマを思い出させるものの回避、過覚醒（常に警戒している）、感情の麻痺。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">特定の場所・音・匂いで症状が出る。眠れない。人間関係が難しくなる。日常生活への影響が大きい。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">😴 悪夢・睡眠の質</span>
+                <span class="detail-tip">⚡ フラッシュバックの頻度</span>
+                <span class="detail-tip">😔 気分・安心感の変化</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 神経発達症 -->
+      <button class="cat-btn" onclick="toggleCat(this,'cat5')">
+        <div class="cat-left">
+          <span class="cat-icon">🧩</span>
+          <div><div class="cat-name">神経発達症（発達障害）</div><div class="cat-count">2つの疾患</div></div>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="cat-items" id="cat5">
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">ADHD（注意欠如・多動症）</div>
+          <div class="disease-sub">不注意・多動性・衝動性が特徴</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">忘れ物・なくし物が多い、集中が続かない、順番を待てない、思ったことをすぐ口にする、締め切りを守れない。大人になっても続く。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">仕事でミスが多い。時間管理が難しい。「だらしない」と誤解されやすい。二次障害としてうつ・不安を抱えることが多い。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">🎯 集中できた時間</span>
+                <span class="detail-tip">😔 気分の波</span>
+                <span class="detail-tip">💊 服薬の効果確認</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">ASD（自閉スペクトラム症）</div>
+          <div class="disease-sub">コミュニケーション・社会的相互作用・こだわりの特性</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な特性</div>
+              <div class="detail-body">相手の気持ちを読むことが難しい、言葉の裏を読めない、特定のことへの強いこだわり、感覚過敏（音・光・触感など）。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">職場・学校での人間関係に疲れやすい。急な変化が苦手。二次障害（うつ・不安）を抱えることが多い。感覚過敏で疲弊しやすい。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">😓 疲れ・消耗感</span>
+                <span class="detail-tip">😔 気分の変化</span>
+                <span class="detail-tip">🌙 睡眠の質</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 依存症 -->
+      <button class="cat-btn" onclick="toggleCat(this,'cat6')">
+        <div class="cat-left">
+          <span class="cat-icon">🔗</span>
+          <div><div class="cat-name">依存症</div><div class="cat-count">3つの疾患</div></div>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="cat-items" id="cat6">
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">アルコール依存症</div>
+          <div class="disease-sub">飲酒のコントロールができなくなる状態</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">飲む量・頻度をコントロールできない。飲まないとイライラ・震えなどの離脱症状が出る。飲酒を優先して生活が崩れる。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">日常の困りごと</div>
+              <div class="detail-body">仕事・家族関係に影響が出る。「意志が弱い」と誤解されやすいが、脳の病気です。一人でやめることは非常に難しい。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">💊 服薬・断酒の継続</span>
+                <span class="detail-tip">😔 気分・飲みたい気持ちの強さ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">薬物依存症</div>
+          <div class="disease-sub">薬物への強い渇望と使用のコントロール喪失</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">使いたいという強い欲求（渇望）。やめたくてもやめられない。やめると離脱症状が出る。社会生活が崩れていく。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">💊 治療・服薬の継続</span>
+                <span class="detail-tip">😔 気分・渇望の強さ</span>
+                <span class="detail-tip">👥 支援者と繋がれたか</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">ギャンブル依存症</div>
+          <div class="disease-sub">ギャンブルへの衝動をコントロールできない</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">ギャンブルに使う時間・お金が増え続ける。やめたいのにやめられない。借金・嘘・家族への隠し事が増える。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">😔 衝動の強さ</span>
+                <span class="detail-tip">👥 自助グループへの参加</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- その他 -->
+      <button class="cat-btn" onclick="toggleCat(this,'cat7')">
+        <div class="cat-left">
+          <span class="cat-icon">📋</span>
+          <div><div class="cat-name">その他の疾患</div><div class="cat-count">5つの疾患</div></div>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="cat-items" id="cat7">
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">摂食障害</div>
+          <div class="disease-sub">食べること・体重・体型への強いこだわりと行動</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">【拒食症】極端な食事制限、体重への強い恐れ。【過食症】大量に食べて吐く行動。身体的な合併症も多い。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">🍽 食欲・食事の状態</span>
+                <span class="detail-tip">😔 気分・自己評価の変化</span>
+                <span class="detail-tip">💊 服薬の継続</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">睡眠障害</div>
+          <div class="disease-sub">眠れない・眠りすぎるなど睡眠に関する問題</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な種類</div>
+              <div class="detail-body">不眠症（寝つけない・途中で目が覚める）、過眠症（眠りすぎる）、睡眠時無呼吸症候群、概日リズム障害など。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">🌙 就寝・起床時刻</span>
+                <span class="detail-tip">😴 眠れた感覚（0〜10）</span>
+                <span class="detail-tip">😔 日中の眠気・気分</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">解離性障害</div>
+          <div class="disease-sub">記憶・意識・アイデンティティなどの連続性が断絶する</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な症状</div>
+              <div class="detail-body">記憶がとぎれる（健忘）、自分が自分でない感覚（離人感）、別の人格が現れる（解離性同一性障害）。強いストレスやトラウマが背景にあることが多い。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">🌀 解離が起きた状況</span>
+                <span class="detail-tip">😔 気分・安心感</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">パーソナリティ障害</div>
+          <div class="disease-sub">持続的な思考・感情・行動パターンの偏りにより生活に支障をきたす</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">主な種類</div>
+              <div class="detail-body">境界性パーソナリティ障害（感情の不安定さ・見捨てられ恐怖）、回避性、依存性など。本人も生きづらさを強く感じている。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">😤 感情の波</span>
+                <span class="detail-tip">👥 人間関係のトラブル</span>
+                <span class="detail-tip">😔 気分・安定感</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-name">てんかん / 認知症</div>
+          <div class="disease-sub">脳の機能的・器質的な変化による疾患</div>
+          <div class="disease-detail">
+            <div class="detail-section">
+              <div class="detail-label">てんかん</div>
+              <div class="detail-body">脳の神経細胞の過剰な電気的活動により発作が起きる。発作の種類・頻度を記録することが治療に役立つ。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">認知症</div>
+              <div class="detail-body">記憶・判断・言語などの認知機能が低下し、日常生活に支障をきたす。高次脳機能障害とは原因・経過が異なる。</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">記録のヒント</div>
+              <div class="detail-tips">
+                <span class="detail-tip">⚡ 発作の日時・状況</span>
+                <span class="detail-tip">🧠 物忘れの変化</span>
+                <span class="detail-tip">💊 服薬の継続</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- にゃんログCTA -->
+<section class="section section-white">
+  <div class="container">
+    <div class="nyanlog-cta">
+      <div class="section-kicker" style="color:rgba(255,255,255,.7)">にゃんログ活用</div>
+      <h2>毎日の変化を、<br>診察につなごう。</h2>
+      <p>こころの病気では「今日の状態」を正確に伝えることが治療の鍵です。にゃんログなら、気分・服薬・気になったことをタップだけで記録でき、週ごとのまとめを診察に活かせます。</p>
+      <div class="nyanlog-features">
+        <div class="nyanlog-feature">
+          <strong>😊 気分記録</strong>今日の状態を3択でかんたんに
+        </div>
+        <div class="nyanlog-feature">
+          <strong>💊 服薬チェック</strong>飲んだ・飲んでないを毎日確認
+        </div>
+        <div class="nyanlog-feature">
+          <strong>📌 気になったこと</strong>不安・眠れない・イライラなど
+        </div>
+        <div class="nyanlog-feature">
+          <strong>🩺 診察向けまとめ</strong>1週間の傾向を自動で整理
+        </div>
+      </div>
+      <a href="./nyanlog.html" class="btn-white">🐾 にゃんログで記録をはじめる</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="container" style="text-align:center">
+    <div style="font-size:48px;margin-bottom:16px">💙</div>
+    <h2 style="font-size:clamp(26px,4vw,36px);font-weight:900;line-height:1.2;margin-bottom:14px">こころの病気は、<br>一人で抱えなくていい。</h2>
+    <p style="font-size:16px;font-weight:700;color:#6b5a45;line-height:1.85;max-width:560px;margin:0 auto 28px">記録を続けることが、医師との会話を変えます。変化に気づくことが、回復への一歩になります。</p>
+    <a href="./nyanlog.html" class="btn-primary" style="font-size:16px;padding:16px 32px;border-radius:16px">🐾 今すぐ記録をはじめる</a>
+    <div style="margin-top:14px"><a href="./index.html" style="font-size:14px;font-weight:700;color:var(--muted)">← トップページに戻る</a></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container site-footer-inner">
+    <div>© にゃんログ</div>
+    <div class="footer-links">
+      <a href="./index.html">トップ</a>
+      <a href="./nyanlog.html">アプリ</a>
+      <a href="./kouji-nou.html">高次脳機能障害</a>
+    </div>
+    <div style="text-align:right">
+      <div>記録はやさしく、判断は慎重に。</div>
+      <div style="font-size:12px;margin-top:4px;color:var(--muted)">本サービスは医療診断・治療を目的としたものではありません。症状については必ず医師にご相談ください。</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleCat(btn,id){
+  btn.classList.toggle('open');
+  document.getElementById(id).classList.toggle('show');
+}
+function toggleDisease(item){
+  item.classList.toggle('open');
+}
+</script>
+</body>
+</html>

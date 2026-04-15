@@ -6,6 +6,14 @@
   <title>にゃんログ | やさしく記録して、診察につなぐ</title>
   <meta name="description" content="にゃんログは、気分・服薬・気になったことをやさしく記録するためのサービスです。答えを決めつけず、日々の変化を見える形にして、診察や相談に役立つ材料へつなげます。">
   <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="にゃんログ">
+  <meta property="og:title" content="にゃんログ | やさしく記録して、診察につなぐ">
+  <meta property="og:description" content="にゃんログは、気分・服薬・気になったことをやさしく記録するためのサービスです。答えを決めつけず、日々の変化を見える形にして、診察や相談に役立つ材料へつなげます。">
+  <meta property="og:url" content="https://mahitogawa.github.io/nyanlog/">
+  <meta property="og:image" content="https://mahitogawa.github.io/nyanlog/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://mahitogawa.github.io/nyanlog/">
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
     :root{
@@ -35,10 +43,7 @@
     .hero-copy{max-width:640px;margin-top:22px;font-size:18px;font-weight:800;color:#6b5a45;line-height:1.9}
     .cta-row,.sub-links{display:flex;gap:12px;flex-wrap:wrap}.cta-row{margin-top:30px}.sub-links{margin-top:14px}
     .pill-link,.chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:999px;padding:10px 14px;box-shadow:var(--shadow-sm);font-size:14px;font-weight:900;color:var(--muted)}
-    .stats{margin-top:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:640px}
-    .stat{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow-sm)}
-    .stat-value{font-size:30px;font-weight:900;line-height:1}.green{color:var(--brand)}.purple{color:var(--purple)}.amber{color:var(--amber)}
-    .stat-label{margin-top:8px;font-size:12px;font-weight:800;color:var(--muted);line-height:1.5}
+    .green{color:var(--brand)}.purple{color:var(--purple)}.amber{color:var(--amber)}
     .phone-wrap{position:relative}.floating-note{position:absolute;top:-16px;right:-10px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--shadow-sm);font-size:14px;font-weight:900;color:var(--brand);z-index:2}
     .phone{max-width:420px;margin:0 auto;border-radius:34px;background:#fff;border:1px solid var(--line);padding:16px;box-shadow:var(--shadow)}
     .phone-inner{border-radius:28px;background:linear-gradient(180deg,#fffdfb 0%,#f8f0e6 100%);padding:16px}.phone-top{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--brand);color:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 12px 22px rgba(45,106,79,.18)}
@@ -65,10 +70,9 @@
     .cta-box{overflow:hidden;border-radius:36px;border:1px solid #d8cbbb;background:linear-gradient(135deg,#fff 0%,#f7f1e8 45%,#eef6f1 100%);padding:44px 28px;text-align:center;box-shadow:var(--shadow)}
     .cta-icon{width:64px;height:64px;border-radius:24px;display:grid;place-items:center;margin:0 auto;background:var(--brand);color:#fff;font-size:34px;box-shadow:0 14px 30px rgba(45,106,79,.20)}
     .cta-title{margin-top:22px;font-size:clamp(30px,4.4vw,46px);line-height:1.15;letter-spacing:-.02em;font-weight:900}.cta-copy{max-width:760px;margin:16px auto 0;color:#6b5a45;font-size:17px;font-weight:800;line-height:1.9}
-    .cta-help{margin-top:14px;font-size:14px;font-weight:800;color:var(--muted)} .cta-help a{color:var(--brand);text-decoration:underline;text-underline-offset:4px}
     .site-footer{border-top:1px solid var(--line);background:var(--cream)} .site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 0;color:var(--muted);font-size:14px;font-weight:800}
     @media (max-width:1080px){.feature-grid{grid-template-columns:repeat(2,1fr)}.hero-grid,.safety-grid{grid-template-columns:1fr}.steps,.service-grid{grid-template-columns:1fr}}
-    @media (max-width:760px){.nav{display:none}.container{width:min(var(--max),calc(100% - 24px))}.hero-grid{gap:34px;padding:34px 0 64px}.cta-row,.sub-links{flex-direction:column}.stats,.feature-grid{grid-template-columns:1fr}.section{padding:64px 0}.site-footer-inner{flex-direction:column;align-items:flex-start}.floating-note{position:static;margin:0 auto 12px;width:max-content}}
+    @media (max-width:760px){.nav{display:none}.container{width:min(var(--max),calc(100% - 24px))}.hero-grid{gap:34px;padding:34px 0 64px}.cta-row,.sub-links{flex-direction:column}.feature-grid{grid-template-columns:1fr}.section{padding:64px 0}.site-footer-inner{flex-direction:column;align-items:flex-start}.floating-note{position:static;margin:0 auto 12px;width:max-content}}
   </style>
 </head>
 <body>
@@ -84,6 +88,8 @@
         <a href="#how" class="nav-link">使い方</a>
         <a href="#safety" class="nav-link">安心設計</a>
         <a href="#faq" class="nav-link">FAQ</a>
+        <a href="./kouji-nou.html" class="nav-link">高次脳機能障害</a>
+        <a href="./kokoro.html" class="nav-link">こころの病気</a>
       </nav>
     </div>
   </header>
@@ -96,21 +102,37 @@
           <div class="eyebrow">✨ 毎日の状態を、曖昧なまま記録できる</div>
           <h1>記録はアプリ、<br><span class="accent">結論は医師へ。</span></h1>
           <p class="hero-copy">にゃんログは、気分・服薬・気になったことをやさしく記録するためのサービスです。答えを決めつけず、日々の変化を見える形にして、診察や相談に役立つ材料へつなげます。</p>
-          <div class="cta-row">
-            <a href="./nyanlog.html" class="btn btn-primary">今すぐはじめる →</a>
-            <a href="#how" class="btn btn-secondary">デモを見る</a>
+
+          <!-- 支援法バナー -->
+          <div style="margin-top:24px;background:#1a4a35;border-radius:16px;padding:12px 18px;display:flex;align-items:center;gap:12px;max-width:560px">
+            <span style="font-size:20px">🏛</span>
+            <div>
+              <div style="font-size:13px;font-weight:900;color:rgba(255,255,255,.9);line-height:1.6">高次脳機能障害者支援法 2026年4月施行</div>
+              <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.65)">支援の輪が広がっています</div>
+            </div>
+            <span style="margin-left:auto;font-size:11px;font-weight:900;background:rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:3px 10px;white-space:nowrap">NEW</span>
           </div>
-          <div class="sub-links">
-            <a href="#how" class="pill-link">使い方ガイド →</a>
-          
+
+          <!-- 2択カード -->
+          <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:560px">
+            <a href="./kouji-nou.html" style="display:block;background:#e8f5ef;border:2px solid #b7dfc9;border-radius:18px;padding:16px;text-decoration:none;transition:.15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+              <div style="font-size:22px;margin-bottom:8px">🧠</div>
+              <div style="font-size:15px;font-weight:900;color:#1a4a35;margin-bottom:4px">高次脳機能障害</div>
+              <div style="font-size:12px;font-weight:700;color:#2d6a4f;line-height:1.5">脳梗塞・事故・病気後の後遺症</div>
+            </a>
+            <a href="./kokoro.html" style="display:block;background:#eef0ff;border:2px solid #c4c0f0;border-radius:18px;padding:16px;text-decoration:none;transition:.15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+              <div style="font-size:22px;margin-bottom:8px">💙</div>
+              <div style="font-size:15px;font-weight:900;color:#3c3489;margin-bottom:4px">こころの病気</div>
+              <div style="font-size:12px;font-weight:700;color:#534ab7;line-height:1.5">うつ・不安症・発達障害など</div>
+            </a>
+          </div>
+
+          <div class="cta-row" style="margin-top:16px">
+            <a href="./nyanlog.html" class="btn btn-primary">🐾 まず使ってみる</a>
+            <a href="#how" class="btn btn-secondary">デモを見る</a>
           </div>
           <div class="sub-links" style="margin-top:22px">
             <span class="chip">気分記録</span><span class="chip">服薬チェック</span><span class="chip">傾向の見返し</span><span class="chip">診察前の整理</span>
-          </div>
-          <div class="stats">
-            <div class="stat"><div class="stat-value green">3秒</div><div class="stat-label">迷わず記録しやすい入力体験</div></div>
-            <div class="stat"><div class="stat-value purple">やさしく</div><div class="stat-label">断定しない見せ方を重視</div></div>
-            <div class="stat"><div class="stat-value amber">見返せる</div><div class="stat-label">履歴とまとめで傾向がわかる</div></div>
           </div>
         </div>
         <div class="phone-wrap">
@@ -119,7 +141,7 @@
             <div class="phone-top">
               <div class="phone-brand">
                 <div class="phone-brand-icon">🐱</div>
-                <div><div class="phone-brand-title">にゃんログ</div><div class="phone-brand-date">2026年4月14日（火）</div></div>
+                <div><div class="phone-brand-title">にゃんログ</div><div class="phone-brand-date">2026年4月（火）</div></div>
               </div><div>🕒</div>
             </div>
             <div class="phone-cards">
@@ -184,6 +206,7 @@
         <div class="service-grid">
           <article class="card"><div class="section-kicker">START</div><h3>今すぐ使い始める</h3><p>毎日の記録をすぐ始めたい方向けの導線です。気分・服薬・気になったことを、その場で記録できます。</p><div style="margin-top:22px"><a href="./nyanlog.html" class="btn btn-primary btn-small">アプリを開く →</a></div></article>
           <article class="card"><div class="section-kicker">DEMO</div><h3>まずはデモで体験</h3><p>導入前に画面や流れを確認したい方向けです。実際の記録イメージや振り返り方を見られます。</p><div style="margin-top:22px"><a href="#how" class="btn btn-secondary btn-small">デモを見る →</a></div></article>
+          <article class="card"><div class="section-kicker">LEARN</div><h3>疾患について知る</h3><p>高次脳機能障害・こころの病気など、対象疾患の症状・困りごと・日常の工夫をわかりやすく解説しています。</p><div style="margin-top:22px;display:flex;gap:8px;flex-wrap:wrap"><a href="./kouji-nou.html" class="btn btn-secondary btn-small">高次脳機能障害 →</a><a href="./kokoro.html" class="btn btn-secondary btn-small">こころの病気 →</a></div></article>
         </div>
       </div>
     </section>
@@ -221,7 +244,15 @@
   <footer class="site-footer">
     <div class="container site-footer-inner">
       <div>© にゃんログ</div>
-      <div>記録はやさしく、判断は慎重に。</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px;font-weight:800">
+        <a href="./nyanlog.html" style="color:var(--muted)">アプリ</a>
+        <a href="./kouji-nou.html" style="color:var(--muted)">高次脳機能障害</a>
+        <a href="./kokoro.html" style="color:var(--muted)">こころの病気</a>
+      </div>
+      <div style="text-align:right">
+        <div>記録はやさしく、判断は慎重に。</div>
+        <div style="font-size:12px;margin-top:4px;color:var(--muted)">本サービスは医療診断・治療を目的としたものではありません。症状については必ず医師にご相談ください。</div>
+      </div>
     </div>
   </footer>
 </body>
