@@ -72,7 +72,30 @@
     .cta-title{margin-top:22px;font-size:clamp(30px,4.4vw,46px);line-height:1.15;letter-spacing:-.02em;font-weight:900}.cta-copy{max-width:760px;margin:16px auto 0;color:#6b5a45;font-size:17px;font-weight:800;line-height:1.9}
     .site-footer{border-top:1px solid var(--line);background:var(--cream)} .site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 0;color:var(--muted);font-size:14px;font-weight:800}
     @media (max-width:1080px){.feature-grid{grid-template-columns:repeat(2,1fr)}.hero-grid,.safety-grid{grid-template-columns:1fr}.steps,.service-grid{grid-template-columns:1fr}}
-    @media (max-width:760px){.nav{display:none}.container{width:min(var(--max),calc(100% - 24px))}.hero-grid{gap:34px;padding:34px 0 64px}.cta-row,.sub-links{flex-direction:column}.feature-grid{grid-template-columns:1fr}.section{padding:64px 0}.site-footer-inner{flex-direction:column;align-items:flex-start}.floating-note{position:static;margin:0 auto 12px;width:max-content}}
+    @media (max-width:760px){
+      .nav{display:none}
+      .container{width:min(var(--max),calc(100% - 24px))}
+      .hero-grid{gap:34px;padding:34px 0 64px}
+      .cta-row,.sub-links{flex-direction:column}
+      .feature-grid{grid-template-columns:1fr}
+      .section{padding:64px 0}
+      .site-footer-inner{flex-direction:column;align-items:flex-start}
+      .floating-note{position:static;margin:0 auto 12px;width:max-content}
+      /* フォントサイズ底上げ */
+      body{font-size:17px}
+      .hero-copy{font-size:18px}
+      .section-desc{font-size:18px}
+      .card p{font-size:17px}
+      .faq-q{font-size:20px}
+      .faq-a{font-size:17px}
+      .chip,.eyebrow,.badge,.cat-message{font-size:16px}
+      .tag{font-size:15px;padding:10px 14px}
+      .phone-card-label,.choice-grid-3,.choice-grid-2{font-size:15px}
+      .btn-small{font-size:16px;padding:12px 18px}
+      .section-kicker{font-size:14px}
+      .site-footer-inner{font-size:15px}
+      .brand-sub{font-size:14px}
+    }
   </style>
 </head>
 <body>
@@ -107,10 +130,10 @@
           <div style="margin-top:24px;background:#1a4a35;border-radius:16px;padding:12px 18px;display:flex;align-items:center;gap:12px;max-width:560px">
             <span style="font-size:20px">🏛</span>
             <div>
-              <div style="font-size:13px;font-weight:900;color:rgba(255,255,255,.9);line-height:1.6">高次脳機能障害者支援法 2026年4月施行</div>
-              <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.65)">支援の輪が広がっています</div>
+              <div style="font-size:15px;font-weight:900;color:rgba(255,255,255,.9);line-height:1.6">高次脳機能障害者支援法 2026年4月施行</div>
+              <div style="font-size:14px;font-weight:700;color:rgba(255,255,255,.65)">支援の輪が広がっています</div>
             </div>
-            <span style="margin-left:auto;font-size:11px;font-weight:900;background:rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:3px 10px;white-space:nowrap">NEW</span>
+            <span style="margin-left:auto;font-size:12px;font-weight:900;background:rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:3px 10px;white-space:nowrap">NEW</span>
           </div>
 
           <!-- 2択カード -->
@@ -118,12 +141,12 @@
             <a href="./kouji-nou.html" style="display:block;background:#e8f5ef;border:2px solid #b7dfc9;border-radius:18px;padding:16px;text-decoration:none;transition:.15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
               <div style="font-size:22px;margin-bottom:8px">🧠</div>
               <div style="font-size:15px;font-weight:900;color:#1a4a35;margin-bottom:4px">高次脳機能障害</div>
-              <div style="font-size:12px;font-weight:700;color:#2d6a4f;line-height:1.5">脳梗塞・事故・病気後の後遺症</div>
+              <div style="font-size:14px;font-weight:700;color:#2d6a4f;line-height:1.5">脳梗塞・事故・病気後の後遺症</div>
             </a>
             <a href="./kokoro.html" style="display:block;background:#eef0ff;border:2px solid #c4c0f0;border-radius:18px;padding:16px;text-decoration:none;transition:.15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
               <div style="font-size:22px;margin-bottom:8px">💙</div>
               <div style="font-size:15px;font-weight:900;color:#3c3489;margin-bottom:4px">こころの病気</div>
-              <div style="font-size:12px;font-weight:700;color:#534ab7;line-height:1.5">うつ・不安症・発達障害など</div>
+              <div style="font-size:14px;font-weight:700;color:#534ab7;line-height:1.5">うつ・不安症・発達障害など</div>
             </a>
           </div>
 
@@ -251,7 +274,7 @@
       </div>
       <div style="text-align:right">
         <div>記録はやさしく、判断は慎重に。</div>
-        <div style="font-size:12px;margin-top:4px;color:var(--muted)">本サービスは医療診断・治療を目的としたものではありません。症状については必ず医師にご相談ください。</div>
+        <div style="font-size:13px;margin-top:4px;color:var(--muted)">本サービスは医療診断・治療を目的としたものではありません。症状については必ず医師にご相談ください。</div>
       </div>
     </div>
   </footer>
