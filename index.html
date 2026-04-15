@@ -1,1288 +1,228 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,viewport-fit=cover"/>
-<title>🐱 にゃんログ v13</title>
-<link rel="icon" type="image/png" href="favicon.png">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
-
-*{box-sizing:border-box;margin:0;padding:0}
-html{overflow-x:hidden;}
-
-:root{
-  --cream:#fdf8f3;
-  --sand:#f5ede0;
-  --brand:#2d6a4f;
-  --brand-light:#e8f5ef;
-  --ink:#2c2118;
-  --muted:#8b7355;
-  --line:#e8ddd0;
-  --warn:#e07b39;
-  --warn-bg:#fef3e8;
-  --danger:#c0392b;
-  --danger-bg:#fdecea;
-  --purple:#5b54c7;
-  --purple-bg:#eef0ff;
-  --amber:#d97706;
-  --amber-bg:#fff8e7;
-}
-
-body{
-  font-family:'Zen Maru Gothic',-apple-system,"Hiragino Sans",sans-serif;
-  background:var(--cream);
-  color:var(--ink);
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-/* ===== HEADER ===== */
-.hd{
-  background:var(--brand);
-  padding:env(safe-area-inset-top,0) 0 0;
-  position:sticky;top:0;z-index:100;
-}
-.hd-inner{
-  padding:16px 16px 10px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  cursor:pointer;
-  gap:8px;
-  width:100%;
-  background:none;
-  border:none;
-  font-family:inherit;
-  text-decoration:none;
-  color:inherit;
-  -webkit-tap-highlight-color:rgba(255,255,255,.2);
-}
-.hd-top-row{
-  display:flex;align-items:center;gap:12px;
-}
-.logo-icon{
-  width:56px;height:56px;
-  background:rgba(255,255,255,.22);
-  border-radius:18px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:34px;flex-shrink:0;
-  box-shadow:0 2px 10px rgba(0,0,0,.15);
-}
-.logo-text{
-  font-size:34px;font-weight:900;color:#fff;
-  letter-spacing:.04em;
-  text-shadow:0 2px 8px rgba(0,0,0,.18);
-}
-.logo-date{
-  font-size:clamp(36px,10.5vw,54px);
-  color:#fff;
-  font-weight:900;
-  letter-spacing:.02em;
-  line-height:1.1;
-  text-align:center;
-  width:100%;
-  text-shadow:0 3px 14px rgba(0,0,0,.25);
-  background:rgba(0,0,0,.08);
-  border-radius:14px;
-  padding:6px 12px;
-}
-
-/* タブ */
-.tabs{
-  display:flex;
-  margin-top:14px;
-  border-bottom:none;
-  gap:2px;
-  padding:0 8px;
-}
-.tab{
-  flex:1;
-  padding:14px 4px;
-  font-size:17px;
-  font-weight:900;
-  color:rgba(255,255,255,.65);
-  background:none;
-  border:none;
-  cursor:pointer;
-  border-radius:14px 14px 0 0;
-  font-family:inherit;
-  transition:.15s;
-  letter-spacing:.01em;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  min-width:0;
-}
-.tab.on{
-  background:var(--cream);
-  color:var(--brand);
-}
-
-/* ===== VIEWS ===== */
-.view{display:none;padding:20px 16px 48px;max-width:480px;margin:0 auto}
-.view.on{display:block}
-
-/* ===== カード ===== */
-.card{
-  background:#fff;
-  border-radius:20px;
-  border:1.5px solid var(--line);
-  padding:20px;
-  margin-bottom:14px;
-}
-.card-title{
-  font-size:20px;font-weight:900;
-  color:var(--muted);
-  letter-spacing:.04em;
-  margin-bottom:16px;
-  display:flex;align-items:center;gap:6px;
-}
-
-/* ===== 気分ボタン ===== */
-.mood-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.mood-btn{
-  background:var(--sand);
-  border:2.5px solid transparent;
-  border-radius:18px;
-  height:92px;
-  cursor:pointer;
-  transition:.18s;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:6px;
-  font-family:inherit;
-}
-.mood-emoji{font-size:36px;line-height:1}
-.mood-label{font-size:16px;font-weight:900;color:var(--muted)}
-.mood-btn:active{transform:scale(.95)}
-.mood-btn.on{
-  border-color:var(--purple);
-  background:var(--purple-bg);
-}
-.mood-btn.on .mood-label{color:var(--purple)}
-
-/* ===== 薬ボタン ===== */
-.drug-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.drug-btn{
-  background:var(--sand);
-  border:2.5px solid transparent;
-  border-radius:18px;
-  height:74px;
-  font-size:19px;font-weight:900;
-  cursor:pointer;
-  font-family:inherit;
-  color:var(--ink);
-  transition:.18s;
-}
-.drug-btn:active{transform:scale(.96)}
-#medYes.on{background:var(--brand-light);border-color:var(--brand);color:var(--brand)}
-#medNo.on{
-  background:var(--danger-bg);border-color:var(--danger);color:var(--danger);
-  animation:redglow 1s ease 2;
-}
-@keyframes redglow{
-  0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}
-  50%{box-shadow:0 0 0 8px rgba(192,57,43,.2)}
-}
-
-/* ===== 気になったことボタン ===== */
-.sign-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.sign-btn{
-  background:var(--sand);
-  border:2px solid var(--line);
-  border-radius:14px;
-  height:72px;
-  font-size:16px;font-weight:900;
-  color:var(--ink);
-  cursor:pointer;
-  font-family:inherit;
-  transition:.18s;
-  line-height:1.4;
-  padding:4px 2px;
-  box-shadow:0 2px 0 rgba(0,0,0,.08);
-}
-.sign-btn:active{transform:scale(.95);box-shadow:none}
-.sign-btn.on{
-  background:var(--amber-bg);
-  border:2.5px solid var(--amber);
-  color:var(--amber);
-  box-shadow:0 2px 0 rgba(217,119,6,.25);
-}
-.sign-more-btn{
-  grid-column:1/-1;
-  background:none;
-  border:1.5px dashed var(--line);
-  border-radius:12px;
-  padding:12px;
-  font-size:17px;font-weight:900;
-  color:var(--muted);
-  cursor:pointer;
-  font-family:inherit;
-  transition:.15s;
-  margin-top:2px;
-}
-.sign-more-btn:active{background:var(--sand)}
-
-/* メモ */
-textarea{
-  width:100%;
-  border:2px solid var(--line);
-  border-radius:14px;
-  padding:14px;
-  font-size:18px;
-  font-family:inherit;
-  font-weight:700;
-  color:var(--ink);
-  background:var(--sand);
-  resize:none;
-  line-height:1.6;
-  margin-top:10px;
-  transition:.15s;
-}
-textarea:focus{outline:none;border-color:var(--brand);background:#fff}
-textarea::placeholder{color:#c4b49a;font-weight:700}
-
-/* ===== 記録ボタン ===== */
-.save-btn{
-  width:100%;height:70px;
-  background:var(--brand);
-  color:#fff;
-  border:none;border-radius:20px;
-  font-size:20px;font-weight:900;
-  cursor:pointer;
-  font-family:inherit;
-  letter-spacing:.04em;
-  transition:.15s;
-  margin-bottom:14px;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-}
-.save-btn:active{opacity:.85;transform:scale(.98)}
-
-/* ===== コメントカード ===== */
-.cat-card{
-  background:var(--brand-light);
-  border:1.5px solid #b7dfc9;
-  border-radius:18px;
-  padding:18px;
-  display:flex;gap:12px;align-items:flex-start;
-  margin-bottom:10px;
-}
-.cat-avatar{font-size:36px;flex-shrink:0;margin-top:2px}
-.cat-text{font-size:18px;font-weight:900;line-height:1.7;color:#1a4a35}
-
-.nurse-card{
-  background:var(--warn-bg);
-  border:1.5px solid #f0c090;
-  border-radius:18px;
-  padding:18px;
-  display:none;
-  gap:12px;align-items:flex-start;
-  margin-bottom:10px;
-}
-.nurse-card.show{display:flex}
-.nurse-icon{font-size:28px;flex-shrink:0;margin-top:2px}
-.nurse-inner{}
-.nurse-label{font-size:14px;font-weight:900;color:var(--warn);letter-spacing:.06em;margin-bottom:4px}
-.nurse-text{font-size:17px;font-weight:900;line-height:1.7;color:#7c3d12}
-
-/* ===== 履歴リスト ===== */
-.hist-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 14px;
-  background:var(--sand);
-  border-radius:14px;
-  margin-bottom:8px;
-  border:1.5px solid var(--line);
-}
-.hist-day{font-size:17px;font-weight:900;color:var(--ink)}
-.hist-meta{font-size:15px;font-weight:700;color:var(--muted);text-align:right}
-
-/* ===== サマリー ===== */
-.kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.kpi-box{
-  background:var(--sand);
-  border-radius:16px;
-  padding:14px;
-  border:1.5px solid var(--line);
-}
-.kpi-label{font-size:15px;font-weight:900;color:var(--muted);margin-bottom:4px}
-.kpi-val{font-size:32px;font-weight:900;color:var(--ink)}
-
-.range-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-
-/* バッジ */
-.badge{
-  display:inline-block;
-  background:var(--sand);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:7px 16px;
-  font-size:16px;font-weight:900;
-  color:var(--muted);
-  margin:4px 4px 0 0;
-}
-.range-btn{
-  border:2px solid var(--line);
-  background:#fff;border-radius:999px;
-  padding:10px 20px;font-size:16px;font-weight:900;
-  cursor:pointer;font-family:inherit;color:var(--muted);
-  transition:.15s;
-}
-.range-btn.on{background:var(--brand);border-color:var(--brand);color:#fff}
-
-.doctor-box{
-  background:var(--amber-bg);
-  border:1.5px solid #f0c040;
-  border-radius:16px;
-  padding:18px;
-}
-.doctor-label{font-size:16px;font-weight:900;color:var(--amber);letter-spacing:.04em;margin-bottom:8px}
-.doctor-text{font-size:18px;font-weight:900;line-height:1.7;color:#78350f}
-
-.input-row{display:flex;gap:8px;margin-bottom:14px}
-.text-input{
-  flex:1;border:2px solid var(--line);
-  border-radius:14px;padding:14px;
-  font:inherit;font-size:18px;font-weight:700;
-  background:var(--sand);color:var(--ink);
-}
-.text-input:focus{outline:none;border-color:var(--brand)}
-.add-btn{
-  background:var(--brand);color:#fff;
-  border:none;border-radius:14px;
-  padding:14px 20px;font:inherit;
-  font-size:18px;font-weight:900;cursor:pointer;
-}
-.concern-tag{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--sand);border:1.5px solid var(--line);
-  border-radius:999px;padding:8px 16px;
-  font-size:16px;font-weight:900;color:var(--ink);
-  margin:4px 4px 0 0;
-}
-.remove-btn{
-  background:none;border:none;
-  color:var(--danger);font-weight:900;
-  cursor:pointer;font-size:20px;line-height:1;
-}
-/* 候補管理トグル */
-.cfg-section-label{font-size:14px;font-weight:900;color:var(--muted);letter-spacing:.06em;margin:14px 0 8px;}
-.sign-manage-row{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 14px;border-radius:14px;margin-bottom:6px;
-  border:1.5px solid var(--line);background:var(--sand);transition:.15s;
-  min-width:0;overflow:hidden;
-}
-.sign-manage-row.off{background:#f5f5f5;border-color:#ddd;}
-.sign-manage-name{font-size:16px;font-weight:900;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.sign-manage-row.off .sign-manage-name{color:#bbb;}
-.tog{position:relative;width:50px;height:28px;flex-shrink:0;min-width:50px;}
-.tog input{opacity:0;width:0;height:0;position:absolute;}
-.tog-track{position:absolute;inset:0;border-radius:99px;background:#ddd;cursor:pointer;transition:.2s;}
-.tog input:checked+.tog-track{background:var(--brand);}
-.tog-track::after{content:'';position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.2s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
-.tog input:checked+.tog-track::after{left:25px;}
-.sign-manage-del{background:none;border:none;color:#ccc;font-size:18px;cursor:pointer;padding:0;font-weight:900;line-height:1;transition:.15s;flex-shrink:0;}
-.sign-manage-del:hover{color:var(--danger);}
-.restore-section{margin-top:12px;padding-top:12px;border-top:1.5px dashed var(--line);}
-.restore-label{font-size:13px;font-weight:900;color:var(--muted);margin-bottom:6px;letter-spacing:.04em;}
-.restore-tag{
-  display:inline-flex;align-items:center;gap:5px;
-  background:#f0f0f0;border:1.5px dashed #ccc;border-radius:999px;
-  padding:6px 14px;font-size:15px;font-weight:900;color:#999;
-  margin:3px 3px 0 0;cursor:pointer;transition:.15s;
-}
-.restore-tag:hover{background:var(--brand-light);border-color:var(--brand);color:var(--brand);}
-.export-btn{
-  width:100%;padding:18px;
-  background:var(--sand);border:1.5px solid var(--line);
-  border-radius:16px;font:inherit;font-size:18px;font-weight:900;
-  color:var(--ink);cursor:pointer;margin-bottom:10px;
-}
-.clear-btn{
-  width:100%;padding:18px;
-  background:var(--danger-bg);border:1.5px solid #f5b7b1;
-  border-radius:16px;font:inherit;font-size:18px;font-weight:900;
-  color:var(--danger);cursor:pointer;
-}
-
-/* まとめ画面 nurse カード */
-.sum-nurse-box{
-  background:var(--warn-bg);
-  border:1.5px solid #f0c090;
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:14px;
-}
-.sum-nurse-header{
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:14px;
-}
-.sum-nurse-icon{font-size:28px;flex-shrink:0;}
-.sum-nurse-title{font-size:18px;font-weight:900;color:var(--warn);}
-.sum-nurse-subtitle{font-size:13px;font-weight:700;color:#b45309;margin-top:1px;}
-.sum-nurse-msg{
-  display:flex;gap:10px;align-items:flex-start;
-  padding:12px 14px;
-  background:#fff;
-  border-radius:12px;
-  border-left:4px solid var(--warn);
-  margin-bottom:8px;
-}
-.sum-nurse-msg:last-child{margin-bottom:0;}
-.sum-nurse-msg-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
-.sum-nurse-msg-text{font-size:16px;font-weight:900;line-height:1.7;color:#7c3d12;}
-.sum-nurse-msg.green{border-left-color:var(--brand);background:#f0faf5;}
-.sum-nurse-msg.green .sum-nurse-msg-text{color:#1a4a35;}
-.sum-nurse-msg.empty{border-left-color:#ccc;background:#fafafa;}
-.sum-nurse-msg.empty .sum-nurse-msg-text{color:var(--muted);}
-.ai-link-card{
-  background:#fff;
-  border:1.5px solid var(--line);
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:14px;
-  display:none;
-}
-.ai-link-card.show{display:block}
-.ai-link-title{
-  font-size:16px;font-weight:900;
-  color:var(--muted);
-  margin-bottom:14px;
-  display:flex;align-items:center;gap:6px;
-}
-.ai-link-note{
-  font-size:13px;font-weight:700;
-  color:#c4b49a;line-height:1.6;
-  margin-bottom:14px;
-}
-.ai-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.ai-btn{
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:5px;
-  padding:14px 6px;
-  border-radius:14px;
-  border:1.5px solid var(--line);
-  background:var(--sand);
-  font-family:inherit;
-  font-size:13px;font-weight:900;
-  color:var(--ink);
-  cursor:pointer;
-  text-decoration:none;
-  transition:.15s;
-}
-.ai-btn:active{transform:scale(.96)}
-.ai-btn .ai-icon{font-size:28px;line-height:1}
-
-.stamp-ov{
-  position:fixed;inset:0;pointer-events:none;
-  display:flex;align-items:center;justify-content:center;
-  z-index:9999;
-}
-.stamp-inner{
-  font-size:90px;opacity:0;transform:scale(.4) rotate(-15deg);
-}
-.stamp-ov.show .stamp-inner{animation:popin .9s ease forwards}
-@keyframes popin{
-  0%{opacity:0;transform:scale(.4) rotate(-15deg)}
-  40%{opacity:1;transform:scale(1.3) rotate(8deg)}
-  65%{transform:scale(.9) rotate(-4deg)}
-  80%{opacity:1;transform:scale(1.05) rotate(2deg)}
-  100%{opacity:0;transform:scale(1) rotate(0)}
-}
-
-@media(max-width:480px){
-  body{background:var(--cream)}
-  .view{padding:16px 12px 48px}
-}
-</style>
-</head>
-<body id="top">
-
-<div class="hd">
-  <a class="hd-inner" href="#top" id="toTopBtn" title="TOPへ戻る ↑">
-    <div class="hd-top-row">
-      <div class="logo-icon">🐱</div>
-      <div class="logo-text">にゃんログ</div>
-    </div>
-    <div class="logo-date" id="dateEl"></div>
-  </a>
-  <div class="tabs">
-    <button class="tab on" data-tab="rec">📝 記録</button>
-    <button class="tab" data-tab="hist">📅 履歴</button>
-    <button class="tab" data-tab="sum">📊 まとめ</button>
-    <button class="tab" data-tab="cfg">⚙️ 設定</button>
-  </div>
-</div>
-
-<!-- 記録 -->
-<div class="view on" id="view-rec">
-
-  <div class="card">
-    <div class="card-title">😊 今日の気分</div>
-    <div class="mood-row">
-      <button class="mood-btn" data-mood="元気" onclick="setMood(this)">
-        <span class="mood-emoji">😄</span>
-        <span class="mood-label">元気</span>
-      </button>
-      <button class="mood-btn" data-mood="普通" onclick="setMood(this)">
-        <span class="mood-emoji">😐</span>
-        <span class="mood-label">普通</span>
-      </button>
-      <button class="mood-btn" data-mood="しんどい" onclick="setMood(this)">
-        <span class="mood-emoji">😔</span>
-        <span class="mood-label">しんどい</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">💊 お薬</div>
-    <div class="drug-row">
-      <button class="drug-btn" id="medYes" onclick="setMed('yes')">✅ 飲んだ</button>
-      <button class="drug-btn" id="medNo"  onclick="setMed('no')">❌ 飲んでない</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">📌 気になったこと <span style="font-size:12px;font-weight:700;color:#c4b49a">なくてもOK</span></div>
-    <div class="sign-grid" id="signGrid"></div>
-    <textarea id="memo" rows="2" placeholder="その他、気になったことがあれば…"></textarea>
-  </div>
-
-  <button class="save-btn" onclick="saveRecord()">
-    <span>記録する</span><span>🐾</span>
-  </button>
-
-  <div class="cat-card">
-    <div class="cat-avatar">🐱</div>
-    <div class="cat-text" id="catMsg">今日はどうだったにゃ？<br>記録してにゃ🐾</div>
-  </div>
-
-  <div class="nurse-card" id="nurseCard">
-    <div class="nurse-icon">🩺</div>
-    <div class="nurse-inner">
-      <div class="nurse-label">医療スタッフより</div>
-      <div class="nurse-text" id="nurseMsg"></div>
-    </div>
-  </div>
-
-  <div class="ai-link-card" id="aiLinkCard">
-    <div class="ai-link-title">🤖 AIに相談する</div>
-    <div class="ai-link-note">
-      タップするとプロンプトをコピーしてAIが開くにゃ🐱<br>
-      開いたら貼り付けるだけにゃ（自己責任でにゃ）
-    </div>
-    <div class="ai-btns">
-      <button class="ai-btn" onclick="openAI('https://claude.ai')">
-        <span class="ai-icon">🧠🐱</span><span>Claude</span>
-      </button>
-      <button class="ai-btn" onclick="openAI('https://gemini.google.com')">
-        <span class="ai-icon">✨🐱</span><span>Gemini</span>
-      </button>
-      <button class="ai-btn" onclick="openAI('https://chatgpt.com')">
-        <span class="ai-icon">🤖🐱</span><span>ChatGPT</span>
-      </button>
-    </div>
-    <div id="aiCopyMsg" style="text-align:center;font-size:14px;font-weight:900;color:var(--brand);margin-top:10px;min-height:20px"></div>
-  </div>
-
-</div>
-
-<!-- 履歴 -->
-<div class="view" id="view-hist">
-  <div class="card">
-    <div class="card-title">📅 最近の記録</div>
-    <div id="histList"></div>
-  </div>
-</div>
-
-<!-- まとめ -->
-<div class="view" id="view-sum">
-  <div class="range-row">
-    <button class="range-btn on" data-range="7" onclick="setRange(this)">直近7日</button>
-    <button class="range-btn" data-range="14" onclick="setRange(this)">直近14日</button>
-    <button class="range-btn" data-range="30" onclick="setRange(this)">直近30日</button>
-  </div>
-  <div class="kpi">
-    <div class="kpi-box"><div class="kpi-label">記録日数</div><div class="kpi-val" id="kpiTotal">－</div></div>
-    <div class="kpi-box"><div class="kpi-label">服薬できた日</div><div class="kpi-val" id="kpiDrug">－</div></div>
-    <div class="kpi-box"><div class="kpi-label">しんどい日</div><div class="kpi-val" id="kpiShindoi">－</div></div>
-    <div class="kpi-box"><div class="kpi-label">元気な日</div><div class="kpi-val" id="kpiGenki">－</div></div>
-  </div>
-  <div class="card">
-    <div class="card-title">📌 よく出た気になったこと</div>
-    <div id="topSigns"></div>
-  </div>
-  <div class="doctor-box">
-    <div class="doctor-label">🩺 診察向けメモ</div>
-    <div class="doctor-text" id="doctorText">記録が増えると自動でまとめが出るにゃ📋</div>
-  </div>
-
-  <div class="sum-nurse-box">
-    <div class="sum-nurse-header">
-      <div class="sum-nurse-icon">🩺</div>
-      <div>
-        <div class="sum-nurse-title">医療従事者・ケアスタッフへ</div>
-        <div class="sum-nurse-subtitle">記録をもとにした自動コメントです</div>
-      </div>
-    </div>
-    <div id="sumNurseMsgs"><div class="sum-nurse-msg empty"><span class="sum-nurse-msg-icon">📋</span><span class="sum-nurse-msg-text">記録が3件以上になると表示されます</span></div></div>
-  </div>
-</div>
-
-<!-- 設定 -->
-<div class="view" id="view-cfg">
-  <div class="card">
-    <div class="card-title">📌 気になったことの候補</div>
-    <div class="input-row">
-      <input class="text-input" id="newSign" placeholder="例：食欲がない"/>
-      <button class="add-btn" onclick="addSign()">追加</button>
-    </div>
-    <div style="font-size:13px;color:var(--muted);font-weight:700;margin-bottom:10px;line-height:1.6">
-      🔘 トグルで表示／非表示を切り替えられます。非表示にしても候補は残ります。<br>
-      🗑 ゴミ箱で完全に削除できます。
-    </div>
-    <div id="signTags"></div>
-  </div>
-  <div class="card">
-    <div class="card-title">📂 データ・レポート</div>
-    <button class="export-btn" onclick="exportPdf()">🖨️ みんなへのまとめ（PDF印刷）</button>
-    <button class="export-btn" style="margin-top:0" onclick="exportJson()">📤 JSONで書き出し（バックアップ）</button>
-    <button class="clear-btn" onclick="clearAll()">🗑 全データ削除</button>
-  </div>
-  <div style="font-size:16px;color:var(--muted);font-weight:700;line-height:1.7;padding:0 4px">
-    データはこのブラウザのみに保存されます。外部に送信しません。
-  </div>
-</div>
-
-<div class="stamp-ov" id="stampOv">
-  <div class="stamp-inner">🐾</div>
-</div>
-
-<script>
-const KEY='nyanlog_rebuild_v1';
-const SIGN_KEY='nyanlog_rebuild_signs_v1';
-const SIGN_MASTER_KEY='nyanlog_rebuild_signs_master_v1';
-const DEFAULT_SIGNS=['言葉が出にくい','忘れっぽい','集中できない','体がだるい','痛み・不快感','めまい・ふらつき','不安','食欲がない','眠れない','イライラ','頭が重い','そわそわする','歩けた','排便','むくみ','手足のしびれ','言葉が聞き取れない'];
-let med=null;
-let range=7;
-
-// XSSエスケープ（将来DBや外部データを使う場合に備えて）
-function esc(str){
-  return String(str)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
-}
-
-// 日付
-(function(){
-  const d=new Date();
-  const w=['日','月','火','水','木','金','土'];
-  document.getElementById('dateEl').textContent=`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${w[d.getDay()]}）`;
-})();
-
-// TOPへ戻るボタン
-document.getElementById('toTopBtn').addEventListener('click',function(e){
-  e.preventDefault();
-  e.stopPropagation();
-  window.scrollTo(0,0);
-  document.documentElement.scrollTop=0;
-  document.body.scrollTop=0;
-});
-
-// タブ
-document.querySelectorAll('.tab').forEach(t=>{
-  t.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
-    document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
-    t.classList.add('on');
-    document.getElementById('view-'+t.dataset.tab).classList.add('on');
-    if(t.dataset.tab==='hist') renderHist();
-    if(t.dataset.tab==='sum') renderSum();
-    if(t.dataset.tab==='cfg') renderCfg();
-  });
-});
-
-// データ
-function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
-function store(r){localStorage.setItem(KEY,JSON.stringify(r))}
-// 有効候補（記録画面に表示する）
-function loadSigns(){try{return JSON.parse(localStorage.getItem(SIGN_KEY)||'null')||DEFAULT_SIGNS.slice()}catch{return DEFAULT_SIGNS.slice()}}
-function storeSigns(s){localStorage.setItem(SIGN_KEY,JSON.stringify(s))}
-// マスター候補（全て。削除しても残る）
-function loadMaster(){
-  try{
-    const m=JSON.parse(localStorage.getItem(SIGN_MASTER_KEY)||'null');
-    if(m) return m;
-    // 初回：デフォルト＋有効リストをマージしてマスター作成
-    const merged=[...new Set([...DEFAULT_SIGNS,...loadSigns()])];
-    localStorage.setItem(SIGN_MASTER_KEY,JSON.stringify(merged));
-    return merged;
-  }catch{return DEFAULT_SIGNS.slice()}
-}
-function storeMaster(m){localStorage.setItem(SIGN_MASTER_KEY,JSON.stringify(m))}
-// 日付キー：ローカル時刻でYYYY-MM-DD
-function localDayKey(d){
-  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
-}
-
-// 気になったことグリッド描画
-const SIGN_FOLD=6; // 初期表示数
-let signExpanded=false;
-
-function renderSignGrid(){
-  const signs=loadSigns();
-  const grid=document.getElementById('signGrid');
-  const visible=signExpanded?signs:signs.slice(0,SIGN_FOLD);
-  const hasMore=signs.length>SIGN_FOLD;
-
-  // 現在のON状態を保持
-  const onSet=new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim()));
-
-  grid.innerHTML=visible.map(s=>`<button class="sign-btn${onSet.has(s)?' on':''}" onclick="this.classList.toggle('on')">${esc(s)}</button>`).join('');
-
-  // もっと見る／閉じるボタン
-  if(hasMore){
-    const more=document.createElement('button');
-    more.className='sign-more-btn';
-    more.textContent=signExpanded?`▲ 閉じる`:`＋ もっと見る（残り${signs.length-SIGN_FOLD}件）`;
-    more.onclick=()=>{signExpanded=!signExpanded;renderSignGrid();};
-    grid.appendChild(more);
-  }
-}
-
-// 薬・気分
-function setMed(v){
-  med=v;
-  document.getElementById('medYes').className='drug-btn'+(v==='yes'?' on':'');
-  document.getElementById('medNo').className='drug-btn'+(v==='no'?' on':'');
-}
-function setMood(el){
-  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
-}
-
-// 猫コメント
-function buildCat(today,records){
-  const w=records.slice(0,7);
-  const drugDays=w.filter(r=>r.drug==='yes').length;
-  const tiredDays=w.filter(r=>r.signs.includes('体がだるい')||r.mood==='しんどい').length;
-  const prev=records[1];
-  if(today.drug==='no') return'今日はお薬が飲めなかったにゃ💊 理由をメモしておくと次の診察で役立つにゃ。';
-  if(today.signs.length&&today.memo) return`「${today.signs[0]}」など気になることをメモも含めて記録できたにゃ🐱 大事な記録にゃ。`;
-  if(today.signs.length) return`今日は「${today.signs.join('・')}」が気になる日だったにゃ。変化を追えるにゃ🐱`;
-  if(prev&&prev.mood==='しんどい'&&today.mood==='元気') return'昨日より気分が上がってるにゃ😄 いい変化にゃ🐱';
-  if(tiredDays>=3) return`最近しんどい日が続いてるにゃ😔 この記録を診察で見せてにゃ。`;
-  if(drugDays>=5) return`この1週間、お薬を${drugDays}日飲めてるにゃ💊 安定してるにゃ🐱`;
-  if(today.mood==='元気') return'今日は元気な日にゃ😄 この調子にゃ🐱';
-  return'記録できたにゃ🐱 続けるだけで傾向が見えてくるにゃ。えらいにゃ。';
-}
-
-// 医療コメント
-function buildNurse(today,records){
-  const w=records.slice(0,7);
-  const dizzDays=w.filter(r=>r.signs.includes('めまい・ふらつき')).length;
-  const wordDays=w.filter(r=>r.signs.includes('言葉が出にくい')).length;
-  const tiredDays=w.filter(r=>r.signs.includes('体がだるい')).length;
-  const shindoi=w.filter(r=>r.mood==='しんどい').length;
-  const drugNo=w.filter(r=>r.drug==='no').length;
-  if(drugNo>=2) return'服薬できていない日が続いています。理由があれば次の診察で相談してください。';
-  if(dizzDays>=3) return`めまい・ふらつきが${dizzDays}日続いています。転倒に注意し、担当の方に伝えてください。`;
-  if(wordDays>=3) return`言葉が出にくい日が${wordDays}日続いています。次の診察で伝える材料になります。`;
-  if(tiredDays>=3) return`体のだるさが${tiredDays}日続いています。水分・睡眠を意識してみてください。`;
-  if(shindoi>=3) return`気分がしんどい日が${shindoi}日続いています。無理せず周囲のサポートを活用してください。`;
-  return null;
-}
-
-// 記録する
-function saveRecord(){
-  const catEl=document.getElementById('catMsg');
-  if(!med){catEl.textContent='お薬の記録を選んでにゃ💊';return;}
-  const mood=document.querySelector('.mood-btn.on')?.dataset.mood||'';
-  if(!mood){catEl.textContent='今日の気分を選んでにゃ😊';return;}
-  const signs=[...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim());
-  const memo=document.getElementById('memo').value.trim();
-  const now=new Date();
-  const dayKey=localDayKey(now);
-  const today={at:now.toISOString(),dayKey,drug:med,mood,signs,memo};
-  const records=load();
-  const idx=records.findIndex(r=>r.dayKey===dayKey);
-  if(idx>=0)records[idx]=today; else records.unshift(today);
-  store(records);
-  catEl.textContent=buildCat(today,records);
-  const ncs=buildNurse(today,records);
-  const nurseCard=document.getElementById('nurseCard');
-  if(ncs&&ncs.length){
-    document.getElementById('nurseMsg').innerHTML=ncs.map(t=>`<div>${esc(t)}</div>`).join('');
-    nurseCard.classList.add('show');
-  }else{
-    nurseCard.classList.remove('show');
-  }
-  // スタンプ
-  const ov=document.getElementById('stampOv');
-  ov.classList.add('show');
-  setTimeout(()=>ov.classList.remove('show'),950);
-
-  // AIリンク生成
-  buildAiLink(today);
-
-  // リセット
-  med=null;
-  document.getElementById('medYes').className='drug-btn';
-  document.getElementById('medNo').className='drug-btn';
-  document.querySelectorAll('.mood-btn,.sign-btn').forEach(b=>b.classList.remove('on'));
-  signExpanded=false;
-  renderSignGrid();
-  document.getElementById('memo').value='';
-}
-
-// 履歴
-function renderHist(){
-  const records=load();
-  const w=['日','月','火','水','木','金','土'];
-  const el=document.getElementById('histList');
-  if(!records.length){el.innerHTML='<div style="color:var(--muted);font-weight:700;font-size:15px">まだ記録なし。最初の1件を記録してにゃ🐱</div>';return;}
-  el.innerHTML=records.slice(0,10).map(r=>{
-    const dt=new Date(r.at);
-    const label=`${dt.getMonth()+1}/${dt.getDate()}（${w[dt.getDay()]}）`;
-    const drug=r.drug==='yes'?'💊✅':'💊❌';
-    const moodIcon={'元気':'😄','普通':'😐','しんどい':'😔'}[r.mood]||'';
-    return`<div class="hist-item"><span class="hist-day">${esc(label)} ${moodIcon}</span><span class="hist-meta">${drug} ${esc(r.signs[0]||'－')}</span></div>`;
-  }).join('');
-}
-
-// AIリンク生成
-let aiPromptText='';
-function buildAiLink(today){
-  const moodLabel=today.mood||'未選択';
-  const drug=today.drug==='yes'?'飲んだ':'飲んでいない';
-  const signs=today.signs.length?today.signs.join('・'):'特になし';
-  const memo=today.memo?`\nメモ：${today.memo}`:'';
-
-  aiPromptText=`今日の体調記録です。アドバイスや気になる点があれば教えてください。
-
-【日付】${document.getElementById('dateEl').textContent}
-【気分】${moodLabel}
-【お薬】${drug}
-【気になったこと】${signs}${memo}
-
-※これはリハビリ中の個人記録です。医療的な診断は不要で、気づきや励ましをもらえると嬉しいです。`;
-
-  document.getElementById('aiLinkCard').classList.add('show');
-  document.getElementById('aiCopyMsg').textContent='';
-}
-
-// ワンタップ：コピー＋開く
-function openAI(url){
-  const msg=document.getElementById('aiCopyMsg');
-  const successText='✅ コピーして開いたにゃ！貼り付けてにゃ🐱';
-  const failText='⚠️ 開いたけどコピーできなかったにゃ。手動でコピーしてにゃ。';
-
-  const openWindow=()=>window.open(url,'_blank','noopener');
-
-  navigator.clipboard.writeText(aiPromptText).then(()=>{
-    msg.textContent=successText;
-    setTimeout(()=>{msg.textContent='';},3000);
-    openWindow();
-  }).catch(()=>{
-    try{
-      const ta=document.createElement('textarea');
-      ta.value=aiPromptText;
-      ta.style.position='fixed';
-      ta.style.opacity='0';
-      ta.style.left='-9999px';
-      document.body.appendChild(ta);
-      ta.focus();
-      ta.select();
-      const copied=document.execCommand('copy');
-      document.body.removeChild(ta);
-
-      msg.textContent=copied ? successText : failText;
-      setTimeout(()=>{msg.textContent='';},3000);
-    }catch(e){
-      msg.textContent=failText;
-      setTimeout(()=>{msg.textContent='';},3000);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>にゃんログ | やさしく記録して、診察につなぐ</title>
+  <meta name="description" content="にゃんログは、気分・服薬・気になったことをやさしく記録するためのサービスです。答えを決めつけず、日々の変化を見える形にして、診察や相談に役立つ材料へつなげます。">
+  <meta name="robots" content="index,follow">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root{
+      --cream:#fdf8f3;--sand:#f7f1e8;--brand:#2d6a4f;--brand-soft:#e8f5ef;--ink:#2c2118;
+      --muted:#8b7355;--line:#eadfce;--purple:#5b54c7;--purple-soft:#eef0ff;
+      --amber:#d97706;--amber-soft:#fff8e7;--white:#fff;
+      --shadow:0 20px 60px rgba(44,33,24,.10);--shadow-sm:0 8px 24px rgba(44,33,24,.08);
+      --max:1180px;
     }
-    openWindow();
-  });
-}
-function buildSumNurse(records, range){
-  if(records.length<3) return null;
-  const msgs=[];
-  const drug=records.filter(r=>r.drug==='yes').length;
-  const drugNo=records.filter(r=>r.drug==='no').length;
-  const shindoi=records.filter(r=>r.mood==='しんどい').length;
-  const genki=records.filter(r=>r.mood==='元気').length;
-  const dizzDays=records.filter(r=>r.signs.includes('めまい・ふらつき')).length;
-  const wordDays=records.filter(r=>r.signs.includes('言葉が出にくい')).length;
-  const tiredDays=records.filter(r=>r.signs.includes('体がだるい')).length;
-  const anxDays=records.filter(r=>r.signs.includes('不安')).length;
-  const sleepDays=records.filter(r=>r.signs.includes('眠れない')).length;
-  const total=records.length;
-  const drugRate=Math.round(drug/total*100);
-
-  // 服薬
-  if(drugRate===100) msgs.push({type:'green',icon:'💊',text:`この期間（${range}日）、毎日服薬できています。とても安定しています。`});
-  else if(drugRate>=80) msgs.push({type:'green',icon:'💊',text:`服薬率${drugRate}%（${drug}/${total}日）。おおむね安定しています。`});
-  else if(drugNo>=2) msgs.push({type:'warn',icon:'💊',text:`服薬できていない日が${drugNo}日あります（服薬率${drugRate}%）。理由の確認をおすすめします。`});
-
-  // 気分
-  if(shindoi>=Math.ceil(total*0.5)) msgs.push({type:'warn',icon:'😔',text:`しんどい日が${shindoi}日（${Math.round(shindoi/total*100)}%）と多めです。本人の負担感を直接確認してください。`});
-  else if(shindoi>=3) msgs.push({type:'warn',icon:'😔',text:`しんどいと感じた日が${shindoi}日ありました。疲労・ストレスの蓄積に注意してください。`});
-  if(genki>=Math.ceil(total*0.6)) msgs.push({type:'green',icon:'😄',text:`元気な日が${genki}日（${Math.round(genki/total*100)}%）と多く、良好な状態が続いています。`});
-
-  // 症状別
-  if(dizzDays>=3) msgs.push({type:'warn',icon:'🌀',text:`めまい・ふらつきが${dizzDays}日記録されています。転倒リスクに注意し、必要に応じて環境整備を検討してください。`});
-  if(wordDays>=3) msgs.push({type:'warn',icon:'💬',text:`言葉が出にくい日が${wordDays}日あります。次の診察で状態を詳しく確認することをおすすめします。`});
-  if(tiredDays>=3) msgs.push({type:'warn',icon:'😴',text:`体のだるさが${tiredDays}日続いています。水分・睡眠・栄養の状態も合わせて確認してください。`});
-  if(anxDays>=3) msgs.push({type:'warn',icon:'😟',text:`不安を感じた日が${anxDays}日あります。日常の声かけや傾聴の機会を増やすと良いかもしれません。`});
-  if(sleepDays>=3) msgs.push({type:'warn',icon:'🌙',text:`眠れない日が${sleepDays}日記録されています。睡眠の質について本人に確認してください。`});
-
-  // 未実装7症状を追加
-  const forgetDays=records.filter(r=>r.signs.includes('忘れっぽい')).length;
-  const focusDays=records.filter(r=>r.signs.includes('集中できない')).length;
-  const painDays=records.filter(r=>r.signs.includes('痛み・不快感')).length;
-  const irritDays=records.filter(r=>r.signs.includes('イライラ')).length;
-  const heavyDays=records.filter(r=>r.signs.includes('頭が重い')).length;
-  const restlessDays=records.filter(r=>r.signs.includes('そわそわする')).length;
-  const appetiteDays=records.filter(r=>r.signs.includes('食欲がない')).length;
-
-  if(forgetDays>=3) msgs.push({type:'warn',icon:'🧠',text:`忘れっぽい日が${forgetDays}日続いています。日常生活への影響（薬の飲み忘れ・約束など）を確認してください。`});
-  if(focusDays>=3) msgs.push({type:'warn',icon:'🎯',text:`集中しにくい日が${focusDays}日続いています。疲労・睡眠不足が影響している可能性があります。`});
-  if(painDays>=3) msgs.push({type:'warn',icon:'⚡',text:`痛みや不快感が${painDays}日続いています。部位・程度を確認し、担当者に報告してください。`});
-  if(irritDays>=3) msgs.push({type:'warn',icon:'😤',text:`イライラする日が${irritDays}日続いています。ストレス源の確認や休息の確保を検討してください。`});
-  if(heavyDays>=3) msgs.push({type:'warn',icon:'🤯',text:`頭が重い日が${heavyDays}日続いています。血圧・睡眠・水分量も合わせて確認してください。`});
-  if(restlessDays>=3) msgs.push({type:'warn',icon:'😰',text:`そわそわする日が${restlessDays}日続いています。不安や焦りの背景を傾聴してみてください。`});
-  if(appetiteDays>=3) msgs.push({type:'warn',icon:'🍽',text:`食欲がない日が${appetiteDays}日続いています。体重・水分摂取量も合わせて確認してください。`});
-
-  const walkedDays=records.filter(r=>r.signs.includes('歩けた')).length;
-  const defDays=records.filter(r=>r.signs.includes('排便')).length;
-  const edema=records.filter(r=>r.signs.includes('むくみ')).length;
-  const numbDays=records.filter(r=>r.signs.includes('手足のしびれ')).length;
-  const hearDays=records.filter(r=>r.signs.includes('言葉が聞き取れない')).length;
-
-  if(walkedDays>=5) msgs.push({type:'green',icon:'🚶',text:`この期間、${walkedDays}日歩けています。活動量が安定しています。`});
-  if(defDays<=Math.ceil(total*0.3)&&total>=5) msgs.push({type:'warn',icon:'🚽',text:`排便の記録が${defDays}日と少なめです。便秘・水分不足の可能性を確認してください。`});
-  if(edema>=3) msgs.push({type:'warn',icon:'💧',text:`むくみが${edema}日記録されています。服薬の副作用・水分管理を確認してください。`});
-  if(numbDays>=2) msgs.push({type:'warn',icon:'⚡',text:`手足のしびれが${numbDays}日続いています。脳梗塞後の症状変化として医師への報告をおすすめします。`});
-  if(hearDays>=2) msgs.push({type:'warn',icon:'👂',text:`言葉が聞き取れない日が${hearDays}日あります。高次脳機能障害の症状変化として診察で確認してください。`});
-
-  // 問題なし
-  if(msgs.length===0) msgs.push({type:'green',icon:'✅',text:`この期間、特に気になる傾向は見られませんでした。引き続き見守りをお願いします。`});
-
-  return msgs;
-}
-
-// まとめ
-function setRange(el){
-  range=Number(el.dataset.range);
-  document.querySelectorAll('.range-btn').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
-  renderSum();
-}
-function renderSum(){
-  const now=new Date();
-  const from=new Date(now);from.setDate(now.getDate()-range+1);
-  const fromKey=localDayKey(from);
-  const records=load().filter(r=>r.dayKey>=fromKey);
-  const drug=records.filter(r=>r.drug==='yes').length;
-  const shindoi=records.filter(r=>r.mood==='しんどい').length;
-  const genki=records.filter(r=>r.mood==='元気').length;
-  document.getElementById('kpiTotal').textContent=records.length+'日';
-  document.getElementById('kpiDrug').textContent=drug+'日';
-  document.getElementById('kpiShindoi').textContent=shindoi+'日';
-  document.getElementById('kpiGenki').textContent=genki+'日';
-  // 気になったこと集計
-  const cnt={};
-  records.forEach(r=>r.signs.forEach(s=>cnt[s]=(cnt[s]||0)+1));
-  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  document.getElementById('topSigns').innerHTML=top.length?top.map(([n,c])=>`<span class="badge">${esc(n)} ${c}回</span>`).join(''):'<span style="color:var(--muted);font-size:14px;font-weight:700">まだデータなし</span>';
-  // 診察メモ
-  if(records.length>=3){
-    const pieces=[];
-    pieces.push(`直近${range}日で${records.length}件の記録があります。`);
-    if(shindoi>0) pieces.push(`しんどい日は${shindoi}日ありました。`);
-    pieces.push(`服薬できた日は${drug}日、できなかった日は${records.length-drug}日です。`);
-    if(top.length) pieces.push(`気になったことでは「${top.slice(0,3).map(v=>v[0]).join('・')}」が多く見られます。`);
-    document.getElementById('doctorText').textContent=pieces.join(' ');
-  } else {
-    document.getElementById('doctorText').textContent='記録が増えると自動でまとめが出るにゃ📋';
-  }
-  // 医療従事者コメント
-  const nurseEl=document.getElementById('sumNurseMsgs');
-  const nurseMsgs=buildSumNurse(records,range);
-  if(nurseMsgs){
-    nurseEl.innerHTML=nurseMsgs.map(m=>`
-      <div class="sum-nurse-msg ${m.type==='green'?'green':''}">
-        <span class="sum-nurse-msg-icon">${esc(m.icon)}</span>
-        <span class="sum-nurse-msg-text">${esc(m.text)}</span>
-      </div>`).join('');
-  } else {
-    nurseEl.innerHTML='<div class="sum-nurse-msg empty"><span class="sum-nurse-msg-icon">📋</span><span class="sum-nurse-msg-text">記録が3件以上になると表示されます</span></div>';
-  }
-}
-
-// 設定
-function renderCfg(){
-  const master=loadMaster();
-  const enabled=loadSigns();
-  const enabledSet=new Set(enabled);
-  const container=document.getElementById('signTags');
-
-  // 有効・無効それぞれ描画
-  container.innerHTML=master.map((s,i)=>{
-    const on=enabledSet.has(s);
-    const safe=s.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return `<div class="sign-manage-row${on?'':' off'}" data-name="${safe}">
-      <span class="sign-manage-name">${safe}</span>
-      <label class="tog" title="${on?'非表示にする':'表示する'}">
-        <input type="checkbox" ${on?'checked':''} data-sign-index="${i}">
-        <span class="tog-track"></span>
-      </label>
-      <button class="sign-manage-del" data-del-index="${i}" title="完全に削除">🗑</button>
-    </div>`;
-  }).join('');
-
-  // トグル：有効/無効切り替え
-  container.querySelectorAll('.tog input').forEach(inp=>{
-    inp.addEventListener('change',function(){
-      const idx=Number(this.dataset.signIndex);
-      const m=loadMaster();
-      const name=m[idx];
-      const cur=loadSigns();
-      const newEnabled=this.checked?[...cur,name]:cur.filter(s=>s!==name);
-      storeSigns(newEnabled);
-      renderSignGrid();
-      renderCfg();
-    });
-  });
-
-  // 完全削除ボタン（マスターからも消す）
-  container.querySelectorAll('.sign-manage-del').forEach(btn=>{
-    btn.addEventListener('click',function(){
-      const idx=Number(this.dataset.delIndex);
-      const m=loadMaster();
-      const name=m[idx];
-      if(!confirm(`「${name}」を完全に削除しますにゃ。よろしい？`))return;
-      m.splice(idx,1);
-      storeMaster(m);
-      const cur=loadSigns().filter(s=>s!==name);
-      storeSigns(cur);
-      renderSignGrid();
-      renderCfg();
-    });
-  });
-}
-function addSign(){
-  const val=document.getElementById('newSign').value.trim();
-  if(!val) return;
-  const master=loadMaster();
-  const enabled=loadSigns();
-  if(!master.includes(val)){
-    master.push(val);
-    storeMaster(master);
-  }
-  if(!enabled.includes(val)){
-    enabled.push(val);
-    storeSigns(enabled);
-    renderSignGrid();
-  }
-  document.getElementById('newSign').value='';
-  renderCfg();
-}
-function removeSign(name){
-  // 後方互換用（現在は使われないが残す）
-  const signs=loadSigns().filter(s=>s!==name);
-  storeSigns(signs);renderSignGrid();renderCfg();
-}
-function exportPdf(){
-  const records=load();
-  if(!records.length){alert('まだ記録がないにゃ💊 記録してから書き出してにゃ🐱');return;}
-
-  const w=['日','月','火','水','木','金','土'];
-  const now=new Date();
-  const todayStr=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${w[now.getDay()]}）`;
-
-  // 集計（全期間）
-  const allRec=records;
-  const drugOk=allRec.filter(r=>r.drug==='yes').length;
-  const drugNg=allRec.filter(r=>r.drug==='no').length;
-  const genki=allRec.filter(r=>r.mood==='元気').length;
-  const futsuu=allRec.filter(r=>r.mood==='普通').length;
-  const shindoi=allRec.filter(r=>r.mood==='しんどい').length;
-  const cnt={};
-  allRec.forEach(r=>r.signs.forEach(s=>cnt[s]=(cnt[s]||0)+1));
-  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,5);
-
-  // 最近14日
-  const from14=new Date(now);from14.setDate(now.getDate()-13);
-  const fromKey14=localDayKey(from14);
-  const rec14=allRec.filter(r=>r.dayKey>=fromKey14);
-
-  // 最近14日のカレンダー行
-  const calRows=rec14.slice().reverse().map(r=>{
-    const dt=new Date(r.at);
-    const label=`${dt.getMonth()+1}/${dt.getDate()}（${w[dt.getDay()]}）`;
-    const moodIcon={'元気':'😄 元気','普通':'😐 普通','しんどい':'😔 しんどい'}[r.mood]||r.mood;
-    const drug=r.drug==='yes'?'✅ 飲んだ':'❌ 飲んでない';
-    const signs=r.signs.length?r.signs.join('・'):'－';
-    const memo=r.memo||'';
-    return `<tr>
-      <td>${label}</td>
-      <td>${moodIcon}</td>
-      <td>${drug}</td>
-      <td>${signs}</td>
-      <td style="font-size:13px;color:#555">${memo}</td>
-    </tr>`;
-  }).join('');
-
-  // 診察メモ文
-  const pieces=[];
-  pieces.push(`記録期間：全${allRec.length}件`);
-  if(shindoi>0) pieces.push(`しんどい日：${shindoi}日`);
-  pieces.push(`服薬できた日：${drugOk}日、できなかった日：${drugNg}日`);
-  if(top.length) pieces.push(`気になったこと多い順：「${top.map(v=>v[0]).join('・')}」`);
-  const doctorNote=pieces.join('　／　');
-
-  const html=`<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8"/>
-<title>にゃんログ まとめ</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Zen Maru Gothic',sans-serif;color:#1a1a1a;background:#fff;padding:24px;max-width:720px;margin:0 auto}
-  h1{font-size:28px;font-weight:900;color:#2d6a4f;margin-bottom:2px}
-  .subtitle{font-size:15px;color:#666;margin-bottom:18px}
-  .section{margin-bottom:22px}
-  h2{font-size:17px;font-weight:900;color:#2d6a4f;border-left:5px solid #2d6a4f;padding-left:10px;margin-bottom:10px}
-  .kpi-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px}
-  .kpi{background:#e8f5ef;border-radius:12px;padding:12px 18px;flex:1;min-width:100px;text-align:center}
-  .kpi-label{font-size:13px;font-weight:700;color:#5a8a70;margin-bottom:4px}
-  .kpi-val{font-size:28px;font-weight:900;color:#2d6a4f}
-  table{width:100%;border-collapse:collapse;font-size:14px}
-  th{background:#2d6a4f;color:#fff;font-weight:900;padding:8px 10px;text-align:left}
-  td{padding:8px 10px;border-bottom:1px solid #e0e0e0;vertical-align:top}
-  tr:nth-child(even) td{background:#f7faf8}
-  .badge{display:inline-block;background:#fff8e7;border:1px solid #f0c040;border-radius:99px;padding:4px 12px;font-size:13px;font-weight:900;color:#78530a;margin:3px 3px 0 0}
-  .doctor-box{background:#fff8e7;border:2px solid #f0c040;border-radius:14px;padding:16px;margin-top:4px}
-  .doctor-label{font-size:13px;font-weight:900;color:#d97706;letter-spacing:.06em;margin-bottom:6px}
-  .doctor-text{font-size:15px;font-weight:700;line-height:1.8;color:#78350f}
-  .footer{margin-top:28px;font-size:12px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:12px}
-  @media print{
-    .no-print{display:none!important}
-    body{padding:12px}
-  }
-  .print-btn{
-    display:block;margin:0 auto 20px;padding:14px 32px;
-    background:#2d6a4f;color:#fff;border:none;border-radius:12px;
-    font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;
-  }
-  .print-btn:hover{background:#245a40}
-</style>
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Noto Sans JP",sans-serif;background:var(--cream);color:var(--ink);line-height:1.65}
+    a{text-decoration:none;color:inherit}
+    .container{width:min(var(--max),calc(100% - 32px));margin-inline:auto}
+    .site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(234,223,206,.8);background:rgba(253,248,243,.88);backdrop-filter:blur(16px)}
+    .site-header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px}.brand-icon{width:46px;height:46px;border-radius:18px;display:grid;place-items:center;background:var(--brand);color:#fff;font-size:24px;box-shadow:0 10px 24px rgba(45,106,79,.22)}
+    .brand-title{font-size:20px;font-weight:900;color:var(--brand)} .brand-sub{font-size:12px;font-weight:700;color:var(--muted);margin-top:2px}
+    .nav{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.nav-link{font-size:14px;font-weight:800;color:#6b5a45}.nav-link:hover{color:var(--brand)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:18px;font-weight:900;transition:.2s ease;border:1px solid transparent;cursor:pointer}
+    .btn:hover{transform:translateY(-1px)} .btn-primary{background:var(--brand);color:#fff;padding:14px 22px;box-shadow:0 16px 34px rgba(45,106,79,.20)}
+    .btn-secondary{background:#fff;color:var(--ink);border-color:#d8cbbb;padding:14px 22px}.btn-small{padding:10px 16px;border-radius:14px;font-size:14px}
+    .hero{position:relative;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at top left, rgba(45,106,79,.14), transparent 32%),radial-gradient(circle at top right, rgba(91,84,199,.12), transparent 28%),linear-gradient(to bottom, rgba(255,255,255,.35), transparent);pointer-events:none}
+    .blob{position:absolute;border-radius:999px;filter:blur(50px);opacity:.9;pointer-events:none}.blob1{width:260px;height:260px;left:-70px;top:90px;background:#fff3cf}.blob2{width:320px;height:320px;right:-40px;top:-20px;background:#e8f5ef}
+    .hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:56px 0 88px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.9);border:1px solid #d8cbbb;color:var(--muted);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:900;box-shadow:var(--shadow-sm)}
+    h1{margin:18px 0 0;font-size:clamp(42px, 7vw, 72px);line-height:1.05;letter-spacing:-.03em;font-weight:900}.accent{color:var(--brand)}
+    .hero-copy{max-width:640px;margin-top:22px;font-size:18px;font-weight:800;color:#6b5a45;line-height:1.9}
+    .cta-row,.sub-links{display:flex;gap:12px;flex-wrap:wrap}.cta-row{margin-top:30px}.sub-links{margin-top:14px}
+    .pill-link,.chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:999px;padding:10px 14px;box-shadow:var(--shadow-sm);font-size:14px;font-weight:900;color:var(--muted)}
+    .stats{margin-top:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:640px}
+    .stat{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow-sm)}
+    .stat-value{font-size:30px;font-weight:900;line-height:1}.green{color:var(--brand)}.purple{color:var(--purple)}.amber{color:var(--amber)}
+    .stat-label{margin-top:8px;font-size:12px;font-weight:800;color:var(--muted);line-height:1.5}
+    .phone-wrap{position:relative}.floating-note{position:absolute;top:-16px;right:-10px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--shadow-sm);font-size:14px;font-weight:900;color:var(--brand);z-index:2}
+    .phone{max-width:420px;margin:0 auto;border-radius:34px;background:#fff;border:1px solid var(--line);padding:16px;box-shadow:var(--shadow)}
+    .phone-inner{border-radius:28px;background:linear-gradient(180deg,#fffdfb 0%,#f8f0e6 100%);padding:16px}.phone-top{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--brand);color:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 12px 22px rgba(45,106,79,.18)}
+    .phone-brand{display:flex;align-items:center;gap:12px}.phone-brand-icon{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.14);font-size:24px}
+    .phone-brand-title{font-size:16px;font-weight:900}.phone-brand-date{font-size:12px;font-weight:800;color:rgba(255,255,255,.84)}
+    .phone-cards{margin-top:14px;display:grid;gap:12px}.phone-card{background:#fff;border-radius:20px;padding:16px;box-shadow:var(--shadow-sm);border:1px solid #efe3d5}
+    .phone-card-label{font-size:13px;font-weight:900;color:var(--muted);margin-bottom:12px}.choice-grid-3,.choice-grid-2{display:grid;gap:8px;text-align:center;font-size:13px;font-weight:900}
+    .choice-grid-3{grid-template-columns:repeat(3,1fr)} .choice-grid-2{grid-template-columns:repeat(2,1fr)}
+    .choice{border-radius:16px;padding:12px 8px;background:#f5ede0;color:var(--muted)} .active-purple{background:var(--purple-soft);color:var(--purple)} .active-green{background:var(--brand-soft);color:var(--brand)}
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px}.tag{border-radius:999px;padding:9px 12px;font-size:12px;font-weight:900;background:#f5ede0;color:var(--muted)} .tag.active{background:var(--amber-soft);color:var(--amber)}
+    .cat-message{border-radius:20px;border:1px solid #b7dfc9;background:var(--brand-soft);color:#1a4a35;padding:16px;font-size:14px;font-weight:900;line-height:1.8}
+    .section{padding:88px 0}.section-white{background:#fff}.section-head{max-width:720px;margin-bottom:38px}
+    .section-kicker{font-size:13px;letter-spacing:.18em;font-weight:900;color:var(--muted);margin-bottom:12px}.section-title{font-size:clamp(32px, 5vw, 48px);line-height:1.15;letter-spacing:-.02em;font-weight:900;margin:0}
+    .section-desc{margin-top:16px;font-size:17px;line-height:1.9;font-weight:800;color:#6b5a45}
+    .feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--shadow-sm)} .card.soft{background:var(--cream)}
+    .icon-box{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;background:#f5ede0;font-size:28px;color:var(--brand);margin-bottom:18px}
+    .card h3{margin:0;font-size:24px;font-weight:900;line-height:1.3}.card p{margin:14px 0 0;color:#6b5a45;font-size:15px;font-weight:800;line-height:1.85}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.step-no{font-size:58px;font-weight:900;line-height:1;color:var(--brand);margin-bottom:18px}
+    .safety-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:start}.safety-main{border-radius:34px;background:var(--brand);color:#fff;padding:40px;box-shadow:0 26px 60px rgba(45,106,79,.20)}
+    .safety-main .section-kicker{color:rgba(255,255,255,.72)} .safety-main .section-desc{color:rgba(255,255,255,.90)} .badge-row{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+    .badge{background:rgba(255,255,255,.10);color:#fff;border-radius:999px;padding:10px 14px;font-size:14px;font-weight:900}
+    .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.faq-list{display:grid;gap:16px}.faq-item{background:var(--cream);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:var(--shadow-sm)}
+    .faq-q{font-size:22px;font-weight:900;line-height:1.4}.faq-a{margin-top:12px;color:#6b5a45;font-size:15px;font-weight:800;line-height:1.85}
+    .cta-box{overflow:hidden;border-radius:36px;border:1px solid #d8cbbb;background:linear-gradient(135deg,#fff 0%,#f7f1e8 45%,#eef6f1 100%);padding:44px 28px;text-align:center;box-shadow:var(--shadow)}
+    .cta-icon{width:64px;height:64px;border-radius:24px;display:grid;place-items:center;margin:0 auto;background:var(--brand);color:#fff;font-size:34px;box-shadow:0 14px 30px rgba(45,106,79,.20)}
+    .cta-title{margin-top:22px;font-size:clamp(30px,4.4vw,46px);line-height:1.15;letter-spacing:-.02em;font-weight:900}.cta-copy{max-width:760px;margin:16px auto 0;color:#6b5a45;font-size:17px;font-weight:800;line-height:1.9}
+    .cta-help{margin-top:14px;font-size:14px;font-weight:800;color:var(--muted)} .cta-help a{color:var(--brand);text-decoration:underline;text-underline-offset:4px}
+    .site-footer{border-top:1px solid var(--line);background:var(--cream)} .site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 0;color:var(--muted);font-size:14px;font-weight:800}
+    @media (max-width:1080px){.feature-grid{grid-template-columns:repeat(2,1fr)}.hero-grid,.safety-grid{grid-template-columns:1fr}.steps,.service-grid{grid-template-columns:1fr}}
+    @media (max-width:760px){.nav{display:none}.container{width:min(var(--max),calc(100% - 24px))}.hero-grid{gap:34px;padding:34px 0 64px}.cta-row,.sub-links{flex-direction:column}.stats,.feature-grid{grid-template-columns:1fr}.section{padding:64px 0}.site-footer-inner{flex-direction:column;align-items:flex-start}.floating-note{position:static;margin:0 auto 12px;width:max-content}}
+  </style>
 </head>
 <body>
-<button class="print-btn no-print" onclick="window.print()">🖨️ このページを印刷 / PDFで保存</button>
-<h1>🐱 にゃんログ まとめ</h1>
-<div class="subtitle">出力日：${todayStr}　　記録件数：全 ${allRec.length} 件</div>
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <div class="brand">
+        <div class="brand-icon">🐱</div>
+        <div><div class="brand-title">にゃんログ</div><div class="brand-sub">やさしく記録して、診察につなぐ</div></div>
+      </div>
+      <nav class="nav">
+        <a href="./nyanlog.html" class="btn btn-primary btn-small">はじめる</a>
+        <a href="#features" class="nav-link">特徴</a>
+        <a href="#how" class="nav-link">使い方</a>
+        <a href="#safety" class="nav-link">安心設計</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </nav>
+    </div>
+  </header>
 
-<div class="section">
-<h2>📊 全期間の集計</h2>
-<div class="kpi-row">
-  <div class="kpi"><div class="kpi-label">記録日数</div><div class="kpi-val">${allRec.length}日</div></div>
-  <div class="kpi"><div class="kpi-label">💊 服薬できた</div><div class="kpi-val">${drugOk}日</div></div>
-  <div class="kpi"><div class="kpi-label">😄 元気</div><div class="kpi-val">${genki}日</div></div>
-  <div class="kpi"><div class="kpi-label">😐 普通</div><div class="kpi-val">${futsuu}日</div></div>
-  <div class="kpi"><div class="kpi-label">😔 しんどい</div><div class="kpi-val">${shindoi}日</div></div>
-</div>
-</div>
+  <main>
+    <section class="hero">
+      <div class="blob blob1"></div><div class="blob blob2"></div>
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">✨ 毎日の状態を、曖昧なまま記録できる</div>
+          <h1>記録はアプリ、<br><span class="accent">結論は医師へ。</span></h1>
+          <p class="hero-copy">にゃんログは、気分・服薬・気になったことをやさしく記録するためのサービスです。答えを決めつけず、日々の変化を見える形にして、診察や相談に役立つ材料へつなげます。</p>
+          <div class="cta-row">
+            <a href="./nyanlog.html" class="btn btn-primary">今すぐはじめる →</a>
+            <a href="#how" class="btn btn-secondary">デモを見る</a>
+          </div>
+          <div class="sub-links">
+            <a href="#how" class="pill-link">使い方ガイド →</a>
+          
+          </div>
+          <div class="sub-links" style="margin-top:22px">
+            <span class="chip">気分記録</span><span class="chip">服薬チェック</span><span class="chip">傾向の見返し</span><span class="chip">診察前の整理</span>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="stat-value green">3秒</div><div class="stat-label">迷わず記録しやすい入力体験</div></div>
+            <div class="stat"><div class="stat-value purple">やさしく</div><div class="stat-label">断定しない見せ方を重視</div></div>
+            <div class="stat"><div class="stat-value amber">見返せる</div><div class="stat-label">履歴とまとめで傾向がわかる</div></div>
+          </div>
+        </div>
+        <div class="phone-wrap">
+          <div class="floating-note">✅ 今日の記録が続けやすい</div>
+          <div class="phone"><div class="phone-inner">
+            <div class="phone-top">
+              <div class="phone-brand">
+                <div class="phone-brand-icon">🐱</div>
+                <div><div class="phone-brand-title">にゃんログ</div><div class="phone-brand-date">2026年4月14日（火）</div></div>
+              </div><div>🕒</div>
+            </div>
+            <div class="phone-cards">
+              <div class="phone-card"><div class="phone-card-label">😊 今日の気分</div><div class="choice-grid-3"><div class="choice active-purple">😄 元気</div><div class="choice">😐 普通</div><div class="choice">😔 しんどい</div></div></div>
+              <div class="phone-card"><div class="phone-card-label">💊 お薬</div><div class="choice-grid-2"><div class="choice active-green">✅ 飲んだ</div><div class="choice">❌ 飲んでない</div></div></div>
+              <div class="phone-card"><div class="phone-card-label">📌 気になったこと</div><div class="tag-row"><span class="tag active">集中できない</span><span class="tag">不安</span><span class="tag">体がだるい</span></div></div>
+              <div class="cat-message">記録できたにゃ。続けるだけで、あとから変化が見えやすくなるにゃ。</div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </section>
 
-<div class="section">
-<h2>📌 よく出た気になったこと（全期間）</h2>
-${top.length?top.map(([n,c])=>`<span class="badge">${n}　${c}回</span>`).join(''):'<span style="color:#999">記録なし</span>'}
-</div>
+    <section id="features" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">FEATURES</div>
+          <h2 class="section-title">にゃんログの特徴</h2>
+          <p class="section-desc">無理なく続けられる入力体験と、曖昧さを残したまま整理できる仕組みを大切にしています。</p>
+        </div>
+        <div class="feature-grid">
+          <article class="card"><div class="icon-box">🐾</div><h3>毎日の記録がかんたん</h3><p>気分、お薬、気になったことを、迷わず軽く残せます。長い文章を書かなくても大丈夫です。</p></article>
+          <article class="card"><div class="icon-box">🩺</div><h3>結論は出さず、整理に徹する</h3><p>診断や治療判断を行わず、日々の状態を見える形に整えて、診察や相談につなげます。</p></article>
+          <article class="card"><div class="icon-box">📖</div><h3>見返しやすい振り返り</h3><p>履歴やサマリーで最近の傾向を確認できます。本人にも、支える人にもやさしい設計です。</p></article>
+          <article class="card"><div class="icon-box">🔒</div><h3>安心感のある使い心地</h3><p>外に答えを押しつけず、曖昧さを残したまま記録できる距離感を大切にしています。</p></article>
+        </div>
+      </div>
+    </section>
 
-<div class="section">
-<h2>🩺 診察・ケアのための一言まとめ</h2>
-<div class="doctor-box">
-  <div class="doctor-label">看護師・ヘルパー・ドクターへ</div>
-  <div class="doctor-text">${doctorNote}</div>
-</div>
-</div>
+    <section id="how" class="section section-white">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">HOW IT WORKS</div>
+          <h2 class="section-title">使い方は、シンプルに3ステップ</h2>
+        </div>
+        <div class="steps">
+          <article class="card soft"><div class="step-no">01</div><h3>今日の気分を選ぶ</h3><p>元気・普通・しんどい、のように、その日の感覚を直感的に記録します。</p></article>
+          <article class="card soft"><div class="step-no">02</div><h3>お薬と気になることを残す</h3><p>服薬の有無や、不安、だるさ、眠れなさなどを必要な分だけ選べます。</p></article>
+          <article class="card soft"><div class="step-no">03</div><h3>履歴とまとめを見る</h3><p>記録がたまると、最近の傾向がやわらかく整理され、診察前の見返しにも役立ちます。</p></article>
+        </div>
+      </div>
+    </section>
 
-<div class="section">
-<h2>📅 最近14日の記録</h2>
-<table>
-  <thead><tr><th>日付</th><th>気分</th><th>お薬</th><th>気になったこと</th><th>メモ</th></tr></thead>
-  <tbody>${calRows||'<tr><td colspan="5" style="color:#999;text-align:center">記録なし</td></tr>'}</tbody>
-</table>
-</div>
+    <section id="safety" class="section">
+      <div class="container safety-grid">
+        <div class="safety-main">
+          <div class="section-kicker">SAFETY DESIGN</div>
+          <h2 class="section-title">答えを決めつけない、安心の距離感</h2>
+          <p class="section-desc">にゃんログは、医療的な結論を出すためのものではありません。その日の状態を残し、後から見返しやすくし、医師や支援者との会話を支えることを目的にしています。</p>
+          <div class="badge-row"><span class="badge">診断しない</span><span class="badge">断定しない</span><span class="badge">記録を支える</span></div>
+        </div>
+        <div style="display:grid;gap:16px">
+          <article class="card"><div class="icon-box">💚</div><h3>やること</h3><p>気分・服薬・気になる変化の記録、履歴の整理、傾向の見返し、診察前の確認。</p></article>
+          <article class="card"><div class="icon-box" style="color:var(--amber)">🛡️</div><h3>やらないこと</h3><p>診断、断定的な助言、治療判断の代行。あくまで記録と整理を支える立場に徹します。</p></article>
+          <article class="card"><div class="icon-box" style="color:var(--purple)">🩺</div><h3>向いている場面</h3><p>日々の変化を忘れず残したいとき、診察で話す材料をまとめたいとき、支援者と状態を共有したいとき。</p></article>
+        </div>
+      </div>
+    </section>
 
-<div class="footer">🐱 にゃんログ　／　データはこの端末のブラウザにのみ保存されています</div>
-</body>
-</html>`;
+    <section class="section">
+      <div class="container">
+        <div class="service-grid">
+          <article class="card"><div class="section-kicker">START</div><h3>今すぐ使い始める</h3><p>毎日の記録をすぐ始めたい方向けの導線です。気分・服薬・気になったことを、その場で記録できます。</p><div style="margin-top:22px"><a href="./nyanlog.html" class="btn btn-primary btn-small">アプリを開く →</a></div></article>
+          <article class="card"><div class="section-kicker">DEMO</div><h3>まずはデモで体験</h3><p>導入前に画面や流れを確認したい方向けです。実際の記録イメージや振り返り方を見られます。</p><div style="margin-top:22px"><a href="#how" class="btn btn-secondary btn-small">デモを見る →</a></div></article>
+        </div>
+      </div>
+    </section>
 
-  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download='nyanlog-report-'+new Date().toISOString().slice(0,10)+'.html';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(()=>URL.revokeObjectURL(url),5000);
-  alert('📄 レポートをダウンロードしましたにゃ🐱\nダウンロードしたファイルを開いて「印刷」ボタンを押すと印刷・PDF保存ができます。');
-}
-function exportJson(){
-  const records=load();
-  if(!records.length){
-    alert('まだ記録がないにゃ💊 記録してから書き出してにゃ🐱');
-    return;
-  }
-  const data={
-    appName:'にゃんログ',
-    exportedAt:new Date().toLocaleString('ja-JP'),
-    totalRecords:records.length,
-    logs:records
-  };
-  const json=JSON.stringify(data,null,2);
-  const blob=new Blob([json],{type:'application/json;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download='nyanlog-'+new Date().toISOString().slice(0,10)+'.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-function clearAll(){
-  if(!confirm('全データを削除しますにゃ。元に戻せないにゃ。よろしい？'))return;
-  localStorage.removeItem(KEY);localStorage.removeItem(SIGN_KEY);localStorage.removeItem(SIGN_MASTER_KEY);
-  // UIリセット
-  med=null;
-  document.getElementById('medYes').className='drug-btn';
-  document.getElementById('medNo').className='drug-btn';
-  document.querySelectorAll('.mood-btn,.sign-btn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('memo').value='';
-  signExpanded=false;
-  document.getElementById('nurseCard').classList.remove('show');
-  document.getElementById('aiLinkCard').classList.remove('show');
-  document.getElementById('doctorText').textContent='記録が増えると自動でまとめが出るにゃ📋';
-  renderSignGrid();renderHist();renderSum();renderCfg();
-}
+    <section id="faq" class="section section-white">
+      <div class="container" style="max-width:980px">
+        <div class="section-head" style="text-align:center;margin-inline:auto">
+          <div class="section-kicker">FAQ</div>
+          <h2 class="section-title">よくある質問</h2>
+        </div>
+        <div class="faq-list">
+          <article class="faq-item"><div class="faq-q">Q. にゃんログは診断してくれますか？</div><div class="faq-a">A. いいえ。にゃんログは診断や治療判断をするものではありません。日々の状態を記録し、医師や支援者との会話を助けるためのサービスです。</div></article>
+          <article class="faq-item"><div class="faq-q">Q. 文章を書くのが苦手でも使えますか？</div><div class="faq-a">A. 使えます。選択中心で記録できるので、ひとことメモがなくても続けやすい設計です。</div></article>
+          <article class="faq-item"><div class="faq-q">Q. 誰のためのサービスですか？</div><div class="faq-a">A. ご本人はもちろん、ご家族、ヘルパー、看護師など、日々の変化を見守る人にも役立つように考えています。</div></article>
+        </div>
+      </div>
+    </section>
 
-renderSignGrid();
-</script>
+    <section class="section">
+      <div class="container">
+        <div class="cta-box">
+          <div class="cta-icon">🐱</div>
+          <h2 class="cta-title">毎日の記録を、もっとやさしく。</h2>
+          <p class="cta-copy">にゃんログは、がんばりすぎずに続けられる記録体験を目指しています。曖昧さを消しすぎず、でも見返しやすく。そんなちょうどよさを形にしました。</p>
+          <div class="cta-row" style="justify-content:center">
+            <a href="./nyanlog.html" class="btn btn-primary">今すぐはじめる →</a>
+            <a href="#how" class="btn btn-secondary">デモを見る</a>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer-inner">
+      <div>© にゃんログ</div>
+      <div>記録はやさしく、判断は慎重に。</div>
+    </div>
+  </footer>
 </body>
 </html>

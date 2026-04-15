@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,viewport-fit=cover"/>
-<title>🐱 にゃんログ v12</title>
+<title>🐱 にゃんログ v13</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
@@ -190,7 +190,7 @@ body{
 .sign-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .sign-btn{
   background:var(--sand);
-  border:2.5px solid transparent;
+  border:2px solid var(--line);
   border-radius:14px;
   height:72px;
   font-size:16px;font-weight:900;
@@ -200,9 +200,29 @@ body{
   transition:.18s;
   line-height:1.4;
   padding:4px 2px;
+  box-shadow:0 2px 0 rgba(0,0,0,.08);
 }
-.sign-btn:active{transform:scale(.95)}
-.sign-btn.on{background:var(--amber-bg);border-color:var(--amber);color:var(--amber)}
+.sign-btn:active{transform:scale(.95);box-shadow:none}
+.sign-btn.on{
+  background:var(--amber-bg);
+  border:2.5px solid var(--amber);
+  color:var(--amber);
+  box-shadow:0 2px 0 rgba(217,119,6,.25);
+}
+.sign-more-btn{
+  grid-column:1/-1;
+  background:none;
+  border:1.5px dashed var(--line);
+  border-radius:12px;
+  padding:12px;
+  font-size:17px;font-weight:900;
+  color:var(--muted);
+  cursor:pointer;
+  font-family:inherit;
+  transition:.15s;
+  margin-top:2px;
+}
+.sign-more-btn:active{background:var(--sand)}
 
 /* メモ */
 textarea{
@@ -648,7 +668,7 @@ textarea::placeholder{color:#c4b49a;font-weight:700}
 const KEY='nyanlog_rebuild_v1';
 const SIGN_KEY='nyanlog_rebuild_signs_v1';
 const SIGN_MASTER_KEY='nyanlog_rebuild_signs_master_v1';
-const DEFAULT_SIGNS=['言葉が出にくい','忘れっぽい','集中できない','体がだるい','痛み・不快感','めまい・ふらつき','不安','食欲がない','眠れない','イライラ','頭が重い','そわそわする'];
+const DEFAULT_SIGNS=['言葉が出にくい','忘れっぽい','集中できない','体がだるい','痛み・不快感','めまい・ふらつき','不安','食欲がない','眠れない','イライラ','頭が重い','そわそわする','歩けた','排便','むくみ','手足のしびれ','言葉が聞き取れない'];
 let med=null;
 let range=7;
 
@@ -716,10 +736,28 @@ function localDayKey(d){
 }
 
 // 気になったことグリッド描画
+const SIGN_FOLD=6; // 初期表示数
+let signExpanded=false;
+
 function renderSignGrid(){
   const signs=loadSigns();
   const grid=document.getElementById('signGrid');
-  grid.innerHTML=signs.map(s=>`<button class="sign-btn" onclick="this.classList.toggle('on')">${esc(s)}</button>`).join('');
+  const visible=signExpanded?signs:signs.slice(0,SIGN_FOLD);
+  const hasMore=signs.length>SIGN_FOLD;
+
+  // 現在のON状態を保持
+  const onSet=new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim()));
+
+  grid.innerHTML=visible.map(s=>`<button class="sign-btn${onSet.has(s)?' on':''}" onclick="this.classList.toggle('on')">${esc(s)}</button>`).join('');
+
+  // もっと見る／閉じるボタン
+  if(hasMore){
+    const more=document.createElement('button');
+    more.className='sign-more-btn';
+    more.textContent=signExpanded?`▲ 閉じる`:`＋ もっと見る（残り${signs.length-SIGN_FOLD}件）`;
+    more.onclick=()=>{signExpanded=!signExpanded;renderSignGrid();};
+    grid.appendChild(more);
+  }
 }
 
 // 薬・気分
@@ -802,6 +840,8 @@ function saveRecord(){
   document.getElementById('medYes').className='drug-btn';
   document.getElementById('medNo').className='drug-btn';
   document.querySelectorAll('.mood-btn,.sign-btn').forEach(b=>b.classList.remove('on'));
+  signExpanded=false;
+  renderSignGrid();
   document.getElementById('memo').value='';
 }
 
@@ -923,6 +963,18 @@ function buildSumNurse(records, range){
   if(heavyDays>=3) msgs.push({type:'warn',icon:'🤯',text:`頭が重い日が${heavyDays}日続いています。血圧・睡眠・水分量も合わせて確認してください。`});
   if(restlessDays>=3) msgs.push({type:'warn',icon:'😰',text:`そわそわする日が${restlessDays}日続いています。不安や焦りの背景を傾聴してみてください。`});
   if(appetiteDays>=3) msgs.push({type:'warn',icon:'🍽',text:`食欲がない日が${appetiteDays}日続いています。体重・水分摂取量も合わせて確認してください。`});
+
+  const walkedDays=records.filter(r=>r.signs.includes('歩けた')).length;
+  const defDays=records.filter(r=>r.signs.includes('排便')).length;
+  const edema=records.filter(r=>r.signs.includes('むくみ')).length;
+  const numbDays=records.filter(r=>r.signs.includes('手足のしびれ')).length;
+  const hearDays=records.filter(r=>r.signs.includes('言葉が聞き取れない')).length;
+
+  if(walkedDays>=5) msgs.push({type:'green',icon:'🚶',text:`この期間、${walkedDays}日歩けています。活動量が安定しています。`});
+  if(defDays<=Math.ceil(total*0.3)&&total>=5) msgs.push({type:'warn',icon:'🚽',text:`排便の記録が${defDays}日と少なめです。便秘・水分不足の可能性を確認してください。`});
+  if(edema>=3) msgs.push({type:'warn',icon:'💧',text:`むくみが${edema}日記録されています。服薬の副作用・水分管理を確認してください。`});
+  if(numbDays>=2) msgs.push({type:'warn',icon:'⚡',text:`手足のしびれが${numbDays}日続いています。脳梗塞後の症状変化として医師への報告をおすすめします。`});
+  if(hearDays>=2) msgs.push({type:'warn',icon:'👂',text:`言葉が聞き取れない日が${hearDays}日あります。高次脳機能障害の症状変化として診察で確認してください。`});
 
   // 問題なし
   if(msgs.length===0) msgs.push({type:'green',icon:'✅',text:`この期間、特に気になる傾向は見られませんでした。引き続き見守りをお願いします。`});
@@ -1223,7 +1275,7 @@ function clearAll(){
   document.getElementById('medNo').className='drug-btn';
   document.querySelectorAll('.mood-btn,.sign-btn').forEach(b=>b.classList.remove('on'));
   document.getElementById('memo').value='';
-  document.getElementById('catMsg').textContent='今日はどうだったにゃ？ 記録してにゃ🐾';
+  signExpanded=false;
   document.getElementById('nurseCard').classList.remove('show');
   document.getElementById('aiLinkCard').classList.remove('show');
   document.getElementById('doctorText').textContent='記録が増えると自動でまとめが出るにゃ📋';
