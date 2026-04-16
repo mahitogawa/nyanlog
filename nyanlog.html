@@ -241,7 +241,7 @@ textarea{
   transition:.15s;
 }
 textarea:focus{outline:none;border-color:var(--brand);background:#fff}
-textarea::placeholder{color:#c4b49a;font-weight:700}
+textarea::placeholder{color:#9e8d74;font-weight:700}
 
 /* ===== 記録ボタン ===== */
 .save-btn{
@@ -456,7 +456,7 @@ textarea::placeholder{color:#c4b49a;font-weight:700}
 }
 .ai-link-note{
   font-size:13px;font-weight:700;
-  color:#c4b49a;line-height:1.6;
+  color:#8b7355;line-height:1.7;
   margin-bottom:14px;
 }
 .ai-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
@@ -499,6 +499,200 @@ textarea::placeholder{color:#c4b49a;font-weight:700}
   body{background:var(--cream)}
   .view{padding:16px 12px 48px}
 }
+
+/* ===== readability optimization patch ===== */
+body{
+  line-height:1.75;
+  -webkit-text-size-adjust:100%;
+}
+
+.card-title{
+  font-size:22px;
+  line-height:1.5;
+}
+
+.mood-label{font-size:17px}
+.drug-btn{font-size:20px}
+.sign-btn{
+  font-size:17px;
+  min-height:76px;
+  line-height:1.45;
+}
+.sign-more-btn{font-size:18px}
+textarea{
+  font-size:18px;
+  line-height:1.75;
+}
+.save-btn{
+  height:72px;
+  font-size:22px;
+}
+.cat-text,
+.nurse-text,
+.doctor-text,
+.sum-nurse-msg-text{
+  font-size:18px;
+  line-height:1.8;
+}
+
+.hist-day{font-size:18px}
+.hist-meta{font-size:16px; line-height:1.6}
+
+.kpi-label{font-size:16px; line-height:1.5}
+.kpi-val{font-size:34px}
+
+.badge,
+.range-btn,
+.concern-tag{
+  font-size:17px;
+}
+
+.nurse-label,
+.sum-nurse-subtitle,
+.ai-link-note,
+.cfg-section-label,
+.restore-label{
+  font-size:15px;
+  line-height:1.7;
+}
+
+.ai-link-title,
+.sum-nurse-title{
+  font-size:18px;
+  line-height:1.5;
+}
+
+.ai-btn{
+  font-size:14px;
+  min-height:84px;
+  line-height:1.4;
+}
+.ai-btn .ai-icon{font-size:30px}
+
+.text-input,
+.add-btn,
+.export-btn,
+.clear-btn{
+  font-size:18px;
+  min-height:56px;
+}
+
+.sign-manage-name{
+  font-size:17px;
+  line-height:1.5;
+}
+.restore-tag{font-size:16px}
+
+.logo-text{
+  font-size:36px;
+}
+.tab{
+  font-size:18px;
+  padding:15px 6px;
+}
+
+input, button, textarea, select {
+  touch-action: manipulation;
+}
+
+@media(max-width:480px){
+  .view{padding:16px 14px 52px}
+  .card{
+    padding:18px;
+    border-radius:18px;
+  }
+  .card-title{font-size:21px}
+  .mood-btn{height:96px}
+  .mood-emoji{font-size:38px}
+  .mood-label{font-size:17px}
+  .drug-btn{height:78px; font-size:19px}
+  .sign-grid{gap:9px}
+  .sign-btn{
+    font-size:16px;
+    min-height:78px;
+    border-radius:15px;
+    padding:6px 4px;
+  }
+  .save-btn{
+    height:74px;
+    font-size:21px;
+    border-radius:18px;
+  }
+  .cat-card,
+  .nurse-card,
+  .sum-nurse-box,
+  .ai-link-card{
+    padding:16px;
+  }
+  .cat-text,
+  .nurse-text,
+  .doctor-text,
+  .sum-nurse-msg-text{
+    font-size:17px;
+  }
+  .hist-day{font-size:17px}
+  .hist-meta{font-size:15px}
+  .kpi{
+    padding:13px;
+    border-radius:14px;
+  }
+  .kpi-label{font-size:15px}
+  .kpi-val{font-size:30px}
+  .badge,
+  .range-btn,
+  .concern-tag{
+    font-size:16px;
+  }
+  .ai-link-note,
+  .nurse-label,
+  .sum-nurse-subtitle{
+    font-size:14px;
+  }
+  .tab{
+    font-size:16px;
+    padding:14px 4px;
+  }
+}
+
+
+.site-footer{border-top:1px solid var(--line);background:var(--cream);margin-top:28px}
+.site-footer-inner{display:flex;flex-direction:column;gap:12px;padding:24px 16px;color:var(--muted);font-size:13px;font-weight:700;max-width:480px;margin:0 auto}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{color:var(--muted);text-decoration:none}
+.footer-links a:hover{color:var(--brand)}
+
+.footer-top{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px 24px;
+  flex-wrap:wrap;
+}
+.footer-note{
+  width:100%;
+  font-size:13px;
+  line-height:1.8;
+  color:var(--muted);
+}
+@media(max-width:760px){
+  .site-footer-inner{
+    align-items:flex-start;
+  }
+  .footer-top{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .footer-links{
+    flex-wrap:wrap;
+    gap:12px 18px;
+  }
+  .footer-note{
+    font-size:12.5px;
+    line-height:1.8;
+  }
+}
+
 </style>
 </head>
 <body id="top">
@@ -643,7 +837,7 @@ textarea::placeholder{color:#c4b49a;font-weight:700}
       <input class="text-input" id="newSign" placeholder="例：食欲がない"/>
       <button class="add-btn" onclick="addSign()">追加</button>
     </div>
-    <div style="font-size:13px;color:var(--muted);font-weight:700;margin-bottom:10px;line-height:1.6">
+    <div style="font-size:15px;color:var(--muted);font-weight:700;margin-bottom:12px;line-height:1.75">
       🔘 トグルで表示／非表示を切り替えられます。非表示にしても候補は残ります。<br>
       🗑 ゴミ箱で完全に削除できます。
     </div>
@@ -1229,6 +1423,23 @@ ${top.length?top.map(([n,c])=>`<span class="badge">${n}　${c}回</span>`).join(
 </div>
 
 <div class="footer">🐱 にゃんログ　／　データはこの端末のブラウザにのみ保存されています</div>
+<footer class="site-footer">
+  <div class="container site-footer-inner">
+    <div class="footer-top">
+      <div>© にゃんログ</div>
+      <div class="footer-links">
+        <a href="./index.html">トップ</a>
+        <a href="./nyanlog.html">アプリ</a>
+        <a href="./kouji-nou.html">高次脳機能障害</a>
+        <a href="./kokoro.html">こころの病気</a>
+      </div>
+    </div>
+    <div class="footer-note">
+      記録はやさしく、判断は慎重に。<br>
+      本サービスは医療診断・治療を目的としたものではありません。症状については必ず医師にご相談ください。
+    </div>
+  </div>
+</footer>
 </body>
 </html>`;
 

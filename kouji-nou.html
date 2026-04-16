@@ -178,6 +178,39 @@ a{text-decoration:none;color:inherit}
     line-height:1.95;
   }
 }
+
+.footer-top{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px 24px;
+  flex-wrap:wrap;
+}
+.footer-note{
+  width:100%;
+  font-size:13px;
+  line-height:1.8;
+  color:var(--muted);
+}
+@media(max-width:760px){
+  .site-footer-inner{
+    align-items:flex-start;
+  }
+  .footer-top{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .footer-links{
+    flex-wrap:wrap;
+    gap:12px 18px;
+  }
+  .footer-note{
+    font-size:12.5px;
+    line-height:1.8;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -452,12 +485,19 @@ a{text-decoration:none;color:inherit}
 
 <footer class="site-footer">
   <div class="container site-footer-inner">
-    <div>© にゃんログ</div>
-    <div class="footer-links">
-      <a href="./index.html">トップ</a>
-      <a href="./nyanlog.html">アプリ</a>
+    <div class="footer-top">
+      <div>© にゃんログ</div>
+      <div class="footer-links">
+        <a href="./index.html">トップ</a>
+        <a href="./nyanlog.html">アプリ</a>
+        <a href="./kouji-nou.html">高次脳機能障害</a>
+        <a href="./kokoro.html">こころの病気</a>
+      </div>
     </div>
-    <div>記録はやさしく、判断は慎重に。</div>
+    <div class="footer-note">
+      記録はやさしく、判断は慎重に。<br>
+      本サービスは医療診断・治療を目的としたものではありません。症状については必ず医師にご相談ください。
+    </div>
   </div>
 </footer>
 
