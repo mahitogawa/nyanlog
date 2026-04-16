@@ -853,11 +853,7 @@ input, button, textarea, select {
   </div>
   <div class="card">
     <div class="card-title">📂 データ・レポート</div>
-    <button class="export-btn" onclick="exportPdf()">🖨️ みんなへのまとめ（PDF印刷）</button>
-    <button class="export-btn" style="margin-top:0" onclick="exportJson()">📤 JSONで書き出し（バックアップ）</button>
-    <button class="export-btn" style="margin-top:0;background:var(--brand-light);color:var(--brand);border:1.5px solid var(--brand)" onclick="document.getElementById('importFileInput').click()">📥 バックアップから復元</button>
-    <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importJson(this)">
-    <div id="importMsg" style="font-size:14px;font-weight:900;color:var(--brand);min-height:18px;margin-top:4px;text-align:center"></div>
+    <button class="export-btn" onclick="exportPdf()">🖨️ みんなへのまとめ（印刷・PDF保存）</button>
     <button class="clear-btn" onclick="clearAll()">🗑 全データ削除（自動バックアップ付き）</button>
   </div>
   <div style="font-size:16px;color:var(--muted);font-weight:700;line-height:1.7;padding:0 4px">
@@ -1504,14 +1500,20 @@ ${top.length?top.map(([n,c])=>`<span class="badge">${n}　${c}回</span>`).join(
 
   const blob=new Blob([html],{type:'text/html;charset=utf-8'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download='nyanlog-report-'+new Date().toISOString().slice(0,10)+'.html';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(()=>URL.revokeObjectURL(url),5000);
-  alert('📄 レポートをダウンロードしましたにゃ🐱\nダウンロードしたファイルを開いて「印刷」ボタンを押すと印刷・PDF保存ができます。');
+  const win=window.open(url,'_blank');
+  if(win){
+    win.onload=function(){
+      setTimeout(()=>{win.print();},400);
+    };
+  } else {
+    // ポップアップブロックされた場合はダウンロードにフォールバック
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='nyanlog-report-'+new Date().toISOString().slice(0,10)+'.html';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    alert('📄 レポートをダウンロードしましたにゃ🐱\nファイルを開いて印刷してにゃ。');
+  }
+  setTimeout(()=>URL.revokeObjectURL(url),30000);
 }
 function exportJson(){
   const records=load();
