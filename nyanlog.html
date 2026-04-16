@@ -187,20 +187,21 @@ body{
 }
 
 /* ===== 気になったことボタン ===== */
-.sign-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sign-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .sign-btn{
   background:var(--sand);
   border:2px solid var(--line);
   border-radius:14px;
-  height:72px;
-  font-size:16px;font-weight:900;
+  min-height:64px;
+  font-size:15px;font-weight:900;
   color:var(--ink);
   cursor:pointer;
   font-family:inherit;
   transition:.18s;
-  line-height:1.4;
-  padding:4px 2px;
+  line-height:1.5;
+  padding:10px 10px;
   box-shadow:0 2px 0 rgba(0,0,0,.08);
+  text-align:left;
 }
 .sign-btn:active{transform:scale(.95);box-shadow:none}
 .sign-btn.on{
@@ -514,9 +515,11 @@ body{
 .mood-label{font-size:17px}
 .drug-btn{font-size:20px}
 .sign-btn{
-  font-size:17px;
-  min-height:76px;
-  line-height:1.45;
+  font-size:16px;
+  min-height:64px;
+  line-height:1.5;
+  padding:10px 12px;
+  text-align:left;
 }
 .sign-more-btn{font-size:18px}
 textarea{
@@ -867,7 +870,7 @@ input, button, textarea, select {
 const KEY='nyanlog_rebuild_v1';
 const SIGN_KEY='nyanlog_rebuild_signs_v1';
 const SIGN_MASTER_KEY='nyanlog_rebuild_signs_master_v1';
-const DEFAULT_SIGNS=['言葉が出にくい','忘れっぽい','集中できない','体がだるい','痛み・不快感','めまい・ふらつき','不安','食欲がない','眠れない','イライラ','頭が重い','そわそわする','歩けた','排便','むくみ','手足のしびれ','言葉が聞き取れない'];
+const DEFAULT_SIGNS=['言葉が出にくい・つまる','忘れっぽい・物がなくなる','集中できない・ぼーっとする','体がだるい・疲れやすい','痛み・不快感（頭・体）','めまい・ふらつき・ふらっとする','不安・こわい・落ち着かない','食欲がない・食べられない','眠れない・眠りが浅い','イライラ・怒りっぽい','頭が重い・ぼーっとする','そわそわする・じっとできない','歩けた・外に出られた','排便があった','むくみが気になる','手足のしびれ・感覚がおかしい','言葉が聞き取れない・聞き返した'];
 let med=null;
 let range=7;
 
@@ -913,20 +916,67 @@ document.querySelectorAll('.tab').forEach(t=>{
 // データ
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
 function store(r){localStorage.setItem(KEY,JSON.stringify(r))}
+// 旧ラベル→新ラベル 対応表
+const SIGN_MIGRATE_MAP={
+  '言葉が出にくい':'言葉が出にくい・つまる',
+  '忘れっぽい':'忘れっぽい・物がなくなる',
+  '集中できない':'集中できない・ぼーっとする',
+  '体がだるい':'体がだるい・疲れやすい',
+  '痛み・不快感':'痛み・不快感（頭・体）',
+  'めまい・ふらつき':'めまい・ふらつき・ふらっとする',
+  '不安':'不安・こわい・落ち着かない',
+  '食欲がない':'食欲がない・食べられない',
+  '眠れない':'眠れない・眠りが浅い',
+  'イライラ':'イライラ・怒りっぽい',
+  '頭が重い':'頭が重い・ぼーっとする',
+  'そわそわする':'そわそわする・じっとできない',
+  '歩けた':'歩けた・外に出られた',
+  '排便':'排便があった',
+  'むくみ':'むくみが気になる',
+  '手足のしびれ':'手足のしびれ・感覚がおかしい',
+  '言葉が聞き取れない':'言葉が聞き取れない・聞き返した'
+};
+function migrateLabels(arr){return arr.map(s=>SIGN_MIGRATE_MAP[s]||s);}
+function migrateRecords(){
+  // 記録データ内のsignsも新ラベルに置換
+  const records=load();
+  let changed=false;
+  records.forEach(r=>{
+    if(r.signs){
+      const migrated=migrateLabels(r.signs);
+      if(JSON.stringify(migrated)!==JSON.stringify(r.signs)){r.signs=migrated;changed=true;}
+    }
+  });
+  if(changed)store(records);
+}
 // 有効候補（記録画面に表示する）
-function loadSigns(){try{return JSON.parse(localStorage.getItem(SIGN_KEY)||'null')||DEFAULT_SIGNS.slice()}catch{return DEFAULT_SIGNS.slice()}}
+function loadSigns(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(SIGN_KEY)||'null');
+    if(!raw)return DEFAULT_SIGNS.slice();
+    const migrated=migrateLabels(raw);
+    if(JSON.stringify(migrated)!==JSON.stringify(raw))storeSigns(migrated);
+    return migrated;
+  }catch{return DEFAULT_SIGNS.slice()}
+}
 function storeSigns(s){localStorage.setItem(SIGN_KEY,JSON.stringify(s))}
 // マスター候補（全て。削除しても残る）
 function loadMaster(){
   try{
     const m=JSON.parse(localStorage.getItem(SIGN_MASTER_KEY)||'null');
-    if(m) return m;
+    if(m){
+      const migrated=migrateLabels(m);
+      if(JSON.stringify(migrated)!==JSON.stringify(m))storeMaster(migrated);
+      return migrated;
+    }
     // 初回：デフォルト＋有効リストをマージしてマスター作成
     const merged=[...new Set([...DEFAULT_SIGNS,...loadSigns()])];
     localStorage.setItem(SIGN_MASTER_KEY,JSON.stringify(merged));
     return merged;
   }catch{return DEFAULT_SIGNS.slice()}
 }
+// 起動時にレコードデータも一括マイグレーション
+migrateRecords();
 function storeMaster(m){localStorage.setItem(SIGN_MASTER_KEY,JSON.stringify(m))}
 // 日付キー：ローカル時刻でYYYY-MM-DD
 function localDayKey(d){
@@ -1065,14 +1115,15 @@ function buildAiLink(today){
   const moodLabel=today.mood||'未選択';
   const drug=today.drug==='yes'?'飲んだ':'飲んでいない';
   const signs=today.signs.length?today.signs.join('・'):'特になし';
-  const memo=today.memo?`\nメモ：${today.memo}`:'';
+  const memo=today.memo||'特になし';
 
   aiPromptText=`今日の体調記録です。アドバイスや気になる点があれば教えてください。
 
 【日付】${document.getElementById('dateEl').textContent}
 【気分】${moodLabel}
 【お薬】${drug}
-【気になったこと】${signs}${memo}
+【気になったこと】${signs}
+【その他メモ】${memo}
 
 ※これはリハビリ中の個人記録です。医療的な診断は不要で、気づきや励ましをもらえると嬉しいです。`;
 
