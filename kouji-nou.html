@@ -118,33 +118,50 @@ a{text-decoration:none;color:inherit}
 /* 原因セクション専用 */
 .cause-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
   margin-top:28px;
 }
 .cause-card{
   text-align:left;
   min-height:100%;
+  padding:26px;
+  border-radius:24px;
 }
 .cause-title{
-  font-size:18px;
+  font-size:20px;
   font-weight:900;
-  margin-bottom:8px;
+  margin-bottom:10px;
   line-height:1.45;
 }
 .cause-text{
-  font-size:15px;
+  font-size:16px;
   font-weight:700;
   color:#6b5a45;
-  line-height:1.85;
+  line-height:1.95;
 }
-@media(max-width:900px){
-  .cause-grid{grid-template-columns:repeat(2,1fr);}
+.cause-card .icon-box{
+  margin-bottom:18px;
+}
+@media(max-width:960px){
+  .cause-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 @media(max-width:640px){
-  .cause-grid{grid-template-columns:1fr;}
-  .cause-title{font-size:20px;}
-  .cause-text{font-size:16px;}
+  .cause-grid{
+    grid-template-columns:1fr !important;
+    gap:14px;
+  }
+  .cause-card{
+    padding:22px;
+    border-radius:22px;
+  }
+  .cause-title{
+    font-size:22px;
+  }
+  .cause-text{
+    font-size:17px;
+    line-height:2.0;
+  }
 }
 
 /* レスポンシブ */
@@ -153,6 +170,13 @@ a{text-decoration:none;color:inherit}
   .hero-stats{grid-template-columns:1fr 1fr}
   .section{padding:48px 0}
   .hero{padding:40px 0 48px}
+}
+/* cause-finish-patch */
+@media(max-width:640px){
+  .section-desc{
+    font-size:17px;
+    line-height:1.95;
+  }
 }
 </style>
 </head>
