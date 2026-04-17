@@ -1065,8 +1065,8 @@ function saveRecord(){
   catEl.textContent=buildCat(today,records);
   const ncs=buildNurse(today,records);
   const nurseCard=document.getElementById('nurseCard');
-  if(ncs&&ncs.length){
-    document.getElementById('nurseMsg').innerHTML=ncs.map(t=>`<div>${esc(t)}</div>`).join('');
+  if(ncs){
+    document.getElementById('nurseMsg').innerHTML=`<div>${esc(ncs)}</div>`;
     nurseCard.classList.add('show');
   }else{
     nurseCard.classList.remove('show');
