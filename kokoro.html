@@ -60,7 +60,7 @@ a{text-decoration:none;color:inherit}
   transition:.15s;font-family:inherit;
 }
 .cat-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
-.cat-btn.open{border-radius:18px 18px 0 0;border-bottom-color:transparent}
+.cat-btn.open{border-radius:18px 18px 0 0;border-bottom-color:transparent;border-left-width:5px;position:sticky;top:0;z-index:10;}
 .cat-left{display:flex;align-items:center;gap:14px}
 .cat-icon{font-size:24px;width:28px;text-align:center;flex-shrink:0}
 .cat-name{font-size:18px;font-weight:900;color:var(--ink)}
@@ -93,26 +93,26 @@ a{text-decoration:none;color:inherit}
 .disease-item.open .disease-detail{display:block}
 
 /* カテゴリ別カラー（ID指定） */
-button[onclick*="cat1"]{background:#fff0f5;border-color:#f5b8d0;}
-#cat1{background:#fff0f5;border-color:#f5b8d0;}
+button[onclick*="catbutton[onclick*="cat1"]{border-color:#f5b8d0;}"]{border-color:#f5b8d0;}
+#cat1{background:#fff;border-color:#f5b8d0;}
 
-button[onclick*="cat2"]{background:#f0f7ff;border-color:#a8c8f0;}
-#cat2{background:#f0f7ff;border-color:#a8c8f0;}
+button[onclick*="catbutton[onclick*="cat2"]{border-color:#a8c8f0;}"]{border-color:#a8c8f0;}
+#cat2{background:#fff;border-color:#a8c8f0;}
 
-button[onclick*="cat3"]{background:#fff8e7;border-color:#f0c040;}
-#cat3{background:#fff8e7;border-color:#f0c040;}
+button[onclick*="catbutton[onclick*="cat3"]{border-color:#f0c040;}"]{border-color:#f0c040;}
+#cat3{background:#fff;border-color:#f0c040;}
 
-button[onclick*="cat4"]{background:#e8f5ef;border-color:#b7dfc9;}
-#cat4{background:#e8f5ef;border-color:#b7dfc9;}
+button[onclick*="catbutton[onclick*="cat4"]{border-color:#b7dfc9;}"]{border-color:#b7dfc9;}
+#cat4{background:#fff;border-color:#b7dfc9;}
 
-button[onclick*="cat5"]{background:#eef0ff;border-color:#c4c0f0;}
-#cat5{background:#eef0ff;border-color:#c4c0f0;}
+button[onclick*="catbutton[onclick*="cat5"]{border-color:#c4c0f0;}"]{border-color:#c4c0f0;}
+#cat5{background:#fff;border-color:#c4c0f0;}
 
-button[onclick*="cat6"]{background:#fdecea;border-color:#f5b8b3;}
-#cat6{background:#fdecea;border-color:#f5b8b3;}
+button[onclick*="catbutton[onclick*="cat6"]{border-color:#f5b8b3;}"]{border-color:#f5b8b3;}
+#cat6{background:#fff;border-color:#f5b8b3;}
 
-button[onclick*="cat7"]{background:#f5ede0;border-color:#e8ddd0;}
-#cat7{background:#f5ede0;border-color:#e8ddd0;}
+button[onclick*="catbutton[onclick*="cat7"]{border-color:#e8ddd0;}"]{border-color:#e8ddd0;}
+#cat7{background:#fff;border-color:#e8ddd0;}
 
 /* 疾患アイテム：タップできることを示す */
 .disease-item{
