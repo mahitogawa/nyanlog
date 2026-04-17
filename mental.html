@@ -82,8 +82,20 @@ body{
   color:var(--ink);cursor:pointer;transition:.15s;
   text-align:left;line-height:1.4;
 }
-.sym-btn.on{background:var(--brand-light);border-color:var(--brand);color:var(--brand);}
+.sym-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);}
 .sym-btn:active{transform:scale(.97);}
+
+/* カテゴリ別ボタン色 */
+.cat-0 .sym-btn{background:#fde8f0;border-color:#f5b8d0;}
+.cat-0 .sym-btn.on{background:#c0392b;border-color:#c0392b;color:#fff;}
+.cat-1 .sym-btn{background:#fff3cd;border-color:#f0c040;}
+.cat-1 .sym-btn.on{background:#d97706;border-color:#d97706;color:#fff;}
+.cat-2 .sym-btn{background:#e8f5ef;border-color:#b7dfc9;}
+.cat-2 .sym-btn.on{background:#2d6a4f;border-color:#2d6a4f;color:#fff;}
+.cat-3 .sym-btn{background:#e8f1fb;border-color:#a8c8f0;}
+.cat-3 .sym-btn.on{background:#1d6db5;border-color:#1d6db5;color:#fff;}
+.cat-4 .sym-btn{background:#eef0ff;border-color:#c4c0f0;}
+.cat-4 .sym-btn.on{background:#5b54c7;border-color:#5b54c7;color:#fff;}
 
 /* 選択済み */
 .selected-wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:32px;margin-bottom:14px;}
@@ -427,7 +439,7 @@ function renderSyms(){
           <span class="sym-cat-arrow">▼</span>
         </div>
       </button>
-      <div class="sym-cat-body">
+    <div class="sym-cat-body cat-${i}">
         <div class="sym-grid">
           ${cat.syms.map(s=>`
             <button class="sym-btn${selected.has(s)?' on':''}" onclick="toggleSym('${s.replace(/'/g,"\\'")}')">
