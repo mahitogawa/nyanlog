@@ -77,17 +77,53 @@ a{text-decoration:none;color:inherit}
 }
 .cat-items.show{display:block}
 .disease-item{
-  padding:20px 20px 20px 62px;
-  border-bottom:1px solid var(--line);
-  cursor:pointer;
-  transition:.15s;
+  background:#fff;
+  border-radius:14px;
+  margin:8px 12px;
+  padding:14px 16px;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  cursor:pointer;transition:.15s;
 }
-.disease-item:last-child{border-bottom:none}
-.disease-item:hover{background:var(--cream)}
+.disease-item:last-child{margin-bottom:12px;}
+.disease-item:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.1);}
 .disease-name{font-size:16px;font-weight:900;margin-bottom:5px}
 .disease-sub{font-size:14px;font-weight:700;color:var(--muted);line-height:1.6}
-.disease-detail{display:none;margin-top:14px;background:var(--cream);border-radius:12px;padding:14px;border:1px solid var(--line)}
+.disease-detail{display:none;margin-top:14px;background:rgba(255,255,255,.7);border-radius:12px;padding:14px;border:1px solid rgba(0,0,0,.08)}
 .disease-item.open .disease-detail{display:block}
+
+/* カテゴリ別カラー（ID指定） */
+button[onclick*="cat1"]{background:#fff0f5;border-color:#f5b8d0;}
+#cat1{background:#fff0f5;border-color:#f5b8d0;}
+
+button[onclick*="cat2"]{background:#f0f7ff;border-color:#a8c8f0;}
+#cat2{background:#f0f7ff;border-color:#a8c8f0;}
+
+button[onclick*="cat3"]{background:#fff8e7;border-color:#f0c040;}
+#cat3{background:#fff8e7;border-color:#f0c040;}
+
+button[onclick*="cat4"]{background:#e8f5ef;border-color:#b7dfc9;}
+#cat4{background:#e8f5ef;border-color:#b7dfc9;}
+
+button[onclick*="cat5"]{background:#eef0ff;border-color:#c4c0f0;}
+#cat5{background:#eef0ff;border-color:#c4c0f0;}
+
+button[onclick*="cat6"]{background:#fdecea;border-color:#f5b8b3;}
+#cat6{background:#fdecea;border-color:#f5b8b3;}
+
+button[onclick*="cat7"]{background:#f5ede0;border-color:#e8ddd0;}
+#cat7{background:#f5ede0;border-color:#e8ddd0;}
+
+/* 疾患アイテム：タップできることを示す */
+.disease-item{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+}
+.disease-item-main{flex:1;}
+.disease-chevron{
+  font-size:13px;color:var(--muted);
+  flex-shrink:0;margin-top:4px;transition:.2s;
+}
+.disease-item.open .disease-chevron{transform:rotate(180deg);}
 .detail-section{margin-bottom:12px}
 .detail-section:last-child{margin-bottom:0}
 .detail-label{font-size:14px;font-weight:900;color:var(--muted);letter-spacing:.08em;margin-bottom:5px}
@@ -209,6 +245,7 @@ a{text-decoration:none;color:inherit}
       </button>
       <div class="cat-items" id="cat1">
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">うつ病</div>
           <div class="disease-sub">気分の落ち込み、意欲・エネルギーの低下が続く状態</div>
           <div class="disease-detail">
@@ -229,8 +266,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">双極性障害（躁うつ病）</div>
           <div class="disease-sub">躁状態（気分が高まる）と鬱状態を繰り返す</div>
           <div class="disease-detail">
@@ -251,6 +291,8 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
       </div>
 
@@ -264,6 +306,7 @@ a{text-decoration:none;color:inherit}
       </button>
       <div class="cat-items" id="cat2">
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">統合失調症</div>
           <div class="disease-sub">幻覚・妄想・思考のまとまりにくさが主な症状</div>
           <div class="disease-detail">
@@ -284,6 +327,8 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
       </div>
 
@@ -297,6 +342,7 @@ a{text-decoration:none;color:inherit}
       </button>
       <div class="cat-items" id="cat3">
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">パニック症（パニック障害）</div>
           <div class="disease-sub">突然の強い不安・動悸・息苦しさなどの発作が起きる</div>
           <div class="disease-detail">
@@ -317,8 +363,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">強迫症（強迫性障害・OCD）</div>
           <div class="disease-sub">意に反して繰り返す思考や行動が止められない</div>
           <div class="disease-detail">
@@ -338,8 +387,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">社交不安症（社交不安障害）</div>
           <div class="disease-sub">人前で強い不安・恥ずかしさを感じる</div>
           <div class="disease-detail">
@@ -359,8 +411,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">全般不安症（GAD）</div>
           <div class="disease-sub">特定の原因がなく、様々なことへの過度な不安が続く</div>
           <div class="disease-detail">
@@ -380,6 +435,8 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
       </div>
 
@@ -393,6 +450,7 @@ a{text-decoration:none;color:inherit}
       </button>
       <div class="cat-items" id="cat4">
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">適応障害</div>
           <div class="disease-sub">特定のストレスにより心身に不調が出る状態</div>
           <div class="disease-detail">
@@ -413,8 +471,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">PTSD（心的外傷後ストレス障害）</div>
           <div class="disease-sub">強いトラウマ体験後に続く症状</div>
           <div class="disease-detail">
@@ -435,6 +496,8 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
       </div>
 
@@ -448,6 +511,7 @@ a{text-decoration:none;color:inherit}
       </button>
       <div class="cat-items" id="cat5">
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">ADHD（注意欠如・多動症）</div>
           <div class="disease-sub">不注意・多動性・衝動性が特徴</div>
           <div class="disease-detail">
@@ -468,8 +532,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">ASD（自閉スペクトラム症）</div>
           <div class="disease-sub">コミュニケーション・社会的相互作用・こだわりの特性</div>
           <div class="disease-detail">
@@ -490,6 +557,8 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
       </div>
 
@@ -503,6 +572,7 @@ a{text-decoration:none;color:inherit}
       </button>
       <div class="cat-items" id="cat6">
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">アルコール依存症</div>
           <div class="disease-sub">飲酒のコントロールができなくなる状態</div>
           <div class="disease-detail">
@@ -522,8 +592,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">薬物依存症</div>
           <div class="disease-sub">薬物への強い渇望と使用のコントロール喪失</div>
           <div class="disease-detail">
@@ -540,8 +613,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">ギャンブル依存症</div>
           <div class="disease-sub">ギャンブルへの衝動をコントロールできない</div>
           <div class="disease-detail">
@@ -557,6 +633,8 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
       </div>
 
@@ -570,6 +648,7 @@ a{text-decoration:none;color:inherit}
       </button>
       <div class="cat-items" id="cat7">
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">摂食障害</div>
           <div class="disease-sub">食べること・体重・体型への強いこだわりと行動</div>
           <div class="disease-detail">
@@ -586,8 +665,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">睡眠障害</div>
           <div class="disease-sub">眠れない・眠りすぎるなど睡眠に関する問題</div>
           <div class="disease-detail">
@@ -604,8 +686,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">解離性障害</div>
           <div class="disease-sub">記憶・意識・アイデンティティなどの連続性が断絶する</div>
           <div class="disease-detail">
@@ -621,8 +706,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">パーソナリティ障害</div>
           <div class="disease-sub">持続的な思考・感情・行動パターンの偏りにより生活に支障をきたす</div>
           <div class="disease-detail">
@@ -639,8 +727,11 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
         <div class="disease-item" onclick="toggleDisease(this)">
+          <div class="disease-item-main">
           <div class="disease-name">てんかん / 認知症</div>
           <div class="disease-sub">脳の機能的・器質的な変化による疾患</div>
           <div class="disease-detail">
@@ -661,6 +752,8 @@ a{text-decoration:none;color:inherit}
               </div>
             </div>
           </div>
+          </div>
+          <span class="disease-chevron">▼</span>
         </div>
       </div>
 
