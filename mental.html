@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>こころのセルフチェック | にゃんログ</title>
+<meta name="description" content="症状から気になる病気を参考表示。AIがやさしく解説します。診断ではありません。">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#5b54c7">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+:root{
+  --cream:#fdf8f3;
+  --sand:#f5ede0;
+  --brand:#5b54c7;
+  --brand-light:#eef0ff;
+  --green:#2d6a4f;
+  --ink:#2c2118;
+  --muted:#8b7355;
+  --line:#e8ddd0;
+  --warn:#e07b39;
+  --amber:#d97706;
+  --amber-bg:#fff8e7;
+  --danger:#c0392b;
+  --danger-bg:#fdecea;
+}
+
+body{
+  font-family:'Zen Maru Gothic',-apple-system,'Hiragino Sans',sans-serif;
+  background:var(--cream);color:var(--ink);min-height:100vh;
+}
+
+/* ヘッダー */
+.hd{background:var(--brand);padding:env(safe-area-inset-top,0) 0 0;position:sticky;top:0;z-index:100;}
+.hd-inner{display:flex;align-items:center;gap:12px;padding:14px 16px;}
+.hd-icon{width:42px;height:42px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.hd-title{font-size:18px;font-weight:900;color:#fff;}
+.hd-sub{font-size:13px;font-weight:700;color:rgba(255,255,255,.75);}
+.hd-back{margin-left:auto;background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:12px;padding:8px 14px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;}
+
+.main{max-width:680px;margin:0 auto;padding:20px 14px 80px;}
+
+/* 警告バナー */
+.warn-bar{
+  background:var(--amber-bg);border:1.5px solid var(--amber);
+  border-radius:16px;padding:14px 16px;
+  font-size:14px;font-weight:700;color:#78350f;
+  line-height:1.75;margin-bottom:18px;
+}
+
+/* カード */
+.card{background:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(44,33,24,.07);border:1px solid var(--line);}
+.card-title{font-size:16px;font-weight:900;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+
+/* 症状グリッド */
+.sym-cats{display:flex;flex-direction:column;gap:8px;}
+.sym-cat-wrap{border:1.5px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;}
+.sym-cat-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;cursor:pointer;
+  background:#fff;border:none;width:100%;font-family:inherit;
+  transition:.15s;
+}
+.sym-cat-header:active{background:var(--sand);}
+.sym-cat-title{font-size:15px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.sym-cat-meta{display:flex;align-items:center;gap:8px;}
+.sym-cat-count{font-size:13px;font-weight:900;color:var(--brand);background:var(--brand-light);border-radius:999px;padding:3px 10px;}
+.sym-cat-arrow{font-size:14px;color:var(--muted);transition:.25s;}
+.sym-cat-wrap.open .sym-cat-arrow{transform:rotate(180deg);}
+.sym-cat-body{display:none;padding:0 14px 14px;}
+.sym-cat-wrap.open .sym-cat-body{display:block;}
+.sym-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.sym-btn{
+  background:var(--sand);border:2px solid var(--line);
+  border-radius:12px;padding:12px 10px;
+  font-family:inherit;font-size:14px;font-weight:900;
+  color:var(--ink);cursor:pointer;transition:.15s;
+  text-align:left;line-height:1.4;
+}
+.sym-btn.on{background:var(--brand-light);border-color:var(--brand);color:var(--brand);}
+.sym-btn:active{transform:scale(.97);}
+
+/* 選択済み */
+.selected-wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:32px;margin-bottom:14px;}
+.selected-tag{
+  background:var(--brand);color:#fff;
+  border-radius:999px;padding:6px 14px;
+  font-size:14px;font-weight:900;
+  display:flex;align-items:center;gap:6px;cursor:pointer;
+}
+.selected-tag .rm{font-size:16px;opacity:.7;}
+
+/* 分析ボタン */
+.analyze-btn{
+  display:block;width:100%;padding:18px;
+  background:var(--brand);color:#fff;
+  border:none;border-radius:16px;
+  font-family:inherit;font-size:17px;font-weight:900;
+  cursor:pointer;transition:.15s;
+}
+.analyze-btn:disabled{opacity:.5;cursor:not-allowed;}
+.analyze-btn:not(:disabled):active{transform:scale(.98);}
+
+/* 結果エリア */
+.result-section{display:none;}
+.result-section.show{display:block;}
+
+/* 疾患マッチカード */
+.match-list{display:flex;flex-direction:column;gap:10px;}
+.match-item{
+  background:#fff;border-radius:16px;
+  border:1.5px solid var(--line);
+  padding:16px;
+}
+.match-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.match-name{font-size:16px;font-weight:900;color:var(--ink);flex:1;}
+.match-score{
+  font-size:14px;font-weight:900;
+  background:var(--brand-light);color:var(--brand);
+  border-radius:999px;padding:4px 12px;
+}
+.match-bar-wrap{height:8px;background:var(--sand);border-radius:999px;overflow:hidden;margin-bottom:10px;}
+.match-bar{height:100%;background:linear-gradient(to right,var(--brand),#8b85e0);border-radius:999px;transition:.5s ease;}
+.match-syms{display:flex;flex-wrap:wrap;gap:6px;}
+.match-sym{font-size:14px;font-weight:700;background:var(--brand-light);color:var(--brand);border-radius:999px;padding:4px 10px;}
+
+/* 参考メッセージ */
+.msg-box{
+  background:linear-gradient(135deg,#f0eeff,#e8f5ef);
+  border:1.5px solid var(--brand);
+  border-radius:20px;padding:20px;
+  font-size:15px;font-weight:700;
+  color:#1a1560;line-height:1.9;
+  white-space:pre-wrap;word-break:break-word;
+}
+
+/* AIに相談カード */
+.ai-consult-card{
+  background:var(--sand);border-radius:16px;
+  padding:16px;margin-top:14px;
+  border:1.5px solid var(--line);
+}
+.ai-consult-title{
+  font-size:15px;font-weight:900;color:var(--ink);
+  margin-bottom:6px;
+}
+.ai-consult-note{
+  font-size:14px;font-weight:700;color:var(--muted);
+  line-height:1.7;margin-bottom:12px;
+}
+.ai-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.ai-btn{
+  display:flex;flex-direction:column;align-items:center;
+  gap:5px;padding:14px 6px;
+  border-radius:14px;border:1.5px solid var(--line);
+  background:#fff;font-family:inherit;
+  font-size:15px;font-weight:900;color:var(--ink);
+  cursor:pointer;text-decoration:none;transition:.15s;
+}
+.ai-btn:active{transform:scale(.95);}
+.ai-btn-icon{font-size:26px;line-height:1;}
+.ai-copy-msg{
+  text-align:center;font-size:14px;font-weight:900;
+  color:var(--brand);min-height:18px;margin-top:8px;
+}
+
+/* コピー・印刷 */
+.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.act-btn{
+  flex:1;min-width:120px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px;border:none;border-radius:14px;
+  font-family:inherit;font-size:15px;font-weight:900;
+  cursor:pointer;transition:.15s;
+}
+.act-btn:active{transform:scale(.97);}
+.act-copy{background:var(--green);color:#fff;}
+.act-print{background:var(--amber);color:#fff;}
+.copy-msg{text-align:center;font-size:14px;font-weight:900;color:var(--green);min-height:20px;margin-top:8px;}
+
+/* もう一度 */
+.reset-btn{
+  display:block;width:100%;margin-top:14px;
+  padding:14px;background:var(--sand);
+  border:1.5px solid var(--line);border-radius:14px;
+  font-family:inherit;font-size:15px;font-weight:900;
+  color:var(--muted);cursor:pointer;
+}
+
+/* 印刷用 */
+@media print{
+  .hd,.warn-bar,.sym-cats,.analyze-btn,.action-row,.reset-btn{display:none!important;}
+  .result-section{display:block!important;}
+  body{background:#fff;}
+  .card{box-shadow:none;border:1px solid #ddd;}
+}
+
+/* フッター */
+.site-footer{border-top:1px solid var(--line);background:var(--cream);}
+.site-footer-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 16px;flex-wrap:wrap;color:var(--muted);font-size:13px;font-weight:700;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-links a{color:var(--muted);text-decoration:none;}
+.footer-note{width:100%;font-size:13px;line-height:1.8;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="hd">
+  <div class="hd-inner">
+    <div class="hd-icon">💙</div>
+    <div>
+      <div class="hd-title">こころのセルフチェック</div>
+      <div class="hd-sub">症状→参考情報→AI解説</div>
+    </div>
+    <a class="hd-back" href="./kokoro.html">← 戻る</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="warn-bar">
+    ⚠️ これは医療診断ではありません。あくまで「参考情報」として活用してください。症状が気になる場合は必ず医師にご相談ください。
+  </div>
+
+  <!-- 症状選択 -->
+  <div class="card">
+    <div class="card-title">💙 今の自分に当てはまるものを選んでね</div>
+    <div class="selected-wrap" id="selectedWrap">
+      <span style="font-size:14px;font-weight:700;color:var(--muted);">ここに選んだ症状が出ます</span>
+    </div>
+    <div class="sym-cats" id="symCats"></div>
+  </div>
+
+  <button class="analyze-btn" id="analyzeBtn" onclick="analyze()" disabled>
+    🔍 チェックする（症状を選んでにゃ）
+  </button>
+
+  <!-- 結果 -->
+  <div class="result-section" id="resultSection">
+
+    <div class="card" id="matchCard">
+      <div class="card-title">📊 気になる病気（参考）</div>
+      <div class="match-list" id="matchList"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💬 参考メッセージ</div>
+      <div id="aiArea"></div>
+      <div class="ai-consult-card">
+        <div class="ai-consult-title">🤖 AIに相談する</div>
+        <div class="ai-consult-note">タップするとプロンプトをコピーしてAIが開くにゃ🐱<br>開いたら貼り付けるだけにゃ（自己責任でにゃ）</div>
+        <div class="ai-btns">
+          <button class="ai-btn" onclick="openAI('https://claude.ai')">
+            <span class="ai-btn-icon">🧠🐱</span>Claude
+          </button>
+          <button class="ai-btn" onclick="openAI('https://gemini.google.com')">
+            <span class="ai-btn-icon">✨🐱</span>Gemini
+          </button>
+          <button class="ai-btn" onclick="openAI('https://chatgpt.com')">
+            <span class="ai-btn-icon">🤖🐱</span>ChatGPT
+          </button>
+        </div>
+        <div class="ai-copy-msg" id="aiCopyMsg"></div>
+      </div>
+      <div class="action-row">
+        <button class="act-btn act-copy" onclick="copyResult()">📋 コピー</button>
+        <button class="act-btn act-print" onclick="window.print()">🖨️ 印刷・PDF</button>
+      </div>
+      <div class="copy-msg" id="copyMsg"></div>
+    </div>
+
+    <button class="reset-btn" onclick="reset()">🔄 もう一度チェックする</button>
+
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>© にゃんログ</div>
+    <div class="footer-links">
+      <a href="./index.html">トップ</a>
+      <a href="./nyanlog.html">記録アプリ</a>
+      <a href="./kokoro.html">こころの病気</a>
+      <a href="./kouji-nou.html">高次脳機能障害</a>
+    </div>
+    <div class="footer-note">本ページは医療診断を目的としたものではありません。症状については必ず医師にご相談ください。</div>
+  </div>
+</footer>
+
+<script>
+// ===== 症状データベース =====
+const SYMPTOM_CATS = [
+  {
+    cat: '😔 気分・感情',
+    syms: [
+      '気分が落ち込む','何もやる気が出ない','悲しい・虚しい','涙が出る',
+      '気分が異常に高まる時がある','感情の波が激しい','感情が麻痺している感じ','怒りっぽい・イライラ',
+    ]
+  },
+  {
+    cat: '😰 不安・恐怖',
+    syms: [
+      '強い不安感がある','突然パニックになる','特定の場所・状況が怖い',
+      '人前が異常に怖い','何でも心配が止まらない','過去のつらい体験がよみがえる',
+    ]
+  },
+  {
+    cat: '🧠 思考・認知',
+    syms: [
+      '集中できない','記憶が悪い','考えがまとまらない',
+      '変な声や音が聞こえる','誰かに監視されている気がする','自分を傷つけたい気持ち',
+      '同じことを繰り返さずにいられない','衝動が抑えられない',
+    ]
+  },
+  {
+    cat: '😴 睡眠・身体',
+    syms: [
+      '眠れない・眠りが浅い','眠りすぎる','食欲がない','食べすぎてしまう',
+      '疲れやすい・だるい','動悸・息切れがある','頭痛・体の痛みが続く','めまいがする',
+    ]
+  },
+  {
+    cat: '🏠 生活・行動',
+    syms: [
+      '外出できなくなった','人との関わりを避けている','仕事・家事ができない',
+      'お酒・薬・ゲームがやめられない','衝動的な行動をしてしまう',
+      '特定のルーティンがないと不安','人間関係でいつも困る',
+    ]
+  },
+];
+
+// ===== 疾患マッピング =====
+const DISEASES = [
+  {
+    name:'うつ病', icon:'🌧',
+    syms:['気分が落ち込む','何もやる気が出ない','悲しい・虚しい','涙が出る','眠れない・眠りが浅い','眠りすぎる','食欲がない','疲れやすい・だるい','集中できない','仕事・家事ができない'],
+    desc:'気分の落ち込みとエネルギー低下が続く状態。「怠け」ではなく脳の病気です。'
+  },
+  {
+    name:'双極性障害（躁うつ病）', icon:'🌊',
+    syms:['気分が異常に高まる時がある','感情の波が激しい','気分が落ち込む','衝動的な行動をしてしまう','眠れない・眠りが浅い','何もやる気が出ない'],
+    desc:'気分が高まる「躁状態」と落ち込む「鬱状態」を繰り返します。'
+  },
+  {
+    name:'統合失調症', icon:'🌀',
+    syms:['変な声や音が聞こえる','誰かに監視されている気がする','考えがまとまらない','人との関わりを避けている','何もやる気が出ない','感情が麻痺している感じ'],
+    desc:'幻覚・妄想・思考のまとまりにくさが主な症状。早期治療が重要です。'
+  },
+  {
+    name:'パニック症', icon:'⚡',
+    syms:['突然パニックになる','動悸・息切れがある','めまいがする','特定の場所・状況が怖い','外出できなくなった','強い不安感がある'],
+    desc:'突然の強い不安発作が繰り返し起こります。適切な治療で改善します。'
+  },
+  {
+    name:'強迫症（OCD）', icon:'🔁',
+    syms:['同じことを繰り返さずにいられない','特定のルーティンがないと不安','強い不安感がある','仕事・家事ができない'],
+    desc:'意に反して繰り返す思考や行動が止められない状態。本人も苦しんでいます。'
+  },
+  {
+    name:'社交不安症', icon:'👥',
+    syms:['人前が異常に怖い','人との関わりを避けている','動悸・息切れがある','外出できなくなった','仕事・家事ができない'],
+    desc:'人前での強い不安と身体症状。「内気」ではなく治療できる病気です。'
+  },
+  {
+    name:'全般不安症（GAD）', icon:'😰',
+    syms:['何でも心配が止まらない','疲れやすい・だるい','眠れない・眠りが浅い','集中できない','頭痛・体の痛みが続く','強い不安感がある'],
+    desc:'様々なことへの過度な心配が止められない状態。'
+  },
+  {
+    name:'適応障害', icon:'🏢',
+    syms:['気分が落ち込む','強い不安感がある','仕事・家事ができない','外出できなくなった','涙が出る','疲れやすい・だるい'],
+    desc:'特定のストレス状況への反応。環境が変わると改善しやすいです。'
+  },
+  {
+    name:'PTSD', icon:'💔',
+    syms:['過去のつらい体験がよみがえる','眠れない・眠りが浅い','特定の場所・状況が怖い','感情が麻痺している感じ','怒りっぽい・イライラ','人との関わりを避けている'],
+    desc:'強いトラウマ体験後に続く症状。専門的なケアで回復できます。'
+  },
+  {
+    name:'ADHD', icon:'🧩',
+    syms:['集中できない','衝動が抑えられない','衝動的な行動をしてしまう','記憶が悪い','仕事・家事ができない','人間関係でいつも困る'],
+    desc:'注意力・衝動性のコントロールの難しさ。大人になってから気づくことも多い。'
+  },
+  {
+    name:'ASD（自閉スペクトラム症）', icon:'🌈',
+    syms:['人間関係でいつも困る','特定のルーティンがないと不安','人との関わりを避けている','感情が麻痺している感じ'],
+    desc:'コミュニケーションの特性と強いこだわり。個性として理解することが大切。'
+  },
+  {
+    name:'依存症', icon:'🔗',
+    syms:['お酒・薬・ゲームがやめられない','衝動が抑えられない','仕事・家事ができない','人との関わりを避けている'],
+    desc:'アルコール・薬物・行動への依存。意志の問題ではなく、治療が必要な病気です。'
+  },
+  {
+    name:'摂食障害', icon:'🍽',
+    syms:['食欲がない','食べすぎてしまう','体の痛みが続く','何もやる気が出ない'],
+    desc:'食行動の障害。身体への影響も大きく、早期治療が重要です。'
+  },
+  {
+    name:'睡眠障害', icon:'😴',
+    syms:['眠れない・眠りが浅い','眠りすぎる','疲れやすい・だるい','集中できない'],
+    desc:'睡眠の問題は心身に大きな影響を与えます。'
+  },
+];
+
+// ===== 選択状態 =====
+let selected = new Set();
+
+// ===== 描画 =====
+function renderSyms(){
+  const container = document.getElementById('symCats');
+  container.innerHTML = SYMPTOM_CATS.map((cat, i)=>{
+    const selectedCount = cat.syms.filter(s=>selected.has(s)).length;
+    const isOpen = i < 2 || selectedCount > 0;
+    return `
+    <div class="sym-cat-wrap${isOpen?' open':''}" id="cat-${i}">
+      <button class="sym-cat-header" onclick="toggleCat(${i})">
+        <div class="sym-cat-title">${cat.cat}</div>
+        <div class="sym-cat-meta">
+          ${selectedCount>0?`<span class="sym-cat-count">✓ ${selectedCount}</span>`:''}
+          <span class="sym-cat-arrow">▼</span>
+        </div>
+      </button>
+      <div class="sym-cat-body">
+        <div class="sym-grid">
+          ${cat.syms.map(s=>`
+            <button class="sym-btn${selected.has(s)?' on':''}" onclick="toggleSym('${s.replace(/'/g,"\\'")}')">
+              ${selected.has(s)?'✓ ':''}${s}
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCat(i){
+  const el = document.getElementById('cat-'+i);
+  el.classList.toggle('open');
+}
+
+function renderSelected(){
+  const wrap = document.getElementById('selectedWrap');
+  if(!selected.size){
+    wrap.innerHTML = '<span style="font-size:14px;font-weight:700;color:var(--muted);">ここに選んだ症状が出ます</span>';
+    return;
+  }
+  wrap.innerHTML = [...selected].map(s=>`
+    <div class="selected-tag" onclick="toggleSym('${s.replace(/'/g,"\\'")}')">
+      ${s}<span class="rm">×</span>
+    </div>
+  `).join('');
+}
+
+function toggleSym(s){
+  if(selected.has(s)) selected.delete(s);
+  else selected.add(s);
+  renderSyms();
+  renderSelected();
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = selected.size === 0;
+  btn.textContent = selected.size
+    ? `🔍 ${selected.size}個の症状でチェックする`
+    : '🔍 チェックする（症状を選んでにゃ）';
+}
+
+// ===== 分析 =====
+function analyze(){
+  const syms = [...selected];
+
+  // 疾患マッチ
+  const scored = DISEASES.map(d=>{
+    const hits = d.syms.filter(s=>syms.includes(s));
+    return {...d, hits, score: hits.length/d.syms.length};
+  }).filter(d=>d.hits.length>0).sort((a,b)=>b.score-a.score).slice(0,5);
+
+  // 結果表示
+  document.getElementById('resultSection').classList.add('show');
+  document.getElementById('resultSection').scrollIntoView({behavior:'smooth',block:'start'});
+
+  // マッチリスト
+  const ml = document.getElementById('matchList');
+  if(!scored.length){
+    ml.innerHTML = '<div style="font-size:15px;font-weight:700;color:var(--muted);padding:10px 0;">選んだ症状に強く関連する病気は見つかりませんでした。症状が続く場合は医師にご相談ください。</div>';
+  } else {
+    ml.innerHTML = scored.map(d=>`
+      <div class="match-item">
+        <div class="match-header">
+          <div style="font-size:24px">${d.icon}</div>
+          <div class="match-name">${d.name}</div>
+          <div class="match-score">${Math.round(d.score*100)}%</div>
+        </div>
+        <div class="match-bar-wrap"><div class="match-bar" style="width:${Math.round(d.score*100)}%"></div></div>
+        <div style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;">${d.desc}</div>
+        <div class="match-syms">
+          ${d.hits.map(s=>`<span class="match-sym">✓ ${s}</span>`).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // メッセージ＆プロンプト生成
+  const aiArea = document.getElementById('aiArea');
+  const refMsg = buildMessage(syms, scored);
+  aiArea.innerHTML = `<div class="msg-box">${refMsg}</div>`;
+  aiPromptText = buildPrompt(syms, scored, refMsg);
+}
+
+// プロンプトテキスト
+let aiPromptText = '';
+
+// 症状パターン別メッセージ
+function buildMessage(syms, scored){
+  const top = scored[0];
+  const count = syms.length;
+
+  let msg = '症状を教えてくださり、ありがとうございます。\n\n';
+
+  if(count >= 6){
+    msg += 'いくつもの症状が重なっていて、今とても大変な状態かもしれません。\n一人で抱え込まず、まず信頼できる人か医師に話してみてください。\n\n';
+  } else if(count >= 3){
+    msg += 'いくつかの症状が気になっているのですね。\n日々の変化を記録しながら、早めに専門家に相談することをおすすめします。\n\n';
+  } else {
+    msg += '気になる症状に気づけたことは、とても大切な一歩です。\n\n';
+  }
+
+  if(syms.includes('自分を傷つけたい気持ち')){
+    msg += '⚠️ 自分を傷つけたい気持ちがあるときは、今すぐ「よりそいホットライン（0120-279-338）」に電話してください。24時間つながります。\n\n';
+  }
+
+  if(top){
+    msg += `参考情報として「${top.name}」との関連が見られました。\nただし、これは医療診断ではありません。\n正確なことは必ず医師にご相談ください。\n\n`;
+  }
+
+  msg += 'にゃんログで日々の症状を記録し続けることで、受診時に役立てることができます。\nあなたのことを心配している人は必ずいます。🐱';
+
+  return msg;
+}
+
+function buildPrompt(syms, scored, refMsg){
+  const topNames = scored.slice(0,3).map(d=>d.name).join('・');
+  return `【こころのセルフチェック結果】
+
+【気になっている症状】
+${syms.map(s=>'・'+s).join('\n')}
+
+【参考マッチした病気】
+${topNames || 'なし'}
+
+【アプリからの参考メッセージ】
+${refMsg}
+
+※個人記録です。医療的な診断は不要で、気づきや励ましをもらえると嬉しいです。`;
+}
+
+function openAI(url){
+  const msg = document.getElementById('aiCopyMsg');
+  navigator.clipboard.writeText(aiPromptText).then(()=>{
+    msg.textContent = '✅ コピーしたにゃ！貼り付けてにゃ🐱';
+    setTimeout(()=>{ msg.textContent=''; },3000);
+    window.open(url,'_blank','noopener');
+  }).catch(()=>{
+    window.open(url,'_blank','noopener');
+    msg.textContent = '⚠️ コピーできなかったにゃ。手動でコピーしてにゃ。';
+  });
+}
+
+// コピー
+function copyResult(){
+  const syms = [...selected];
+  const matches = [...document.querySelectorAll('.match-item')].map(el=>{
+    const name = el.querySelector('.match-name').textContent;
+    const score = el.querySelector('.match-score').textContent;
+    return `・${name}（${score}）`;
+  });
+  const aiText = document.querySelector('.msg-box')?.textContent || '';
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
+
+  const text = `【こころのセルフチェック結果】${dateStr}\n\n■ 選んだ症状：\n${syms.map(s=>'・'+s).join('\n')}\n\n■ 気になる病気（参考）：\n${matches.join('\n')}\n\n■ AIからのひとこと：\n${aiText}\n\n※これは医療診断ではありません。症状が続く場合は医師にご相談ください。\n（にゃんログ自動生成）`;
+
+  navigator.clipboard.writeText(text).then(()=>{
+    const msg = document.getElementById('copyMsg');
+    msg.textContent = '✅ コピーしました！';
+    setTimeout(()=>{ msg.textContent=''; },3000);
+  });
+}
+
+// リセット
+function reset(){
+  selected.clear();
+  renderSyms();
+  renderSelected();
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('analyzeBtn').textContent = '🔍 チェックする（症状を選んでにゃ）';
+  document.getElementById('resultSection').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// 初期化
+renderSyms();
+renderSelected();
+</script>
+</body>
+</html>
