@@ -983,14 +983,14 @@ function localDayKey(d){
 const SIGN_FOLD=6; // 初期表示数
 let signExpanded=false;
 
-function renderSignGrid(){
+function renderSignGrid(clearAll=false){
   const signs=loadSigns();
   const grid=document.getElementById('signGrid');
   const visible=signExpanded?signs:signs.slice(0,SIGN_FOLD);
   const hasMore=signs.length>SIGN_FOLD;
 
-  // 現在のON状態を保持
-  const onSet=new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim()));
+  // clearAll=trueのときは全クリア、それ以外は現在のON状態を保持
+  const onSet=clearAll ? new Set() : new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim()));
 
   grid.innerHTML=visible.map(s=>`<button class="sign-btn${onSet.has(s)?' on':''}" onclick="this.classList.toggle('on')">${esc(s)}</button>`).join('');
 
@@ -1079,14 +1079,19 @@ function saveRecord(){
   // AIリンク生成
   buildAiLink(today);
 
-  // リセット
+  // リセット（renderSignGrid前に確実にクリア）
   med=null;
   document.getElementById('medYes').className='drug-btn';
   document.getElementById('medNo').className='drug-btn';
-  document.querySelectorAll('.mood-btn,.sign-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('on'));
   signExpanded=false;
-  renderSignGrid();
   document.getElementById('memo').value='';
+  renderSignGrid(true); // サインはrenderSignGrid内で全クリア
+
+  // AIカードにスクロール
+  setTimeout(()=>{
+    document.getElementById('aiLinkCard').scrollIntoView({behavior:'smooth',block:'center'});
+  },300);
 }
 
 // 履歴
