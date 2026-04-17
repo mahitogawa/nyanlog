@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,viewport-fit=cover"/>
-<title>🐱 にゃんログ v13</title>
+<title>🐱 にゃんログ</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
@@ -854,7 +854,8 @@ input, button, textarea, select {
   <div class="card">
     <div class="card-title">📂 データ・レポート</div>
     <button class="export-btn" onclick="exportPdf()">🖨️ みんなへのまとめ（印刷・PDF保存）</button>
-    <button class="clear-btn" onclick="clearAll()">🗑 全データ削除（自動バックアップ付き）</button>
+    <button class="clear-btn" onclick="clearRecords()" style="background:#e07b39;border-color:#e07b39;">🗑 記録だけ削除（設定は残る）</button>
+    <button class="clear-btn" onclick="clearAll()" style="margin-top:8px;font-size:14px;opacity:.8;">🗑🗑 完全削除（設定も全部）</button>
   </div>
   <div style="font-size:16px;color:var(--muted);font-weight:700;line-height:1.7;padding:0 4px">
     データはこのブラウザのみに保存されます。外部に送信しません。
@@ -1565,6 +1566,33 @@ function importJson(input){
     setTimeout(()=>{msg.textContent='';},5000);
   };
   reader.readAsText(file,'utf-8');
+}
+
+function clearRecords(){
+  const records=load();
+  if(!records.length){alert('削除する記録がないにゃ🐱');return;}
+  // 自動バックアップ
+  const data={appName:'にゃんログ',exportedAt:new Date().toLocaleString('ja-JP'),totalRecords:records.length,logs:records};
+  const json=JSON.stringify(data,null,2);
+  const blob=new Blob([json],{type:'application/json;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='nyanlog-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  if(!confirm('バックアップを保存したにゃ📥\n\n記録だけ削除する？\n気になったことの設定は残るにゃ🐱'))return;
+  localStorage.removeItem(KEY);
+  // UIリセット
+  med=null;
+  document.getElementById('medYes').className='drug-btn';
+  document.getElementById('medNo').className='drug-btn';
+  document.querySelectorAll('.mood-btn,.sign-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('memo').value='';
+  signExpanded=false;
+  document.getElementById('nurseCard').classList.remove('show');
+  document.getElementById('aiLinkCard').classList.remove('show');
+  document.getElementById('doctorText').textContent='記録が増えると自動でまとめが出るにゃ📋';
+  renderSignGrid();renderHist();renderSum();renderCfg();
 }
 
 function clearAll(){
