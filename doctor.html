@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>診察サポート＆きぶんグラフ | にゃんログ</title>
+<meta name="description" content="にゃんログの記録から診察メモを自動作成。気分グラフで傾向を見える化。家族・支援者にも伝わりやすい形に整えます。">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2d6a4f">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+:root{
+  --cream:#fdf8f3;
+  --sand:#f5ede0;
+  --brand:#2d6a4f;
+  --brand-light:#e8f5ef;
+  --ink:#2c2118;
+  --muted:#8b7355;
+  --line:#e8ddd0;
+  --warn:#e07b39;
+  --warn-bg:#fef3e8;
+  --purple:#5b54c7;
+  --purple-bg:#eef0ff;
+  --amber:#d97706;
+  --amber-bg:#fff8e7;
+  --danger:#c0392b;
+  --danger-bg:#fdecea;
+  --teal:#0f7173;
+  --teal-bg:#e0f5f5;
+}
+
+body{
+  font-family:'Zen Maru Gothic',-apple-system,'Hiragino Sans',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+}
+
+/* ヘッダー */
+.hd{
+  background:var(--brand);
+  padding:env(safe-area-inset-top,0) 0 0;
+  position:sticky;top:0;z-index:100;
+}
+.hd-inner{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px 10px;
+}
+.hd-icon{
+  width:42px;height:42px;
+  background:rgba(255,255,255,.2);
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+}
+.hd-texts{}
+.hd-title{font-size:18px;font-weight:900;color:#fff;line-height:1.2;}
+.hd-sub{font-size:13px;font-weight:700;color:rgba(255,255,255,.75);}
+.hd-back{
+  margin-left:auto;flex-shrink:0;
+  background:rgba(255,255,255,.15);
+  color:#fff;border:none;border-radius:12px;
+  padding:8px 14px;font-size:14px;font-weight:900;
+  cursor:pointer;font-family:inherit;
+  text-decoration:none;display:inline-flex;align-items:center;gap:5px;
+}
+
+/* タブ */
+.tabs{
+  display:flex;gap:2px;padding:0 8px 0;margin-top:10px;
+}
+.tab{
+  flex:1;background:rgba(255,255,255,.12);
+  border:none;border-radius:12px 12px 0 0;
+  color:rgba(255,255,255,.7);
+  font-family:inherit;font-size:14px;font-weight:900;
+  padding:10px 4px;cursor:pointer;transition:.15s;
+}
+.tab.on{background:#fff;color:var(--brand);}
+
+/* メイン */
+.main{max-width:680px;margin:0 auto;padding:20px 14px 60px;}
+
+.view{display:none;}
+.view.on{display:block;}
+
+/* カード */
+.card{
+  background:#fff;border-radius:20px;
+  padding:20px;margin-bottom:14px;
+  box-shadow:0 2px 12px rgba(44,33,24,.07);
+  border:1px solid var(--line);
+}
+.card-title{
+  font-size:16px;font-weight:900;
+  color:var(--ink);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* データなし */
+.no-data{
+  text-align:center;padding:40px 20px;
+  font-size:15px;font-weight:700;color:var(--muted);
+  line-height:1.8;
+}
+.no-data a{color:var(--brand);font-weight:900;}
+
+/* ===== 📊 きぶんグラフ ===== */
+.range-row{
+  display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;
+}
+.range-btn{
+  background:var(--sand);border:1.5px solid var(--line);
+  border-radius:10px;padding:8px 16px;
+  font-family:inherit;font-size:14px;font-weight:900;
+  color:var(--muted);cursor:pointer;transition:.15s;
+}
+.range-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);}
+
+.graph-wrap{
+  overflow-x:auto;padding-bottom:8px;
+}
+.graph{
+  display:flex;align-items:flex-end;gap:6px;
+  min-height:120px;padding:8px 0 0;
+}
+.graph-bar-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  flex:1;min-width:28px;
+}
+.graph-bar{
+  width:100%;border-radius:6px 6px 0 0;
+  transition:.3s ease;min-height:4px;
+}
+.bar-genki{background:linear-gradient(to top,#2d6a4f,#52b788);}
+.bar-futsuu{background:linear-gradient(to top,#d97706,#fbbf24);}
+.bar-shindoi{background:linear-gradient(to top,#c0392b,#e74c3c);}
+.bar-none{background:#e8ddd0;}
+.graph-label{font-size:11px;font-weight:900;color:var(--muted);text-align:center;line-height:1.3;}
+.graph-date{font-size:10px;color:#b8a898;}
+
+.legend{
+  display:flex;gap:16px;flex-wrap:wrap;
+  margin-top:14px;
+}
+.legend-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:14px;font-weight:700;color:var(--muted);
+}
+.legend-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0;}
+
+/* KPI */
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  margin-bottom:14px;
+}
+.kpi{
+  background:var(--sand);border-radius:14px;
+  padding:12px;text-align:center;
+}
+.kpi-val{font-size:28px;font-weight:900;color:var(--ink);}
+.kpi-label{font-size:13px;font-weight:700;color:var(--muted);margin-top:4px;line-height:1.4;}
+
+/* サイン頻度 */
+.sign-freq-list{display:flex;flex-direction:column;gap:8px;}
+.sign-freq-item{
+  display:flex;align-items:center;gap:10px;
+}
+.sign-freq-name{font-size:14px;font-weight:900;color:var(--ink);width:160px;flex-shrink:0;}
+.sign-freq-bar-wrap{flex:1;background:var(--sand);border-radius:999px;height:12px;overflow:hidden;}
+.sign-freq-bar{height:100%;background:linear-gradient(to right,var(--brand),#52b788);border-radius:999px;transition:.4s ease;}
+.sign-freq-count{font-size:13px;font-weight:900;color:var(--muted);width:32px;text-align:right;}
+
+/* ===== 🩺 診察メモ ===== */
+.memo-period{
+  display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;
+}
+.memo-out{
+  background:var(--sand);border-radius:16px;
+  padding:18px;font-size:15px;font-weight:700;
+  color:var(--ink);line-height:1.9;
+  white-space:pre-wrap;word-break:break-word;
+  min-height:120px;border:1.5px solid var(--line);
+}
+.copy-btn{
+  display:block;width:100%;margin-top:12px;
+  background:var(--brand);color:#fff;
+  border:none;border-radius:14px;
+  padding:16px;font-size:16px;font-weight:900;
+  font-family:inherit;cursor:pointer;transition:.15s;
+}
+.copy-btn:active{transform:scale(.97);}
+.copy-msg{
+  text-align:center;font-size:14px;font-weight:900;
+  color:var(--brand);min-height:20px;margin-top:8px;
+}
+
+/* 家族向けメモ */
+.family-box{
+  background:var(--purple-bg);
+  border:1.5px solid var(--purple);
+  border-radius:16px;padding:18px;
+  font-size:15px;font-weight:700;
+  color:#2d2a6e;line-height:1.9;
+  white-space:pre-wrap;word-break:break-word;
+}
+.copy-btn.purple{background:var(--purple);}
+
+/* ===== 👨‍👩‍👧 家族・支援者 ===== */
+.support-card{
+  background:#fff;border-radius:20px;
+  padding:20px;margin-bottom:14px;
+  border:1px solid var(--line);
+  box-shadow:0 2px 12px rgba(44,33,24,.07);
+}
+.support-title{
+  font-size:16px;font-weight:900;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.support-body{
+  font-size:15px;font-weight:700;
+  color:#4a3728;line-height:1.85;
+}
+.tip-list{
+  display:flex;flex-direction:column;gap:10px;
+  margin-top:12px;
+}
+.tip-item{
+  display:flex;gap:10px;
+  background:var(--sand);border-radius:14px;
+  padding:14px;
+}
+.tip-icon{font-size:22px;flex-shrink:0;}
+.tip-text{font-size:14px;font-weight:700;color:var(--ink);line-height:1.75;}
+
+.alert-box{
+  background:var(--danger-bg);
+  border:1.5px solid var(--danger);
+  border-radius:14px;padding:16px;
+  font-size:14px;font-weight:700;
+  color:#7c1010;line-height:1.8;
+  margin-top:12px;
+}
+
+/* フッター */
+.site-footer{
+  border-top:1px solid var(--line);
+  background:var(--cream);
+}
+.site-footer-inner{
+  max-width:680px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:24px 16px;
+  flex-wrap:wrap;
+  color:var(--muted);font-size:13px;font-weight:700;
+}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-links a{color:var(--muted);text-decoration:none;}
+.footer-note{
+  width:100%;font-size:13px;line-height:1.8;color:var(--muted);
+}
+</style>
+</head>
+<body>
+
+<div class="hd">
+  <div class="hd-inner">
+    <div class="hd-icon">🩺</div>
+    <div class="hd-texts">
+      <div class="hd-title">診察サポート＆きぶんグラフ</div>
+      <div class="hd-sub">記録から自動でまとめます</div>
+    </div>
+    <a class="hd-back" href="./nyanlog.html">← 記録へ</a>
+  </div>
+  <div class="tabs">
+    <button class="tab on" data-tab="graph">📊 きぶん</button>
+    <button class="tab" data-tab="doctor">🩺 診察メモ</button>
+    <button class="tab" data-tab="family">👨‍👩‍👧 家族へ</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ===== 📊 きぶんグラフ ===== -->
+  <div class="view on" id="view-graph">
+
+    <div class="card">
+      <div class="card-title">📊 気分の記録グラフ</div>
+      <div class="range-row">
+        <button class="range-btn on" data-range="7" onclick="setGraphRange(this)">7日</button>
+        <button class="range-btn" data-range="14" onclick="setGraphRange(this)">14日</button>
+        <button class="range-btn" data-range="30" onclick="setGraphRange(this)">30日</button>
+      </div>
+      <div class="graph-wrap">
+        <div class="graph" id="moodGraph"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#52b788"></div>元気</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>普通</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>しんどい</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e8ddd0"></div>記録なし</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📈 集計サマリー</div>
+      <div class="kpi-grid" id="graphKpi"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📌 気になったこと ランキング</div>
+      <div class="sign-freq-list" id="signFreq"></div>
+    </div>
+
+  </div>
+
+  <!-- ===== 🩺 診察メモ ===== -->
+  <div class="view" id="view-doctor">
+
+    <div class="card">
+      <div class="card-title">🩺 先生への報告メモ</div>
+      <div class="memo-period">
+        <button class="range-btn on" data-range="7" onclick="setMemoRange(this)">直近7日</button>
+        <button class="range-btn" data-range="14" onclick="setMemoRange(this)">直近14日</button>
+        <button class="range-btn" data-range="30" onclick="setMemoRange(this)">直近30日</button>
+      </div>
+      <div class="memo-out" id="doctorMemo"></div>
+      <button class="copy-btn" onclick="copyMemo('doctorMemo','copyMsg1')">📋 コピーする</button>
+      <div class="copy-msg" id="copyMsg1"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👨‍👩‍👧 家族・支援者への共有メモ</div>
+      <div class="family-box" id="familyMemo"></div>
+      <button class="copy-btn purple" onclick="copyMemo('familyMemo','copyMsg2')">📋 コピーする</button>
+      <div class="copy-msg" id="copyMsg2"></div>
+    </div>
+
+  </div>
+
+  <!-- ===== 👨‍👩‍👧 家族・支援者 ===== -->
+  <div class="view" id="view-family">
+
+    <div class="support-card">
+      <div class="support-title">🤝 このページについて</div>
+      <div class="support-body">
+        ご家族・ヘルパー・看護師など、日々を支えてくださる方へ。<br>
+        にゃんログは「答えを決めつけず、記録をやさしく残す」ためのアプリです。<br>
+        本人の状態を一緒に見守るための参考にしてください。
+      </div>
+    </div>
+
+    <div class="support-card">
+      <div class="support-title">💡 関わるときのヒント</div>
+      <div class="tip-list">
+        <div class="tip-item">
+          <div class="tip-icon">🐱</div>
+          <div class="tip-text">「記録できた？」より「今日はどうだった？」と声をかける方が続けやすくなります。</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">⏰</div>
+          <div class="tip-text">記録は毎日でなくてもOK。思い出したときに残せれば十分です。</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">📋</div>
+          <div class="tip-text">受診前に「診察メモ」タブのコピーを渡すと、医師に状態を伝えやすくなります。</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">🔒</div>
+          <div class="tip-text">記録はこの端末のブラウザにのみ保存されます。外部に送信されません。</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">😔</div>
+          <div class="tip-text">「しんどい」が続く日が増えてきたら、医師や支援機関への相談を検討してください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="support-card">
+      <div class="support-title">🚨 こんなときは早めに相談を</div>
+      <div class="alert-box">
+        ・「しんどい」が1週間以上続いている<br>
+        ・お薬を飲み忘れる日が増えている<br>
+        ・食欲がない・眠れない日が続いている<br>
+        ・言葉が出にくい・めまいがひどくなっている<br>
+        ・本人が「消えたい」「もう無理」と言う
+      </div>
+    </div>
+
+    <div class="support-card">
+      <div class="support-title">📞 相談窓口</div>
+      <div class="tip-list">
+        <div class="tip-item">
+          <div class="tip-icon">🧠</div>
+          <div class="tip-text"><strong>高次脳機能障害</strong><br>各都道府県の支援拠点機関（市区町村の障害福祉窓口へ）</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">💙</div>
+          <div class="tip-text"><strong>こころの病気・メンタル</strong><br>よりそいホットライン：0120-279-338（24時間）</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">🏥</div>
+          <div class="tip-text"><strong>かかりつけ医・主治医</strong><br>気になる変化はまず主治医へ。些細なことでも相談を。</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- フッター -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>© にゃんログ</div>
+    <div class="footer-links">
+      <a href="./index.html">トップ</a>
+      <a href="./nyanlog.html">記録アプリ</a>
+      <a href="./kouji-nou.html">高次脳機能障害</a>
+      <a href="./kokoro.html">こころの病気</a>
+    </div>
+    <div class="footer-note">
+      記録はやさしく、判断は慎重に。本サービスは医療診断・治療を目的としたものではありません。
+    </div>
+  </div>
+</footer>
+
+<script>
+const KEY = 'nyanlog_rebuild_v1';
+
+function load(){
+  try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}
+}
+
+// 日付キー
+function localDayKey(d){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function dayLabel(key){
+  const [y,m,d] = key.split('-');
+  const w = ['日','月','火','水','木','金','土'];
+  const dt = new Date(Number(y),Number(m)-1,Number(d));
+  return `${Number(m)}/${Number(d)}(${w[dt.getDay()]})`;
+}
+
+// タブ切り替え
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+    this.classList.add('on');
+    document.getElementById('view-'+this.dataset.tab).classList.add('on');
+  });
+});
+
+// ===== グラフ =====
+let graphRange = 7;
+
+function setGraphRange(el){
+  document.querySelectorAll('#view-graph .range-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  graphRange = Number(el.dataset.range);
+  renderGraph();
+}
+
+function renderGraph(){
+  const records = load();
+  const now = new Date();
+  const days = [];
+  for(let i = graphRange-1; i >= 0; i--){
+    const d = new Date(now);
+    d.setDate(now.getDate()-i);
+    days.push(localDayKey(d));
+  }
+  const map = {};
+  records.forEach(r=>{ map[r.dayKey]=r; });
+
+  const graph = document.getElementById('moodGraph');
+
+  if(!records.length){
+    graph.innerHTML = `<div class="no-data" style="width:100%;text-align:center;">まだ記録がないにゃ🐱<br><a href="./nyanlog.html">記録アプリへ →</a></div>`;
+    document.getElementById('graphKpi').innerHTML = '';
+    document.getElementById('signFreq').innerHTML = '';
+    return;
+  }
+
+  const maxH = 100;
+  graph.innerHTML = days.map(key=>{
+    const r = map[key];
+    const mood = r ? r.mood : null;
+    let barClass = 'bar-none';
+    let h = 20;
+    let label = '－';
+    if(mood === '元気'){ barClass='bar-genki'; h=maxH; label='😄'; }
+    else if(mood === '普通'){ barClass='bar-futsuu'; h=60; label='😐'; }
+    else if(mood === 'しんどい'){ barClass='bar-shindoi'; h=30; label='😔'; }
+    const short = key.slice(5).replace('-','/');
+    return `<div class="graph-bar-wrap">
+      <div class="graph-bar ${barClass}" style="height:${h}px"></div>
+      <div class="graph-label">${label}</div>
+      <div class="graph-date">${short}</div>
+    </div>`;
+  }).join('');
+
+  // KPI
+  const rangeRecords = days.map(k=>map[k]).filter(Boolean);
+  const genki = rangeRecords.filter(r=>r.mood==='元気').length;
+  const shindoi = rangeRecords.filter(r=>r.mood==='しんどい').length;
+  const drug = rangeRecords.filter(r=>r.drug==='yes').length;
+  document.getElementById('graphKpi').innerHTML = `
+    <div class="kpi"><div class="kpi-val" style="color:var(--brand)">${genki}</div><div class="kpi-label">元気な日</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--danger)">${shindoi}</div><div class="kpi-label">しんどい日</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--amber)">${drug}</div><div class="kpi-label">服薬できた日</div></div>
+  `;
+
+  // サイン頻度
+  const cnt = {};
+  rangeRecords.forEach(r=>r.signs.forEach(s=>{ cnt[s]=(cnt[s]||0)+1; }));
+  const top = Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const maxCnt = top[0]?.[1] || 1;
+  const freqEl = document.getElementById('signFreq');
+  if(!top.length){
+    freqEl.innerHTML = '<div style="font-size:14px;font-weight:700;color:var(--muted)">この期間の記録がないにゃ🐱</div>';
+  } else {
+    freqEl.innerHTML = top.map(([name,count])=>`
+      <div class="sign-freq-item">
+        <div class="sign-freq-name">${name}</div>
+        <div class="sign-freq-bar-wrap">
+          <div class="sign-freq-bar" style="width:${Math.round(count/maxCnt*100)}%"></div>
+        </div>
+        <div class="sign-freq-count">${count}回</div>
+      </div>
+    `).join('');
+  }
+}
+
+// ===== 診察メモ =====
+let memoRange = 7;
+
+function setMemoRange(el){
+  document.querySelectorAll('#view-doctor .range-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  memoRange = Number(el.dataset.range);
+  renderMemo();
+}
+
+function renderMemo(){
+  const records = load();
+  const now = new Date();
+  const from = new Date(now); from.setDate(now.getDate()-memoRange+1);
+  const fromKey = localDayKey(from);
+  const rangeRec = records.filter(r=>r.dayKey>=fromKey).sort((a,b)=>a.dayKey.localeCompare(b.dayKey));
+
+  const doctorEl = document.getElementById('doctorMemo');
+  const familyEl = document.getElementById('familyMemo');
+
+  if(!rangeRec.length){
+    doctorEl.textContent = 'まだ記録がないにゃ🐱\nにゃんログで記録してからここに戻ってきてにゃ。';
+    familyEl.textContent = '記録がたまると自動で作成されます。';
+    return;
+  }
+
+  const total = rangeRec.length;
+  const genki = rangeRec.filter(r=>r.mood==='元気').length;
+  const futsuu = rangeRec.filter(r=>r.mood==='普通').length;
+  const shindoi = rangeRec.filter(r=>r.mood==='しんどい').length;
+  const drug = rangeRec.filter(r=>r.drug==='yes').length;
+  const cnt = {};
+  rangeRec.forEach(r=>r.signs.forEach(s=>{ cnt[s]=(cnt[s]||0)+1; }));
+  const topSigns = Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const memos = rangeRec.filter(r=>r.memo).slice(-3);
+
+  // 先生メモ
+  const todayStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
+  let doc = `【直近${memoRange}日の体調報告】${todayStr}現在\n\n`;
+  doc += `■ 記録日数：${total}日間\n`;
+  doc += `■ 気分の内訳：元気${genki}日 / 普通${futsuu}日 / しんどい${shindoi}日\n`;
+  doc += `■ 服薬：${drug}日できた（${total-drug}日できていない）\n`;
+  if(topSigns.length){
+    doc += `\n■ 気になったこと（多い順）：\n`;
+    topSigns.forEach(([s,c])=>{ doc += `  ・${s}（${c}回）\n`; });
+  }
+  if(memos.length){
+    doc += `\n■ 最近のメモ：\n`;
+    memos.forEach(r=>{ doc += `  ${dayLabel(r.dayKey)}「${r.memo}」\n`; });
+  }
+  doc += `\n※にゃんログ自動生成`;
+  doctorEl.textContent = doc;
+
+  // 家族メモ
+  let fam = `【${now.getMonth()+1}月の体調まとめ】\n\n`;
+  fam += `直近${memoRange}日で${total}日記録できました。\n\n`;
+  if(shindoi > Math.floor(total/2)){
+    fam += `⚠️ しんどい日が${shindoi}日あり、少し多めです。\n`;
+  } else if(genki >= Math.floor(total*0.6)){
+    fam += `✅ 元気な日が${genki}日と、比較的安定しています。\n`;
+  } else {
+    fam += `😐 普通の日が多めです（${futsuu}日）。\n`;
+  }
+  fam += `\n💊 お薬：${drug}日服用できています。\n`;
+  if(topSigns.length){
+    fam += `\n😔 気になっていること：\n`;
+    topSigns.slice(0,3).forEach(([s])=>{ fam += `  ・${s}\n`; });
+  }
+  fam += `\n🐱 にゃんログより自動作成`;
+  familyEl.textContent = fam;
+}
+
+// コピー
+function copyMemo(id, msgId){
+  const text = document.getElementById(id).textContent;
+  const msg = document.getElementById(msgId);
+  navigator.clipboard.writeText(text).then(()=>{
+    msg.textContent = '✅ コピーしたにゃ！貼り付けて使ってにゃ🐱';
+    setTimeout(()=>{ msg.textContent=''; }, 3000);
+  }).catch(()=>{
+    msg.textContent = '⚠️ コピーできなかったにゃ。手動でコピーしてにゃ。';
+  });
+}
+
+// 初期描画
+renderGraph();
+renderMemo();
+</script>
+</body>
+</html>
