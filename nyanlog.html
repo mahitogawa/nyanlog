@@ -187,7 +187,7 @@ body{
 }
 
 /* ===== 気になったことボタン ===== */
-.sign-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.sign-grid{display:grid;grid-template-columns:1fr;gap:8px}
 .sign-btn{
   background:var(--sand);
   border:2px solid var(--line);
@@ -376,7 +376,7 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
   padding:10px 14px;border-radius:14px;margin-bottom:6px;
   border:1.5px solid var(--line);background:var(--sand);transition:.15s;
   min-width:0;overflow:hidden;
-}
+  }
 .sign-manage-row.off{background:#f5f5f5;border-color:#ddd;}
 .sign-manage-name{font-size:16px;font-weight:900;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .sign-manage-row.off .sign-manage-name{color:#bbb;}
@@ -1293,7 +1293,7 @@ function renderCfg(){
     const on=enabledSet.has(s);
     const safe=s.replace(/</g,'&lt;').replace(/>/g,'&gt;');
     return `<div class="sign-manage-row${on?'':' off'}" data-name="${safe}">
-      <span class="sign-manage-name">${safe}</span>
+      <span class="sign-manage-name">● ${safe}</span>
       <label class="tog" title="${on?'非表示にする':'表示する'}">
         <input type="checkbox" ${on?'checked':''} data-sign-index="${i}">
         <span class="tog-track"></span>
