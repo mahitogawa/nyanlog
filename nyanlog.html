@@ -690,6 +690,21 @@ input, button, textarea, select {
   line-height:1.8;
   color:var(--muted);
 }
+/* 相互リンクカード */
+.cross-link-card{
+  display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,#eef0ff,#f0eeff);
+  border:1.5px solid var(--brand);border-radius:18px;
+  padding:16px 18px;margin-bottom:14px;
+  text-decoration:none;color:var(--ink);
+  transition:.15s;
+}
+.cross-link-card:active{transform:scale(.98);}
+.cross-link-icon{font-size:30px;flex-shrink:0;}
+.cross-link-body{flex:1;}
+.cross-link-title{font-size:15px;font-weight:900;color:var(--brand);margin-bottom:4px;}
+.cross-link-note{font-size:13px;font-weight:700;color:var(--muted);line-height:1.6;}
+.cross-link-arrow{font-size:26px;font-weight:900;color:var(--brand);flex-shrink:0;}
 @media(max-width:760px){
   .site-footer-inner{align-items:flex-start}
   .footer-top{flex-direction:column;align-items:flex-start}
@@ -768,6 +783,15 @@ input, button, textarea, select {
       <div class="nurse-text" id="nurseMsg"></div>
     </div>
   </div>
+
+  <a href="./mental.html" class="cross-link-card">
+    <div class="cross-link-icon">💙</div>
+    <div class="cross-link-body">
+      <div class="cross-link-title">こころのセルフチェック</div>
+      <div class="cross-link-note">症状を選ぶだけ → 気になる病気を参考表示 → AIに相談</div>
+    </div>
+    <div class="cross-link-arrow">›</div>
+  </a>
 
   <div class="ai-link-card" id="aiLinkCard">
     <div class="ai-link-title">🤖 AIに相談する</div>
@@ -1486,6 +1510,7 @@ ${top.length?top.map(([n,c])=>`<span class="badge">${n}　${c}回</span>`).join(
       <div class="footer-links">
         <a href="./index.html">トップ</a>
         <a href="./nyanlog.html">アプリ</a>
+        <a href="./mental.html">セルフチェック</a>
         <a href="./kouji-nou.html">高次脳機能障害</a>
         <a href="./kokoro.html">こころの病気</a>
       </div>

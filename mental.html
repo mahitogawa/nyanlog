@@ -223,6 +223,22 @@ body{
   color:var(--muted);cursor:pointer;
 }
 
+/* 相互リンクカード */
+.cross-link-card{
+  display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,#e8f5ef,#eef0ff);
+  border:1.5px solid var(--green);border-radius:18px;
+  padding:16px 18px;margin-bottom:14px;
+  text-decoration:none;color:var(--ink);
+  transition:.15s;
+}
+.cross-link-card:active{transform:scale(.98);}
+.cross-link-icon{font-size:30px;flex-shrink:0;}
+.cross-link-body{flex:1;}
+.cross-link-title{font-size:15px;font-weight:900;color:var(--green);margin-bottom:4px;}
+.cross-link-note{font-size:13px;font-weight:700;color:var(--muted);line-height:1.6;}
+.cross-link-arrow{font-size:26px;font-weight:900;color:var(--green);flex-shrink:0;}
+
 /* 印刷用 */
 @media print{
   .hd,.warn-bar,.sym-cats,.analyze-btn,.action-row,.reset-btn{display:none!important;}
@@ -306,6 +322,15 @@ body{
     </div>
 
     <button class="reset-btn" onclick="reset()">🔄 もう一度チェックする</button>
+
+    <a href="./nyanlog.html" class="cross-link-card">
+      <div class="cross-link-icon">📋</div>
+      <div class="cross-link-body">
+        <div class="cross-link-title">にゃんログで毎日の記録もできるにゃ</div>
+        <div class="cross-link-note">気分・お薬・症状を記録して受診時に活用しよう</div>
+      </div>
+      <div class="cross-link-arrow">›</div>
+    </a>
 
   </div>
 
