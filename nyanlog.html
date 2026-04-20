@@ -652,6 +652,8 @@ input, button, textarea, select {
     padding:12px 2px;
     letter-spacing:-.01em;
   }
+  .tab-label{ display:none; }
+  .tab-icon{ font-size:22px; }
   /* iPhoneホームバー対策 */
   .save-btn{
     margin-bottom: calc(14px + env(safe-area-inset-bottom, 16px));
@@ -733,10 +735,10 @@ input, button, textarea, select {
     <div class="logo-date" id="dateEl"></div>
   </a>
   <div class="tabs">
-    <button class="tab on" data-tab="rec">📝 記録</button>
-    <button class="tab" data-tab="hist">📅 履歴</button>
-    <button class="tab" data-tab="sum">📊 まとめ</button>
-    <button class="tab" data-tab="cfg">⚙️ 設定</button>
+    <button class="tab on" data-tab="rec"><span class="tab-icon">📝</span><span class="tab-label"> 記録</span></button>
+    <button class="tab" data-tab="hist"><span class="tab-icon">📅</span><span class="tab-label"> 履歴</span></button>
+    <button class="tab" data-tab="sum"><span class="tab-icon">📊</span><span class="tab-label"> まとめ</span></button>
+    <button class="tab" data-tab="cfg"><span class="tab-icon">⚙️</span><span class="tab-label"> 設定</span></button>
   </div>
 </div>
 
