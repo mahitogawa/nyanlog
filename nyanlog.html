@@ -1060,9 +1060,9 @@ function renderSignGrid(clearAll=false){
   const hasMore=signs.length>SIGN_FOLD;
 
   // clearAll=trueのときは全クリア、それ以外は現在のON状態を保持
-  const onSet=clearAll ? new Set() : new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim()));
+  const onSet=clearAll ? new Set() : new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim().replace(/^● /,'')));
 
-  grid.innerHTML=visible.map(s=>`<button class="sign-btn${onSet.has(s)?' on':''}" onclick="this.classList.toggle('on')">${esc(s)}</button>`).join('');
+  grid.innerHTML=visible.map(s=>`<button class="sign-btn${onSet.has(s)?' on':''}" onclick="this.classList.toggle('on')">● ${esc(s)}</button>`).join('');
 
   // もっと見る／閉じるボタン
   if(hasMore){
@@ -1123,7 +1123,7 @@ function saveRecord(){
   if(!med){catEl.textContent='お薬の記録を選んでにゃ💊';return;}
   const mood=document.querySelector('.mood-btn.on')?.dataset.mood||'';
   if(!mood){catEl.textContent='今日の気分を選んでにゃ😊';return;}
-  const signs=[...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim());
+  const signs=[...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim().replace(/^● /,''));
   const memo=document.getElementById('memo').value.trim();
   const now=new Date();
   const dayKey=localDayKey(now);
