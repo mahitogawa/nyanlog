@@ -653,7 +653,7 @@ input, button, textarea, select {
     letter-spacing:-.01em;
   }
   .tab-label{ display:none; }
-  .tab-icon{ font-size:22px; }
+  .tab-icon{ font-size:20px; }
   /* iPhoneホームバー対策 */
   .save-btn{
     margin-bottom: calc(14px + env(safe-area-inset-bottom, 16px));
@@ -663,6 +663,23 @@ input, button, textarea, select {
   }
 }
 
+
+/* タブ：デフォルトは絵文字のみ（モバイルファースト） */
+.tab-label{ display:none; }
+.tab-icon{ font-size:22px; line-height:1; }
+.tab{ padding:12px 4px; font-size:14px; }
+
+/* 広い画面ではテキストも表示 */
+@media(min-width:480px){
+  .tab-label{ display:inline; }
+  .tab-icon{ font-size:17px; }
+  .tab{ padding:14px 4px; font-size:17px; }
+}
+
+/* iPhoneホームバー対策（全幅共通） */
+.save-btn{
+  margin-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+}
 
 .site-footer{border-top:1px solid var(--line);background:var(--cream)}
 .site-footer-inner{
