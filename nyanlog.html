@@ -478,6 +478,7 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
 .ai-btn:active{transform:scale(.96)}
 .ai-btn .ai-icon{font-size:28px;line-height:1}
 
+@keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .stamp-ov{
   position:fixed;inset:0;pointer-events:none;
   display:flex;align-items:center;justify-content:center;
@@ -796,6 +797,33 @@ input, button, textarea, select {
     <div class="cross-link-arrow">›</div>
   </a>
 
+  <a href="./doctor.html" class="cross-link-card" style="background:linear-gradient(135deg,#fff8e7,#fef3e8);border-color:var(--amber);">
+    <div class="cross-link-icon">🩺</div>
+    <div class="cross-link-body">
+      <div class="cross-link-title" style="color:var(--amber);">診察サポート・きぶんグラフ</div>
+      <div class="cross-link-note">記録から自動でまとめ → 受診時にそのまま使えるにゃ</div>
+    </div>
+    <div class="cross-link-arrow" style="color:var(--amber);">›</div>
+  </a>
+
+  <!-- 記録完了後 診察サポート誘導 -->
+  <div id="doctorBanner" style="display:none;margin-bottom:14px;">
+    <a href="./doctor.html" style="
+      display:flex;align-items:center;gap:14px;
+      background:linear-gradient(135deg,#fff8e7,#fef3e8);
+      border:2px solid var(--amber);border-radius:18px;
+      padding:16px 18px;text-decoration:none;color:var(--ink);
+      animation:fadeInUp .4s ease;
+    ">
+      <div style="font-size:32px;flex-shrink:0;">🩺</div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:900;color:var(--amber);margin-bottom:4px;">記録できたにゃ🐾 診察メモを見る？</div>
+        <div style="font-size:13px;font-weight:700;color:var(--muted);line-height:1.6;">今日の記録からグラフ・報告メモを自動作成するにゃ</div>
+      </div>
+      <div style="font-size:26px;font-weight:900;color:var(--amber);">›</div>
+    </a>
+  </div>
+
   <div class="ai-link-card" id="aiLinkCard">
     <div class="ai-link-title">🤖 AIに相談する</div>
     <div class="ai-link-note">
@@ -1017,9 +1045,9 @@ function renderSignGrid(clearAll=false){
   const hasMore=signs.length>SIGN_FOLD;
 
   // clearAll=trueのときは全クリア、それ以外は現在のON状態を保持
-  const onSet=clearAll ? new Set() : new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim()));
+  const onSet=clearAll ? new Set() : new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim().replace(/^● /,'')));
 
-  grid.innerHTML=visible.map(s=>`<button class="sign-btn${onSet.has(s)?' on':''}" onclick="this.classList.toggle('on')">${esc(s)}</button>`).join('');
+  grid.innerHTML=visible.map(s=>`<button class="sign-btn${onSet.has(s)?' on':''}" onclick="this.classList.toggle('on')">● ${esc(s)}</button>`).join('');
 
   // もっと見る／閉じるボタン
   if(hasMore){
@@ -1080,7 +1108,7 @@ function saveRecord(){
   if(!med){catEl.textContent='お薬の記録を選んでにゃ💊';return;}
   const mood=document.querySelector('.mood-btn.on')?.dataset.mood||'';
   if(!mood){catEl.textContent='今日の気分を選んでにゃ😊';return;}
-  const signs=[...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim());
+  const signs=[...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim().replace(/^● /,''));
   const memo=document.getElementById('memo').value.trim();
   const now=new Date();
   const dayKey=localDayKey(now);
@@ -1114,6 +1142,9 @@ function saveRecord(){
   signExpanded=false;
   document.getElementById('memo').value='';
   renderSignGrid(true); // サインはrenderSignGrid内で全クリア
+
+  // 診察サポート誘導バナー表示
+  document.getElementById('doctorBanner').style.display = 'block';
 
   // AIカードにスクロール
   setTimeout(()=>{
