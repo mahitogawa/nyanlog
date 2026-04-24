@@ -461,15 +461,6 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
 .sum-nurse-msg.green .sum-nurse-msg-text{color:#1a4a35;}
 .sum-nurse-msg.empty{border-left-color:#ccc;background:#fafafa;}
 .sum-nurse-msg.empty .sum-nurse-msg-text{color:var(--muted);}
-.ai-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
-.ai-modal-overlay.open{display:flex;}
-.ai-modal{background:#fff;border-radius:24px;padding:24px;width:90%;max-width:420px;box-shadow:0 8px 40px rgba(0,0,0,.2);}
-.ai-modal-title{font-size:17px;font-weight:900;color:#2c2118;margin-bottom:12px;}
-.ai-modal textarea{width:100%;border:1.5px solid #e8ddd0;border-radius:14px;padding:12px;font-size:14px;font-family:inherit;resize:vertical;min-height:80px;box-sizing:border-box;margin-bottom:12px;}
-.ai-modal-ask{width:100%;background:#2d6a4f;color:#fff;border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;}
-.ai-modal-ask:disabled{opacity:.5;}
-.ai-modal-answer{background:#f5faf7;border-radius:14px;padding:14px;font-size:14px;font-weight:700;color:#2c2118;line-height:1.7;margin-top:10px;display:none;}
-.ai-modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;}
 .ai-link-card{
   background:#fff;
   border:1.5px solid var(--line);
@@ -852,27 +843,23 @@ input, button, textarea, select {
   </div>
 
   <div class="ai-link-card" id="aiLinkCard">
-    <div class="ai-link-title">🤖 AI先生に相談する</div>
+    <div class="ai-link-title">🤖 AIに相談する</div>
     <div class="ai-link-note">
-      今日の記録を自動で読み込んで答えてくれるにゃ🐱<br>
-      追加でひとこと添えてもOKにゃ✨
+      タップするとプロンプトをコピーしてAIが開くにゃ🐱<br>
+      開いたら貼り付けるだけにゃ（自己責任でにゃ）
     </div>
     <div class="ai-btns">
-      <button class="ai-btn" onclick="openAiModal()">
-        <span class="ai-icon">✨🐱</span><span>AI先生に聞く！</span>
+      <button class="ai-btn" onclick="openAI('https://claude.ai')">
+        <span class="ai-icon">🧠🐱</span><span>Claude</span>
+      </button>
+      <button class="ai-btn" onclick="openAI('https://gemini.google.com')">
+        <span class="ai-icon">✨🐱</span><span>Gemini</span>
+      </button>
+      <button class="ai-btn" onclick="openAI('https://chatgpt.com')">
+        <span class="ai-icon">🤖🐱</span><span>ChatGPT</span>
       </button>
     </div>
-  </div>
-
-  <!-- AI先生モーダル -->
-  <div class="ai-modal-overlay" id="aiModalOverlay" onclick="closeAiModal(event)">
-    <div class="ai-modal">
-      <button class="ai-modal-close" onclick="closeAiModalDirect()">✕</button>
-      <div class="ai-modal-title">🐱 AI先生に相談する</div>
-      <textarea id="aiModalInput" placeholder="追加でひとこと（省略OK）"></textarea>
-      <button class="ai-modal-ask" id="aiModalAskBtn" onclick="askAiSensei()">AI先生に聞く！</button>
-      <div class="ai-modal-answer" id="aiModalAnswer"></div>
-    </div>
+    <div id="aiCopyMsg" style="text-align:center;font-size:14px;font-weight:900;color:var(--brand);margin-top:10px;min-height:20px"></div>
   </div>
 
 </div>
