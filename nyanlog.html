@@ -845,20 +845,11 @@ input, button, textarea, select {
   <div class="ai-link-card" id="aiLinkCard">
     <div class="ai-link-title">🤖 AIに相談する</div>
     <div class="ai-link-note">
-      タップするとプロンプトをコピーしてAIが開くにゃ🐱<br>
-      開いたら貼り付けるだけにゃ（自己責任でにゃ）
+      気になることをそのまま聞いてにゃ✨
     </div>
-    <div class="ai-btns">
-      <button class="ai-btn" onclick="openAI('https://claude.ai')">
-        <span class="ai-icon">🧠🐱</span><span>Claude</span>
-      </button>
-      <button class="ai-btn" onclick="openAI('https://gemini.google.com')">
-        <span class="ai-icon">✨🐱</span><span>Gemini</span>
-      </button>
-      <button class="ai-btn" onclick="openAI('https://chatgpt.com')">
-        <span class="ai-icon">🤖🐱</span><span>ChatGPT</span>
-      </button>
-    </div>
+    <textarea id="aiModalInput" placeholder="例：うつ病とはどんな症状ですか？" style="width:100%;min-height:80px;border-radius:10px;border:1.5px solid var(--brand);padding:10px;font-size:15px;resize:vertical;box-sizing:border-box;margin-bottom:8px;"></textarea>
+    <button id="aiModalAskBtn" onclick="askAiSensei()" style="width:100%;background:var(--brand);color:#fff;border:none;border-radius:10px;padding:14px;font-size:17px;font-weight:900;cursor:pointer;">AI先生に聞く！</button>
+    <div id="aiModalAnswer" style="display:none;background:#f0f8ff;border-radius:10px;padding:12px;margin-top:10px;font-size:15px;line-height:1.6;white-space:pre-wrap;"></div>
     <div id="aiCopyMsg" style="text-align:center;font-size:14px;font-weight:900;color:var(--brand);margin-top:10px;min-height:20px"></div>
   </div>
 
@@ -1215,6 +1206,16 @@ function openAiModal(){
 }
 function closeAiModal(e){
   if(e.target===document.getElementById('aiModalOverlay')) closeAiModalDirect();
+}
+async function openAI(url){
+  const msg = document.getElementById('aiCopyMsg');
+  try {
+    await navigator.clipboard.writeText(aiPromptText);
+    msg.textContent = '✅ プロンプトをコピーしたにゃ！貼り付けて使ってにゃ🐱';
+  } catch(e) {
+    msg.textContent = '⚠️ コピーできなかったにゃ…手動でコピーしてにゃ';
+  }
+  setTimeout(() => { window.open(url, '_blank'); }, 500);
 }
 function closeAiModalDirect(){
   document.getElementById('aiModalOverlay').classList.remove('open');
