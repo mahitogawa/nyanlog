@@ -1221,9 +1221,7 @@ function closeAiModalDirect(){
 }
 async function askAiSensei(){
   const extra = document.getElementById('aiModalInput').value.trim();
-  const prompt = aiPromptText + (extra ? '
-
-【追加のひとこと】' + extra : '');
+  const prompt = aiPromptText + (extra ? '\n\n【追加のひとこと】' + extra : '');
   const btn = document.getElementById('aiModalAskBtn');
   const ans = document.getElementById('aiModalAnswer');
   btn.disabled = true;
@@ -1231,7 +1229,7 @@ async function askAiSensei(){
   ans.style.display = 'block';
   ans.textContent = '🐱 考え中にゃ…';
   try {
-    const res = await fetch('https://ai-sensei.mahito-ai.workers.dev/', {
+    const res = await fetch('https://ai-sensei2.mahito-ai.workers.dev/', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({question: prompt})
