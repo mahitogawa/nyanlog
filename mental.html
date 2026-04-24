@@ -171,6 +171,16 @@ body{
 }
 
 /* AIに相談カード */
+.ai-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
+.ai-modal-overlay.open{display:flex;}
+.ai-modal{background:#fff;border-radius:24px;padding:24px;width:90%;max-width:420px;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.ai-modal-title{font-size:17px;font-weight:900;color:#2c2118;margin-bottom:12px;}
+.ai-modal textarea{width:100%;border:1.5px solid #e8ddd0;border-radius:14px;padding:12px;font-size:14px;font-family:inherit;resize:vertical;min-height:90px;box-sizing:border-box;margin-bottom:12px;}
+.ai-modal-ask{width:100%;background:#2d6a4f;color:#fff;border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;}
+.ai-modal-ask:disabled{opacity:.5;}
+.ai-modal-answer{background:#f5faf7;border-radius:14px;padding:14px;font-size:14px;font-weight:700;color:#2c2118;line-height:1.7;margin-top:10px;display:none;}
+.ai-modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;}
+/* AIに相談カード */
 .ai-consult-card{
   background:var(--sand);border-radius:16px;
   padding:16px;margin-top:14px;
@@ -300,16 +310,10 @@ body{
       <div id="aiArea"></div>
       <div class="ai-consult-card">
         <div class="ai-consult-title">🤖 AIに相談する</div>
-        <div class="ai-consult-note">タップするとプロンプトをコピーしてAIが開くにゃ🐱<br>開いたら貼り付けるだけにゃ（自己責任でにゃ）</div>
+        <div class="ai-consult-note">無料のAI先生に相談してみるにゃ🐱<br>ボタンを押すとプロンプトがコピーされるにゃ<br>開いたら貼り付けるだけ！アカウント登録は無料にゃ✨</div>
         <div class="ai-btns">
-          <button class="ai-btn" onclick="openAI('https://claude.ai')">
-            <span class="ai-btn-icon">🧠🐱</span>Claude
-          </button>
-          <button class="ai-btn" onclick="openAI('https://gemini.google.com')">
-            <span class="ai-btn-icon">✨🐱</span>Gemini
-          </button>
-          <button class="ai-btn" onclick="openAI('https://chatgpt.com')">
-            <span class="ai-btn-icon">🤖🐱</span>ChatGPT
+          <button class="ai-btn" onclick="openAI('https://aistudio.google.com/app/prompts/new_chat')">
+            <span class="ai-btn-icon">✨🐱</span>Gemma 4（無料）
           </button>
         </div>
         <div class="ai-copy-msg" id="aiCopyMsg"></div>
@@ -693,16 +697,40 @@ ${refMsg}
 ※個人記録です。医療的な診断は不要で、気づきや励ましをもらえると嬉しいです。`;
 }
 
-function openAI(url){
-  const msg = document.getElementById('aiCopyMsg');
-  navigator.clipboard.writeText(aiPromptText).then(()=>{
-    msg.textContent = '✅ コピーしたにゃ！貼り付けてにゃ🐱';
-    setTimeout(()=>{ msg.textContent=''; },3000);
-    window.open(url,'_blank','noopener');
-  }).catch(()=>{
-    window.open(url,'_blank','noopener');
-    msg.textContent = '⚠️ コピーできなかったにゃ。手動でコピーしてにゃ。';
-  });
+function openAiModal(){
+  document.getElementById('aiModalOverlay').classList.add('open');
+  document.getElementById('aiModalAnswer').style.display='none';
+  document.getElementById('aiModalAnswer').textContent='';
+  document.getElementById('aiModalInput').value='';
+}
+function closeAiModal(e){
+  if(e.target===document.getElementById('aiModalOverlay')) closeAiModalDirect();
+}
+function closeAiModalDirect(){
+  document.getElementById('aiModalOverlay').classList.remove('open');
+}
+async function askAiSensei(){
+  const extra = document.getElementById('aiModalInput').value.trim();
+  const prompt = aiPromptText + (extra ? '\n\n【追加の質問】' + extra : '');
+  const btn = document.getElementById('aiModalAskBtn');
+  const ans = document.getElementById('aiModalAnswer');
+  btn.disabled = true;
+  btn.textContent = '考え中にゃ…🐱';
+  ans.style.display = 'block';
+  ans.textContent = '🐱 考え中にゃ…';
+  try {
+    const res = await fetch('https://ai-sensei.mahito-ai.workers.dev/', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({question: prompt})
+    });
+    const text = await res.text();
+    ans.textContent = '🐱 ' + text;
+  } catch(e) {
+    ans.textContent = '⚠️ 接続エラーにゃ…もう一度試してにゃ';
+  }
+  btn.disabled = false;
+  btn.textContent = 'AI先生に聞く！';
 }
 
 // コピー
