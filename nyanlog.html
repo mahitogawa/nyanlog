@@ -1103,11 +1103,11 @@ function buildNurse(today,records){
   const tiredDays=w.filter(r=>r.signs.includes('体がだるい')).length;
   const shindoi=w.filter(r=>r.mood==='しんどい').length;
   const drugNo=w.filter(r=>r.drug==='no').length;
-  if(drugNo>=2) return'服薬できていない日が続いています。理由があれば次の診察で相談してください。';
-  if(dizzDays>=3) return`めまい・ふらつきが${dizzDays}日続いています。転倒に注意し、担当の方に伝えてください。`;
-  if(wordDays>=3) return`言葉が出にくい日が${wordDays}日続いています。次の診察で伝える材料になります。`;
-  if(tiredDays>=3) return`体のだるさが${tiredDays}日続いています。水分・睡眠を意識してみてください。`;
-  if(shindoi>=3) return`気分がしんどい日が${shindoi}日続いています。無理せず周囲のサポートを活用してください。`;
+  if(drugNo>=2) return`服薬できていない日が${drugNo}日続いています。理由があれば次の診察で相談してください。<br><small style="color:#92400e;font-weight:600;">💡 忘れた・副作用が気になるなど、どんな小さなことでも医師に伝えると薬の調整につながります。</small>`;
+  if(dizzDays>=3) return`めまい・ふらつきが${dizzDays}日続いています。転倒に注意し、担当の方に伝えてください。<br><small style="color:#92400e;font-weight:600;">💡 急に立ち上がらず手すりを使うなど転倒防止を意識してください。症状が強い日は無理せず休みましょう。</small>`;
+  if(wordDays>=3) return`言葉が出にくい日が${wordDays}日続いています。次の診察で伝える材料になります。<br><small style="color:#92400e;font-weight:600;">💡 このアプリの記録をそのまま医師に見せられます。焦らず、ゆっくり話せば大丈夫です。</small>`;
+  if(tiredDays>=3) return`体のだるさが${tiredDays}日続いています。水分・睡眠を意識してみてください。<br><small style="color:#92400e;font-weight:600;">💡 リハビリ中はとても疲れやすいです。休むことも大切な回復の一部です。</small>`;
+  if(shindoi>=3) return`気分がしんどい日が${shindoi}日続いています。無理せず周囲のサポートを活用してください。<br><small style="color:#92400e;font-weight:600;">💡 一人で抱え込まなくて大丈夫。「しんどい」と伝えることが回復への近道です。</small>`;
   return null;
 }
 
