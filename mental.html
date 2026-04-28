@@ -308,7 +308,7 @@ body{
           AI先生に聞く！
         </button>
         <div id="mentalAiAnswer"
-          style="display:none;margin-top:12px;background:#1e293b;color:#f1f5f9;font-size:16px;line-height:1.7;padding:14px;border-radius:10px;"></div>
+          style="display:none;margin-top:12px;background:#f0f8ff;border:1.5px solid #bfdbfe;color:#1a2e4a;font-size:17px;font-weight:600;line-height:1.9;padding:16px 18px;border-radius:12px;word-break:break-word;"></div>
       </div>
       <div class="action-row">
         <button class="act-btn act-copy" onclick="copyResult()">📋 コピー</button>
@@ -756,7 +756,8 @@ async function askMentalAI() {
       body: JSON.stringify({ question: q })
     });
     const text = await res.text();
-    ans.textContent = '🐱 ' + text;
+    const formatted = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+    ans.innerHTML = '<div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:24px;flex-shrink:0;">🐱</span><div><p style="margin:0;">' + formatted + '</p></div></div>';
   } catch(e) {
     ans.textContent = '😿 接続エラーにゃ…もう一度試してにゃ';
   }
