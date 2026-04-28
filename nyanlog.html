@@ -1130,7 +1130,7 @@ function saveRecord(){
   const ncs=buildNurse(today,records);
   const nurseCard=document.getElementById('nurseCard');
   if(ncs){
-    document.getElementById('nurseMsg').innerHTML=`<div>${esc(ncs)}</div>`;
+    document.getElementById('nurseMsg').innerHTML=`<div>${ncs}</div>`;
     nurseCard.classList.add('show');
   }else{
     nurseCard.classList.remove('show');
