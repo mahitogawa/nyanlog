@@ -1236,7 +1236,8 @@ async function askAiSensei(){
       body: JSON.stringify({question: prompt})
     });
     const text = await res.text();
-    ans.textContent = '🐱 ' + text;
+    const formatted = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+    ans.innerHTML = '<div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:24px;flex-shrink:0;">🐱</span><div><p style="margin:0;">' + formatted + '</p></div></div>';
   } catch(e) {
     ans.textContent = '⚠️ 接続エラーにゃ…もう一度試してにゃ';
   }
