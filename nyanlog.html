@@ -1258,25 +1258,49 @@ function removeSelTag(name){
 function setupRecDrum(){
   const wrap=document.getElementById('recDrum');
   if(!wrap)return;
+  let vel=0,lastY=0,lastT=0,raf=null;
+
+  function snap(animate){
+    recDrumOffset=Math.round(recDrumOffset/DRUM_H)*DRUM_H;
+    recDrumApply(animate);
+  }
+  function momentum(){
+    if(Math.abs(vel)<0.5){snap(true);return;}
+    recDrumOffset+=vel;
+    vel*=0.92;
+    recDrumApply(false);
+    raf=requestAnimationFrame(momentum);
+  }
+
   wrap.addEventListener('pointerdown',e=>{
-    recDrumDrag=true;recDrumStartY=e.clientY;recDrumStartOff=recDrumOffset;
+    if(raf){cancelAnimationFrame(raf);raf=null;}
+    recDrumDrag=true;vel=0;
+    recDrumStartY=e.clientY;recDrumStartOff=recDrumOffset;
+    lastY=e.clientY;lastT=Date.now();
     wrap.setPointerCapture(e.pointerId);
   });
   wrap.addEventListener('pointermove',e=>{
     if(!recDrumDrag)return;
+    const now=Date.now();const dt=Math.max(1,now-lastT);
+    vel=(lastY-e.clientY)/dt*16;
+    lastY=e.clientY;lastT=now;
     recDrumOffset=recDrumStartOff+(recDrumStartY-e.clientY);
     recDrumApply(false);
   });
   wrap.addEventListener('pointerup',()=>{
     recDrumDrag=false;
-    recDrumOffset=Math.round(recDrumOffset/DRUM_H)*DRUM_H;
-    recDrumApply(true);
+    raf=requestAnimationFrame(momentum);
   });
+  wrap.addEventListener('pointercancel',()=>{
+    recDrumDrag=false;snap(true);
+  });
+  // タッチのページスクロール防止
+  wrap.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
   wrap.addEventListener('wheel',e=>{
     e.preventDefault();
-    recDrumOffset+=e.deltaY*0.5;
+    recDrumOffset+=e.deltaY*0.8;
     clearTimeout(wrap._t);
-    wrap._t=setTimeout(()=>{recDrumOffset=Math.round(recDrumOffset/DRUM_H)*DRUM_H;recDrumApply(true);},120);
+    wrap._t=setTimeout(()=>snap(true),150);
     recDrumApply(false);
   },{passive:false});
 }
@@ -1345,25 +1369,48 @@ function cfgDelete(){
 function setupCfgDrum(){
   const wrap=document.getElementById('cfgDrum');
   if(!wrap)return;
+  let vel=0,lastY=0,lastT=0,raf=null;
+
+  function snap(animate){
+    cfgDrumOffset=Math.round(cfgDrumOffset/DRUM_H)*DRUM_H;
+    cfgDrumApply(animate);
+  }
+  function momentum(){
+    if(Math.abs(vel)<0.5){snap(true);return;}
+    cfgDrumOffset+=vel;
+    vel*=0.92;
+    cfgDrumApply(false);
+    raf=requestAnimationFrame(momentum);
+  }
+
   wrap.addEventListener('pointerdown',e=>{
-    cfgDrumDrag=true;cfgDrumStartY=e.clientY;cfgDrumStartOff=cfgDrumOffset;
+    if(raf){cancelAnimationFrame(raf);raf=null;}
+    cfgDrumDrag=true;vel=0;
+    cfgDrumStartY=e.clientY;cfgDrumStartOff=cfgDrumOffset;
+    lastY=e.clientY;lastT=Date.now();
     wrap.setPointerCapture(e.pointerId);
   });
   wrap.addEventListener('pointermove',e=>{
     if(!cfgDrumDrag)return;
+    const now=Date.now();const dt=Math.max(1,now-lastT);
+    vel=(lastY-e.clientY)/dt*16;
+    lastY=e.clientY;lastT=now;
     cfgDrumOffset=cfgDrumStartOff+(cfgDrumStartY-e.clientY);
     cfgDrumApply(false);
   });
   wrap.addEventListener('pointerup',()=>{
     cfgDrumDrag=false;
-    cfgDrumOffset=Math.round(cfgDrumOffset/DRUM_H)*DRUM_H;
-    cfgDrumApply(true);
+    raf=requestAnimationFrame(momentum);
   });
+  wrap.addEventListener('pointercancel',()=>{
+    cfgDrumDrag=false;snap(true);
+  });
+  wrap.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
   wrap.addEventListener('wheel',e=>{
     e.preventDefault();
-    cfgDrumOffset+=e.deltaY*0.5;
+    cfgDrumOffset+=e.deltaY*0.8;
     clearTimeout(wrap._t);
-    wrap._t=setTimeout(()=>{cfgDrumOffset=Math.round(cfgDrumOffset/DRUM_H)*DRUM_H;cfgDrumApply(true);},120);
+    wrap._t=setTimeout(()=>snap(true),150);
     cfgDrumApply(false);
   },{passive:false});
 }
