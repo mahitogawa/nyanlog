@@ -972,8 +972,7 @@ input, button, textarea, select {
         <div class="drum-sel-line"></div>
         <div class="drum-list" id="recDrumList"></div>
       </div>
-      <div class="drum-hint">↕ スクロールして選ぶ</div>
-      <button class="drum-add-btn" id="drumAddBtn" onclick="drumAddSign()">＋ 追加</button>
+      <div class="drum-hint">↕ スクロール・タップで選択</div>
       <!-- 選択済みタグ -->
       <div class="sel-tags" id="selSignTags"></div>
       <!-- メモ -->
@@ -1228,20 +1227,27 @@ function recDrumApply(animate){
     el.classList.remove('sel','near');
     if(i===recDrumIdx) el.classList.add('sel');
     else if(Math.abs(i-recDrumIdx)===1) el.classList.add('near');
+    // 選択済みはチェックマーク表示
+    const name=signs[i];
+    el.textContent=(recSelected.has(name)?'✓ ':'')+name;
+    el.style.color=recSelected.has(name)?(i===recDrumIdx?'#2d6a4f':'#6aab8a'):
+      (i===recDrumIdx?'#2c2118':Math.abs(i-recDrumIdx)===1?'#8b7355':'#c4b49a');
   });
-  const btn=document.getElementById('drumAddBtn');
-  if(btn) btn.textContent=`＋「${signs[recDrumIdx]}」を追加`;
 }
 
-function drumAddSign(){
+function drumTapToggle(){
   const signs=loadSigns();
   if(!signs.length)return;
   const name=signs[recDrumIdx];
-  if(recSelected.has(name)){recSelected.delete(name);}
-  else{recSelected.add(name);}
+  if(recSelected.has(name)) recSelected.delete(name);
+  else recSelected.add(name);
   renderSelTags();
-  const btn=document.getElementById('drumAddBtn');
-  if(btn) btn.textContent=`＋「${name}」を追加`;
+  recDrumApply(false);
+}
+
+function drumAddSign(){
+  // 後方互換用（現在はdumTapToggleを使用）
+  drumTapToggle();
 }
 
 function renderSelTags(){
@@ -1289,9 +1295,16 @@ function setupRecDrum(){
     recDrumOffset=recDrumStartOff+(recDrumStartY-e.clientY);
     recDrumApply(false);
   });
-  wrap.addEventListener('pointerup',()=>{
+  wrap.addEventListener('pointerup',e=>{
     recDrumDrag=false;
-    raf=requestAnimationFrame(momentum);
+    const moved=Math.abs(e.clientY-recDrumStartY);
+    if(moved<6){
+      // タップ：中央アイテムをON/OFF
+      snap(true);
+      drumTapToggle();
+    } else {
+      raf=requestAnimationFrame(momentum);
+    }
   });
   wrap.addEventListener('pointercancel',()=>{
     recDrumDrag=false;snap(true);
