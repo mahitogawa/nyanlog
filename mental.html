@@ -12,14 +12,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 
 :root{
   --cream:#fdf8f3;
   --sand:#f5ede0;
-  --brand:#5b54c7;
-  --brand-light:#eef0ff;
-  --green:#2d6a4f;
+  --brand:#2d6a4f;
+  --brand-light:#e8f5ef;
+  --purple:#5b54c7;
+  --purple-bg:#eef0ff;
   --ink:#2c2118;
   --muted:#8b7355;
   --line:#e8ddd0;
@@ -32,60 +33,86 @@ html{scroll-behavior:smooth}
 
 body{
   font-family:'Zen Maru Gothic',-apple-system,'Hiragino Sans',sans-serif;
-  background:var(--cream);color:var(--ink);min-height:100vh;
+  background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden;
 }
 
 /* ヘッダー */
-.hd{background:var(--brand);padding:env(safe-area-inset-top,0) 0 0;position:sticky;top:0;z-index:100;}
-.hd-inner{display:flex;align-items:center;gap:12px;padding:14px 16px;}
-.hd-icon{width:42px;height:42px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;}
-.hd-title{font-size:18px;font-weight:900;color:#fff;}
-.hd-sub{font-size:13px;font-weight:700;color:rgba(255,255,255,.75);}
-.hd-back{margin-left:auto;background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:12px;padding:8px 14px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;}
+.hd{
+  background:var(--purple);
+  padding:env(safe-area-inset-top,0) 0 0;
+  position:sticky;top:0;z-index:100;
+}
+.hd-inner{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+}
+.logo-icon{
+  width:38px;height:38px;
+  background:rgba(255,255,255,.2);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.hd-center{display:flex;flex-direction:column;gap:1px;}
+.logo-text{font-size:16px;font-weight:900;color:#fff;letter-spacing:.04em;line-height:1.2;}
+.logo-sub{font-size:12px;font-weight:700;color:rgba(255,255,255,.75);line-height:1;}
+.hd-back{
+  margin-left:auto;background:rgba(255,255,255,.18);color:#fff;
+  border:none;border-radius:10px;padding:7px 13px;
+  font-size:14px;font-weight:900;cursor:pointer;
+  font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;
+}
 
-.main{max-width:680px;margin:0 auto;padding:20px 14px 80px;}
+.main{max-width:480px;margin:0 auto;padding:18px 14px 80px;}
 
 /* 警告バナー */
 .warn-bar{
   background:var(--amber-bg);border:1.5px solid var(--amber);
-  border-radius:16px;padding:14px 16px;
+  border-radius:14px;padding:13px 15px;
   font-size:14px;font-weight:700;color:#78350f;
-  line-height:1.75;margin-bottom:18px;
+  line-height:1.75;margin-bottom:14px;
 }
 
 /* カード */
-.card{background:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(44,33,24,.07);border:1px solid var(--line);}
-.card-title{font-size:16px;font-weight:900;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card{
+  background:#fff;border-radius:18px;padding:18px 16px;
+  margin-bottom:12px;
+  box-shadow:0 1px 6px rgba(44,33,24,.06);
+  border:1px solid var(--line);
+}
+.card-title{
+  font-size:17px;font-weight:900;color:var(--ink);
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+  border-bottom:2px solid var(--line);padding-bottom:10px;
+}
 
 /* 症状グリッド */
 .sym-cats{display:flex;flex-direction:column;gap:8px;}
-.sym-cat-wrap{border:1.5px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;}
+.sym-cat-wrap{border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;}
 .sym-cat-header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px;cursor:pointer;
+  padding:13px 14px;cursor:pointer;
   background:#fff;border:none;width:100%;font-family:inherit;
   transition:.15s;
 }
 .sym-cat-header:active{background:var(--sand);}
-.sym-cat-title{font-size:15px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.sym-cat-title{font-size:15px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:6px;}
 .sym-cat-meta{display:flex;align-items:center;gap:8px;}
-.sym-cat-count{font-size:13px;font-weight:900;color:var(--brand);background:var(--brand-light);border-radius:999px;padding:3px 10px;}
-.sym-cat-arrow{font-size:14px;color:var(--muted);transition:.25s;}
+.sym-cat-count{font-size:13px;font-weight:900;color:var(--purple);background:var(--purple-bg);border-radius:999px;padding:3px 10px;}
+.sym-cat-arrow{font-size:13px;color:var(--muted);transition:.25s;}
 .sym-cat-wrap.open .sym-cat-arrow{transform:rotate(180deg);}
-.sym-cat-body{display:none;padding:0 14px 14px;}
+.sym-cat-body{display:none;padding:0 12px 12px;}
 .sym-cat-wrap.open .sym-cat-body{display:block;}
 .sym-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
 .sym-btn{
   background:var(--sand);border:2px solid var(--line);
-  border-radius:12px;padding:12px 10px;
+  border-radius:12px;padding:11px 10px;
   font-family:inherit;font-size:14px;font-weight:900;
   color:var(--ink);cursor:pointer;transition:.15s;
   text-align:left;line-height:1.4;
 }
-.sym-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);}
+.sym-btn.on{background:var(--purple);color:#fff;border-color:var(--purple);}
 .sym-btn:active{transform:scale(.97);}
 
-/* カテゴリ別ボタン色 */
 .cat-0 .sym-btn{background:#fde8f0;border-color:#f5b8d0;}
 .cat-0 .sym-btn.on{background:#c0392b;border-color:#c0392b;color:#fff;}
 .cat-1 .sym-btn{background:#fff3cd;border-color:#f0c040;}
@@ -97,10 +124,10 @@ body{
 .cat-4 .sym-btn{background:#eef0ff;border-color:#c4c0f0;}
 .cat-4 .sym-btn.on{background:#5b54c7;border-color:#5b54c7;color:#fff;}
 
-/* 選択済み */
+/* 選択済みタグ */
 .selected-wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:32px;margin-bottom:14px;}
 .selected-tag{
-  background:var(--brand);color:#fff;
+  background:var(--purple);color:#fff;
   border-radius:999px;padding:6px 14px;
   font-size:14px;font-weight:900;
   display:flex;align-items:center;gap:6px;cursor:pointer;
@@ -110,46 +137,45 @@ body{
 /* 分析ボタン */
 .analyze-btn{
   display:block;width:100%;padding:18px;
-  background:var(--brand);color:#fff;
+  background:var(--purple);color:#fff;
   border:none;border-radius:16px;
   font-family:inherit;font-size:17px;font-weight:900;
-  cursor:pointer;transition:.15s;
+  cursor:pointer;transition:.15s;margin-bottom:14px;
+  box-shadow:0 4px 12px rgba(91,84,199,.3);
 }
-.analyze-btn:disabled{opacity:.5;cursor:not-allowed;}
+.analyze-btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;}
 .analyze-btn:not(:disabled):active{transform:scale(.98);}
 
 /* 結果エリア */
 .result-section{display:none;}
 .result-section.show{display:block;}
 
-/* 疾患マッチカード */
+/* マッチカード */
 .match-list{display:flex;flex-direction:column;gap:10px;}
 .match-item{
-  background:#fff;border-radius:16px;
-  border:1.5px solid var(--line);
-  padding:16px;
+  background:var(--sand);border-radius:14px;
+  border:1.5px solid var(--line);padding:14px;
 }
-.match-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.match-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .match-name{font-size:16px;font-weight:900;color:var(--ink);flex:1;}
 .match-score{
-  font-size:14px;font-weight:900;
-  background:var(--brand-light);color:var(--brand);
+  font-size:13px;font-weight:900;
+  background:var(--purple-bg);color:var(--purple);
   border-radius:999px;padding:4px 12px;
 }
-.match-bar-wrap{height:8px;background:var(--sand);border-radius:999px;overflow:hidden;margin-bottom:10px;}
-.match-bar{height:100%;background:linear-gradient(to right,var(--brand),#8b85e0);border-radius:999px;transition:.5s ease;}
+.match-bar-wrap{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:8px;}
+.match-bar{height:100%;background:linear-gradient(to right,var(--purple),#a8a3e8);border-radius:999px;transition:.5s ease;}
 .match-syms{display:flex;flex-wrap:wrap;gap:6px;}
-.match-sym{font-size:14px;font-weight:700;background:var(--brand-light);color:var(--brand);border-radius:999px;padding:4px 10px;}
+.match-sym{font-size:13px;font-weight:700;background:var(--purple-bg);color:var(--purple);border-radius:999px;padding:4px 10px;}
 
-/* 詳細展開 */
 .match-detail{
   display:none;margin-top:12px;
-  background:var(--sand);border-radius:14px;padding:14px;
+  background:#fff;border-radius:12px;padding:14px;border:1px solid var(--line);
 }
 .match-item.open .match-detail{display:block;}
 .match-detail-row{margin-bottom:10px;}
 .match-detail-row:last-child{margin-bottom:0;}
-.match-detail-label{font-size:13px;font-weight:900;color:var(--muted);letter-spacing:.06em;margin-bottom:4px;}
+.match-detail-label{font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.06em;margin-bottom:4px;text-transform:uppercase;}
 .match-detail-body{font-size:14px;font-weight:700;color:#3d2f20;line-height:1.75;}
 .match-detail-hint{font-size:14px;font-weight:700;color:var(--brand);}
 .match-toggle{
@@ -158,111 +184,162 @@ body{
   padding:8px;font-family:inherit;font-size:14px;font-weight:900;
   color:var(--muted);cursor:pointer;transition:.15s;
 }
-.match-toggle:hover{background:var(--sand);}
+.match-toggle:hover{background:var(--cream);}
 
 /* 参考メッセージ */
 .msg-box{
-  background:linear-gradient(135deg,#f0eeff,#e8f5ef);
-  border:1.5px solid var(--brand);
-  border-radius:20px;padding:20px;
+  background:linear-gradient(135deg,var(--purple-bg),var(--brand-light));
+  border:1.5px solid var(--purple);
+  border-radius:16px;padding:18px;
   font-size:15px;font-weight:700;
   color:#1a1560;line-height:1.9;
   white-space:pre-wrap;word-break:break-word;
 }
 
-/* AIに相談カード */
+/* AI相談エリア */
 .ai-consult-card{
-  background:var(--sand);border-radius:16px;
-  padding:16px;margin-top:14px;
-  border:1.5px solid var(--line);
+  background:var(--brand-light);border-radius:14px;
+  padding:16px;margin-top:12px;
+  border:1.5px solid var(--brand);
 }
-.ai-consult-title{
-  font-size:15px;font-weight:900;color:var(--ink);
-  margin-bottom:6px;
+.ai-consult-title{font-size:15px;font-weight:900;color:var(--brand);margin-bottom:6px;}
+.ai-consult-note{font-size:14px;font-weight:700;color:var(--muted);line-height:1.7;margin-bottom:10px;}
+.ai-q-input{
+  width:100%;border:2px solid var(--line);border-radius:12px;
+  padding:12px;font-size:16px;font-family:inherit;font-weight:700;
+  color:var(--ink);background:var(--sand);resize:none;
+  line-height:1.6;transition:.15s;
 }
-.ai-consult-note{
-  font-size:14px;font-weight:700;color:var(--muted);
-  line-height:1.7;margin-bottom:12px;
+.ai-q-input:focus{outline:none;border-color:var(--brand);background:#fff;}
+.ai-ask-btn{
+  display:block;width:100%;margin-top:10px;padding:14px;
+  background:var(--brand);color:#fff;
+  border:none;border-radius:12px;
+  font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;
+  transition:.15s;
 }
-.ai-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.ai-btn{
-  display:flex;flex-direction:column;align-items:center;
-  gap:5px;padding:14px 6px;
-  border-radius:14px;border:1.5px solid var(--line);
-  background:#fff;font-family:inherit;
-  font-size:15px;font-weight:900;color:var(--ink);
-  cursor:pointer;text-decoration:none;transition:.15s;
-}
-.ai-btn:active{transform:scale(.95);}
-.ai-btn-icon{font-size:26px;line-height:1;}
-.ai-copy-msg{
-  text-align:center;font-size:14px;font-weight:900;
-  color:var(--brand);min-height:18px;margin-top:8px;
+.ai-ask-btn:active{transform:scale(.98);}
+.ai-answer{
+  display:none;margin-top:12px;
+  background:#fff;border:1.5px solid var(--brand-light);
+  color:var(--ink);font-size:16px;font-weight:700;
+  line-height:1.9;padding:16px;border-radius:12px;word-break:break-word;
 }
 
-/* コピー・印刷 */
-.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+/* コピー・印刷ボタン */
+.action-row{display:flex;gap:10px;margin-top:14px;}
 .act-btn{
-  flex:1;min-width:120px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
   padding:14px;border:none;border-radius:14px;
-  font-family:inherit;font-size:15px;font-weight:900;
-  cursor:pointer;transition:.15s;
+  font-family:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:.15s;
 }
 .act-btn:active{transform:scale(.97);}
-.act-copy{background:var(--green);color:#fff;}
+.act-copy{background:var(--brand);color:#fff;}
 .act-print{background:var(--amber);color:#fff;}
-.copy-msg{text-align:center;font-size:14px;font-weight:900;color:var(--green);min-height:20px;margin-top:8px;}
+.copy-msg{text-align:center;font-size:14px;font-weight:900;color:var(--brand);min-height:20px;margin-top:8px;}
 
-/* もう一度 */
+/* もう一度ボタン */
 .reset-btn{
   display:block;width:100%;margin-top:14px;
   padding:14px;background:var(--sand);
   border:1.5px solid var(--line);border-radius:14px;
   font-family:inherit;font-size:15px;font-weight:900;
-  color:var(--muted);cursor:pointer;
+  color:var(--muted);cursor:pointer;transition:.15s;
 }
+.reset-btn:active{background:var(--line);}
 
-/* 相互リンクカード */
+/* にゃんログリンク */
 .cross-link-card{
   display:flex;align-items:center;gap:14px;
-  background:linear-gradient(135deg,#e8f5ef,#eef0ff);
-  border:1.5px solid var(--green);border-radius:18px;
-  padding:16px 18px;margin-bottom:14px;
-  text-decoration:none;color:var(--ink);
-  transition:.15s;
+  background:linear-gradient(135deg,var(--brand-light),var(--purple-bg));
+  border:1.5px solid var(--brand);border-radius:16px;
+  padding:16px 18px;margin-top:14px;
+  text-decoration:none;color:var(--ink);transition:.15s;
 }
 .cross-link-card:active{transform:scale(.98);}
 .cross-link-icon{font-size:30px;flex-shrink:0;}
 .cross-link-body{flex:1;}
-.cross-link-title{font-size:15px;font-weight:900;color:var(--green);margin-bottom:4px;}
+.cross-link-title{font-size:15px;font-weight:900;color:var(--brand);margin-bottom:4px;}
 .cross-link-note{font-size:13px;font-weight:700;color:var(--muted);line-height:1.6;}
-.cross-link-arrow{font-size:26px;font-weight:900;color:var(--green);flex-shrink:0;}
+.cross-link-arrow{font-size:26px;font-weight:900;color:var(--brand);flex-shrink:0;}
 
-/* 印刷用 */
+/* フッター */
+.site-footer{border-top:1px solid var(--line);background:var(--cream);margin-top:14px;}
+.site-footer-inner{
+  max-width:480px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:20px 16px;flex-wrap:wrap;
+  color:var(--muted);font-size:13px;font-weight:700;
+}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-links a{color:var(--muted);text-decoration:none;}
+.footer-note{width:100%;font-size:12px;line-height:1.8;color:var(--muted);}
+
+
+
+/* ===== ドラムピッカー（にゃんログ方式） ===== */
+.drum-layout { display: flex; gap: 10px; margin-bottom: 8px; }
+.drum-col { flex: 1; display: flex; flex-direction: column; }
+.drum-col-label { font-size: 12px; font-weight: 900; color: var(--muted); text-align: center; margin-bottom: 6px; letter-spacing: .05em; }
+.drum-wrap {
+  position: relative; height: 168px; overflow: hidden;
+  cursor: grab; user-select: none;
+  border-radius: 12px; background: #f0e8dc;
+}
+.drum-wrap:active { cursor: grabbing; }
+.drum-list { position: absolute; top: 0; left: 0; right: 0; }
+.drum-item {
+  height: 48px; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; color: #c4b49a;
+  transition: color .1s, font-size .1s;
+  padding: 0 10px; text-align: center; line-height: 1.3;
+  border-bottom: 1px solid #e8ddd0;
+}
+.drum-item:last-child { border-bottom: none; }
+.drum-item.sel { color: #2c2118; font-size: 17px; font-weight: 900; }
+.drum-item.near { color: #8b7355; font-size: 16px; }
+.drum-ov-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(to bottom, #f0e8dc 20%, rgba(240,232,220,0));
+  pointer-events: none; z-index: 2;
+}
+.drum-ov-bot {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(to top, #f0e8dc 20%, rgba(240,232,220,0));
+  pointer-events: none; z-index: 2;
+}
+.drum-sel-line {
+  position: absolute; top: 60px; left: 10px; right: 10px; height: 48px;
+  border-top: 1.5px solid var(--purple); border-bottom: 1.5px solid var(--purple);
+  border-radius: 8px; pointer-events: none; z-index: 1;
+}
+.drum-hint { font-size: 12px; color: var(--muted); font-weight: 700; text-align: center; margin: 4px 0 8px; }
+.drum-add-btn {
+  display: block; width: 100%; padding: 14px;
+  background: var(--purple); color: #fff;
+  border: none; border-radius: 12px;
+  font-family: inherit; font-size: 15px; font-weight: 900;
+  cursor: pointer; transition: .15s; margin-bottom: 12px;
+}
+.drum-add-btn:active { transform: scale(.97); }
+
+/* 印刷 */
 @media print{
   .hd,.warn-bar,.sym-cats,.analyze-btn,.action-row,.reset-btn{display:none!important;}
   .result-section{display:block!important;}
   body{background:#fff;}
   .card{box-shadow:none;border:1px solid #ddd;}
 }
-
-/* フッター */
-.site-footer{border-top:1px solid var(--line);background:var(--cream);}
-.site-footer-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 16px;flex-wrap:wrap;color:var(--muted);font-size:13px;font-weight:700;}
-.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
-.footer-links a{color:var(--muted);text-decoration:none;}
-.footer-note{width:100%;font-size:13px;line-height:1.8;color:var(--muted);}
 </style>
 </head>
 <body>
 
 <div class="hd">
   <div class="hd-inner">
-    <div class="hd-icon">💙</div>
-    <div>
-      <div class="hd-title">こころのセルフチェック</div>
-      <div class="hd-sub">症状→参考情報→AI解説</div>
+    <div class="logo-icon">💙</div>
+    <div class="hd-center">
+      <div class="logo-text">こころのセルフチェック</div>
+      <div class="logo-sub">症状 → 参考情報 → AI解説</div>
     </div>
     <a class="hd-back" href="./kokoro.html">← 戻る</a>
   </div>
@@ -274,13 +351,40 @@ body{
     ⚠️ これは医療診断ではありません。あくまで「参考情報」として活用してください。症状が気になる場合は必ず医師にご相談ください。
   </div>
 
-  <!-- 症状選択 -->
+  <!-- 症状選択 ドラムピッカー -->
   <div class="card">
     <div class="card-title">💙 今の自分に当てはまるものを選んでね</div>
-    <div class="selected-wrap" id="selectedWrap">
-      <span style="font-size:14px;font-weight:700;color:var(--muted);">ここに選んだ症状が出ます</span>
+
+    <div class="drum-layout">
+      <!-- カテゴリドラム -->
+      <div class="drum-col">
+        <div class="drum-col-label">カテゴリ</div>
+        <div class="drum-wrap" id="drum-cat">
+          <div class="drum-ov-top"></div>
+          <div class="drum-ov-bot"></div>
+          <div class="drum-sel-line"></div>
+          <div class="drum-list" id="drum-cat-list"></div>
+        </div>
+      </div>
+      <!-- 症状ドラム -->
+      <div class="drum-col">
+        <div class="drum-col-label">症状</div>
+        <div class="drum-wrap" id="drum-sym">
+          <div class="drum-ov-top"></div>
+          <div class="drum-ov-bot"></div>
+          <div class="drum-sel-line"></div>
+          <div class="drum-list" id="drum-sym-list"></div>
+        </div>
+      </div>
     </div>
-    <div class="sym-cats" id="symCats"></div>
+    <div class="drum-hint">↕ スクロール・タップで選択</div>
+    <button class="drum-add-btn" id="drumAddBtn" onclick="drumAdd()">＋ この症状を追加する</button>
+
+    <!-- 選択済みタグ -->
+    <div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:8px;">選んだ症状：</div>
+    <div class="selected-wrap" id="selectedWrap">
+      <span style="font-size:14px;font-weight:700;color:var(--muted);">まだ選んでないにゃ</span>
+    </div>
   </div>
 
   <button class="analyze-btn" id="analyzeBtn" onclick="analyze()" disabled>
@@ -301,14 +405,9 @@ body{
       <div class="ai-consult-card">
         <div class="ai-consult-title">🐱 AI先生に聞く</div>
         <div class="ai-consult-note">気になることをそのまま聞いてにゃ✨</div>
-        <textarea id="mentalAiQuestion" placeholder="例：うつ病とはどんな症状ですか？"
-          style="width:100%;font-size:16px;padding:10px;border-radius:10px;border:1px solid #ccc;height:80px;box-sizing:border-box;margin-top:8px;"></textarea>
-        <button onclick="askMentalAI()"
-          style="background:#10b981;color:#fff;font-size:18px;font-weight:bold;padding:14px;width:100%;border:none;border-radius:12px;margin-top:8px;cursor:pointer;">
-          AI先生に聞く！
-        </button>
-        <div id="mentalAiAnswer"
-          style="display:none;margin-top:12px;background:#f0f8ff;border:1.5px solid #bfdbfe;color:#1a2e4a;font-size:17px;font-weight:600;line-height:1.9;padding:16px 18px;border-radius:12px;word-break:break-word;"></div>
+        <textarea id="mentalAiQuestion" class="ai-q-input" rows="3" placeholder="例：うつ病とはどんな症状ですか？"></textarea>
+        <button class="ai-ask-btn" onclick="askMentalAI()">🐱 AI先生に聞く！</button>
+        <div id="mentalAiAnswer" class="ai-answer"></div>
       </div>
       <div class="action-row">
         <button class="act-btn act-copy" onclick="copyResult()">📋 コピー</button>
@@ -533,64 +632,156 @@ const DISEASES = [
 
 // ===== 選択状態 =====
 let selected = new Set();
+const DRUM_H = 48;
 
-// ===== 描画 =====
-function renderSyms(){
-  const container = document.getElementById('symCats');
-  container.innerHTML = SYMPTOM_CATS.map((cat, i)=>{
-    const selectedCount = cat.syms.filter(s=>selected.has(s)).length;
-    const isOpen = i < 2 || selectedCount > 0;
-    return `
-    <div class="sym-cat-wrap${isOpen?' open':''}" id="cat-${i}">
-      <button class="sym-cat-header" onclick="toggleCat(${i})">
-        <div class="sym-cat-title">${cat.cat}</div>
-        <div class="sym-cat-meta">
-          ${selectedCount>0?`<span class="sym-cat-count">✓ ${selectedCount}</span>`:''}
-          <span class="sym-cat-arrow">▼</span>
-        </div>
-      </button>
-    <div class="sym-cat-body cat-${i}">
-        <div class="sym-grid">
-          ${cat.syms.map(s=>`
-            <button class="sym-btn${selected.has(s)?' on':''}" onclick="toggleSym('${s.replace(/'/g,"\\'")}')">
-              ${selected.has(s)?'✓ ':''}${s}
-            </button>
-          `).join('')}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
+// ===== ドラム共通セットアップ（にゃんログ方式・慣性付き）=====
+function setupDrum(wrapId, listId, onSnap) {
+  const wrap = document.getElementById(wrapId);
+  const list = document.getElementById(listId);
+  if (!wrap || !list) return;
+  let offset = 0, drag = false, startY = 0, startOff = 0;
+  let vel = 0, lastY = 0, lastT = 0, raf = null;
 
-function toggleCat(i){
-  const el = document.getElementById('cat-'+i);
-  el.classList.toggle('open');
-}
-
-function renderSelected(){
-  const wrap = document.getElementById('selectedWrap');
-  if(!selected.size){
-    wrap.innerHTML = '<span style="font-size:14px;font-weight:700;color:var(--muted);">ここに選んだ症状が出ます</span>';
-    return;
+  function apply(animate) {
+    const count = list.children.length;
+    const max = Math.max(0, (count - 1) * DRUM_H);
+    offset = Math.max(0, Math.min(offset, max));
+    const idx = Math.round(offset / DRUM_H);
+    list.style.transition = animate ? 'transform .15s ease' : 'none';
+    list.style.transform = 'translateY(' + (60 - offset) + 'px)';
+    Array.from(list.children).forEach((el, i) => {
+      el.classList.remove('sel', 'near');
+      if (i === idx) el.classList.add('sel');
+      else if (Math.abs(i - idx) === 1) el.classList.add('near');
+    });
+    if (onSnap) onSnap(idx);
   }
-  wrap.innerHTML = [...selected].map(s=>`
-    <div class="selected-tag" onclick="toggleSym('${s.replace(/'/g,"\\'")}')">
-      ${s}<span class="rm">×</span>
-    </div>
-  `).join('');
+
+  function snap(animate) {
+    offset = Math.round(offset / DRUM_H) * DRUM_H;
+    apply(animate);
+  }
+
+  function momentum() {
+    if (Math.abs(vel) < 0.5) { snap(true); return; }
+    offset += vel; vel *= 0.92;
+    apply(false);
+    raf = requestAnimationFrame(momentum);
+  }
+
+  wrap.addEventListener('pointerdown', e => {
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    drag = true; vel = 0;
+    startY = e.clientY; startOff = offset;
+    lastY = e.clientY; lastT = Date.now();
+    wrap.setPointerCapture(e.pointerId);
+  });
+  wrap.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const now = Date.now(), dt = Math.max(1, now - lastT);
+    vel = (lastY - e.clientY) / dt * 16;
+    lastY = e.clientY; lastT = now;
+    offset = startOff + (startY - e.clientY);
+    apply(false);
+  });
+  wrap.addEventListener('pointerup', e => {
+    drag = false;
+    const moved = Math.abs(e.clientY - startY);
+    if (moved < 6) { snap(true); onTap(wrapId); }
+    else { raf = requestAnimationFrame(momentum); }
+  });
+  wrap.addEventListener('pointercancel', () => { drag = false; snap(true); });
+  wrap.addEventListener('wheel', e => {
+    e.preventDefault();
+    offset += e.deltaY > 0 ? DRUM_H : -DRUM_H;
+    snap(true);
+  }, { passive: false });
+
+  apply(false);
+  return { apply, snap, getIdx: () => Math.round(offset / DRUM_H) };
 }
 
-function toggleSym(s){
-  if(selected.has(s)) selected.delete(s);
-  else selected.add(s);
-  renderSyms();
-  renderSelected();
+let catDrumCtrl = null, symDrumCtrl = null;
+let drumCatIdx = 0, drumSymIdx = 0;
+
+function onTap(wrapId) {
+  if (wrapId === 'drum-sym') drumAdd();
+}
+
+function applySymColors() {
+  const list = document.getElementById('drum-sym-list');
+  if (!list) return;
+  const syms = SYMPTOM_CATS[drumCatIdx] ? SYMPTOM_CATS[drumCatIdx].syms : [];
+  Array.from(list.children).forEach((el, i) => {
+    const name = syms[i];
+    const isSel = name && selected.has(name);
+    const isCur = el.classList.contains('sel');
+    el.textContent = (isSel ? '✓ ' : '') + (name || '');
+    el.style.color = isSel ? (isCur ? '#2d6a4f' : '#6aab8a') : '';
+  });
+}
+
+function updateSymDrum(catIdx) {
+  drumCatIdx = catIdx;
+  const syms = SYMPTOM_CATS[catIdx] ? SYMPTOM_CATS[catIdx].syms : [];
+  const sl = document.getElementById('drum-sym-list');
+  sl.innerHTML = syms.map(s => '<div class="drum-item">' + s + '</div>').join('');
+  drumSymIdx = 0;
+  symDrumCtrl = setupDrum('drum-sym', 'drum-sym-list', idx => {
+    drumSymIdx = idx;
+    applySymColors();
+    updateAddBtn();
+  });
+  applySymColors();
+  updateAddBtn();
+}
+
+function initDrums() {
+  const cl = document.getElementById('drum-cat-list');
+  cl.innerHTML = SYMPTOM_CATS.map(c => '<div class="drum-item">' + c.cat + '</div>').join('');
+  catDrumCtrl = setupDrum('drum-cat', 'drum-cat-list', idx => {
+    if (idx !== drumCatIdx) updateSymDrum(idx);
+  });
+  updateSymDrum(0);
+}
+
+function updateAddBtn() {
+  const sym = SYMPTOM_CATS[drumCatIdx] && SYMPTOM_CATS[drumCatIdx].syms[drumSymIdx];
+  const btn = document.getElementById('drumAddBtn');
+  if (btn && sym) btn.textContent = selected.has(sym) ? '✓ 追加済み（もう一度でOFF）' : '＋ この症状を追加する';
+}
+
+function drumAdd() {
+  const sym = SYMPTOM_CATS[drumCatIdx] && SYMPTOM_CATS[drumCatIdx].syms[drumSymIdx];
+  if (!sym) return;
+  if (selected.has(sym)) selected.delete(sym); else selected.add(sym);
+  applySymColors(); updateAddBtn(); renderSelected();
   const btn = document.getElementById('analyzeBtn');
   btn.disabled = selected.size === 0;
-  btn.textContent = selected.size
-    ? `🔍 ${selected.size}個の症状でチェックする`
-    : '🔍 チェックする（症状を選んでにゃ）';
+  btn.textContent = selected.size ? ('🔍 ' + selected.size + '個の症状でチェックする') : '🔍 チェックする（症状を選んでにゃ）';
 }
+
+function renderSelected() {
+  const wrap = document.getElementById('selectedWrap');
+  if (!selected.size) {
+    wrap.innerHTML = '<span style="font-size:14px;font-weight:700;color:var(--muted);">まだ選んでないにゃ</span>';
+    return;
+  }
+  wrap.innerHTML = Array.from(selected).map(s =>
+    '<div class="selected-tag" onclick="removeTag(\'' + s.replace(/'/g, "\\'") + '\')">' + s + '<span class="rm">×</span></div>'
+  ).join('');
+}
+
+function removeTag(s) {
+  selected.delete(s); renderSelected(); applySymColors(); updateAddBtn();
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = selected.size === 0;
+  btn.textContent = selected.size ? ('🔍 ' + selected.size + '個の症状でチェックする') : '🔍 チェックする（症状を選んでにゃ）';
+}
+
+function renderSyms() {}
+function toggleCat() {}
+function toggleSym(s) { if (selected.has(s)) selected.delete(s); else selected.add(s); renderSelected(); }
 
 // ===== 分析 =====
 function analyze(){
@@ -731,8 +922,6 @@ function toggleMatch(id, btn){
 // リセット
 function reset(){
   selected.clear();
-  renderSyms();
-  renderSelected();
   document.getElementById('analyzeBtn').disabled = true;
   document.getElementById('analyzeBtn').textContent = '🔍 チェックする（症状を選んでにゃ）';
   document.getElementById('resultSection').classList.remove('show');
@@ -740,7 +929,7 @@ function reset(){
 }
 
 // 初期化
-renderSyms();
+initDrums();
 renderSelected();
 
 async function askMentalAI() {
