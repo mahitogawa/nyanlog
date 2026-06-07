@@ -724,7 +724,16 @@ let catDrumCtrl = null, symDrumCtrl = null;
 let drumCatIdx = 0, drumSymIdx = 0;
 
 function onTap(wrapId) {
-  if (wrapId === 'drum-sym') drumAdd();
+  if (wrapId === 'drum-sym') {
+    // タップで直接トグル
+    const sym = SYMPTOM_CATS[drumCatIdx] && SYMPTOM_CATS[drumCatIdx].syms[drumSymIdx];
+    if (!sym) return;
+    if (selected.has(sym)) selected.delete(sym); else selected.add(sym);
+    applySymColors(); updateAddBtn(); renderSelected();
+    const btn = document.getElementById('analyzeBtn');
+    btn.disabled = selected.size === 0;
+    btn.textContent = selected.size ? ('🔍 ' + selected.size + '個の症状でチェックする') : '🔍 チェックする（症状を選んでにゃ）';
+  }
 }
 
 function applySymColors() {
