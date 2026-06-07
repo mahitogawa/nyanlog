@@ -359,7 +359,7 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
 .drum-wrap{
   position:relative;height:150px;overflow:hidden;
   cursor:grab;user-select:none;
-  border-radius:12px;background:var(--sand);
+  border-radius:12px;background:#f0e8dc;
   margin-top:12px;
 }
 .drum-wrap:active{cursor:grabbing;}
@@ -370,21 +370,21 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
   transition:color .1s,font-size .1s;
   padding:0 12px;text-align:center;
 }
-.drum-item.sel{color:var(--ink);font-size:16px;}
-.drum-item.near{color:var(--muted);font-size:15px;}
+.drum-item.sel{color:#2c2118;font-size:16px;}
+.drum-item.near{color:#8b7355;font-size:15px;}
 .drum-ov-top{
   position:absolute;top:0;left:0;right:0;height:54px;
-  background:linear-gradient(to bottom,var(--sand) 20%,transparent);
+  background:linear-gradient(to bottom,#f0e8dc 20%,rgba(240,232,220,0));
   pointer-events:none;z-index:2;
 }
 .drum-ov-bot{
   position:absolute;bottom:0;left:0;right:0;height:54px;
-  background:linear-gradient(to top,var(--sand) 20%,transparent);
+  background:linear-gradient(to top,#f0e8dc 20%,rgba(240,232,220,0));
   pointer-events:none;z-index:2;
 }
 .drum-sel-line{
   position:absolute;top:54px;left:10px;right:10px;height:42px;
-  border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);
+  border-top:1.5px solid #e8ddd0;border-bottom:1.5px solid #e8ddd0;
   border-radius:8px;pointer-events:none;z-index:1;
 }
 .drum-hint{
@@ -1205,7 +1205,9 @@ let recSelected=new Set();
 function initRecDrum(){
   const signs=loadSigns();
   const dl=document.getElementById('recDrumList');
-  if(!dl)return;
+  if(!dl||!signs.length)return;
+  recDrumOffset=0;
+  recDrumIdx=0;
   dl.innerHTML=signs.map((s,i)=>`<div class="drum-item" data-i="${i}">${s}</div>`).join('');
   recDrumApply(false);
 }
@@ -2049,9 +2051,17 @@ function clearAll(){
 }
 
 renderSignGrid();
-setupRecDrum();
-setupCfgDrum();
-initRecDrum();
+document.addEventListener('DOMContentLoaded', function(){
+  setupRecDrum();
+  setupCfgDrum();
+  initRecDrum();
+});
+// DOMContentLoadedが既に発火してる場合の対処
+if(document.readyState==='complete'||document.readyState==='interactive'){
+  setupRecDrum();
+  setupCfgDrum();
+  initRecDrum();
+}
 </script>
 </body>
 </html>
