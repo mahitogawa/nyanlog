@@ -365,7 +365,7 @@ body{
     <div class="drum-layout">
       <!-- カテゴリドラム -->
       <div class="drum-col">
-        <div class="drum-col-label">カテゴリ</div>
+        <div class="drum-col-label">① カテゴリ選択</div>
         <div class="drum-outer-wrap">
           <div class="drum-wrap" id="drum-cat">
             <div class="drum-ov-top"></div>
@@ -377,7 +377,7 @@ body{
       </div>
       <!-- 症状ドラム -->
       <div class="drum-col">
-        <div class="drum-col-label">症状</div>
+        <div class="drum-col-label">② 症状を選択</div>
         <div class="drum-outer-wrap">
           <div class="drum-wrap" id="drum-sym">
             <div class="drum-ov-top"></div>
@@ -388,8 +388,8 @@ body{
         </div>
       </div>
     </div>
-    <div class="drum-hint">↕ スクロール・タップで選択</div>
-    <button class="drum-add-btn" id="drumAddBtn" onclick="drumAdd()">＋ この症状を追加する</button>
+    <div class="drum-hint">↕ スクロールして ② をタップで追加</div>
+    <div id="drumAddBtn" style="text-align:center;font-size:14px;font-weight:900;color:var(--purple);min-height:20px;margin-bottom:8px;"></div>
 
     <!-- 選択済みタグ -->
     <div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:8px;">選んだ症状：</div>
@@ -820,8 +820,8 @@ function initDrums() {
 
 function updateAddBtn() {
   const sym = SYMPTOM_CATS[drumCatIdx] && SYMPTOM_CATS[drumCatIdx].syms[drumSymIdx];
-  const btn = document.getElementById('drumAddBtn');
-  if (btn && sym) btn.textContent = selected.has(sym) ? '✓ 追加済み（もう一度でOFF）' : '＋ この症状を追加する';
+  const el = document.getElementById('drumAddBtn');
+  if (el && sym) el.textContent = selected.has(sym) ? '✓ 追加済み（もう一度でOFF）' : '↑ タップして追加';
 }
 
 function drumAdd() {
