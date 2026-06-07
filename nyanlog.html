@@ -85,8 +85,8 @@ body{
   letter-spacing:.04em;line-height:1;
 }
 .logo-date{
-  font-size:13px;color:rgba(255,255,255,.85);
-  font-weight:700;line-height:1;
+  font-size:22px;color:rgba(255,255,255,.95);
+  font-weight:900;line-height:1;
 }
 
 /* ===== ボトムナビ ===== */
@@ -357,7 +357,7 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
 
 /* ===== ドラムピッカー ===== */
 .drum-wrap{
-  position:relative;height:150px;overflow:hidden;
+  position:relative;height:168px;overflow:hidden;
   cursor:grab;user-select:none;
   border-radius:12px;background:#f0e8dc;
   margin-top:12px;
@@ -365,27 +365,27 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
 .drum-wrap:active{cursor:grabbing;}
 .drum-list{position:absolute;top:0;left:0;right:0;}
 .drum-item{
-  height:42px;display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;color:#c4b49a;
+  height:48px;display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:700;color:#c4b49a;
   transition:color .1s,font-size .1s;
-  padding:0 12px;text-align:center;
+  padding:0 16px;text-align:center;
   border-bottom:1px solid #e8ddd0;
 }
 .drum-item:last-child{border-bottom:none;}
-.drum-item.sel{color:#2c2118;font-size:16px;}
-.drum-item.near{color:#8b7355;font-size:15px;}
+.drum-item.sel{color:#2c2118;font-size:18px;}
+.drum-item.near{color:#8b7355;font-size:17px;}
 .drum-ov-top{
-  position:absolute;top:0;left:0;right:0;height:54px;
+  position:absolute;top:0;left:0;right:0;height:60px;
   background:linear-gradient(to bottom,#f0e8dc 20%,rgba(240,232,220,0));
   pointer-events:none;z-index:2;
 }
 .drum-ov-bot{
-  position:absolute;bottom:0;left:0;right:0;height:54px;
+  position:absolute;bottom:0;left:0;right:0;height:60px;
   background:linear-gradient(to top,#f0e8dc 20%,rgba(240,232,220,0));
   pointer-events:none;z-index:2;
 }
 .drum-sel-line{
-  position:absolute;top:54px;left:10px;right:10px;height:42px;
+  position:absolute;top:60px;left:10px;right:10px;height:48px;
   border-top:1.5px solid #e8ddd0;border-bottom:1.5px solid #e8ddd0;
   border-radius:8px;pointer-events:none;z-index:1;
 }
@@ -1199,7 +1199,7 @@ function accToggle(id){
 }
 
 // ===== 記録画面ドラムピッカー =====
-const DRUM_H=42;
+const DRUM_H=48;
 let recDrumIdx=0,recDrumOffset=0,recDrumDrag=false,recDrumStartY=0,recDrumStartOff=0;
 let recSelected=new Set();
 
@@ -1222,7 +1222,7 @@ function recDrumApply(animate){
   recDrumOffset=Math.max(0,Math.min(recDrumOffset,max));
   recDrumIdx=Math.round(recDrumOffset/DRUM_H);
   dl.style.transition=animate?'transform .15s ease':'none';
-  dl.style.transform=`translateY(${54-recDrumOffset}px)`;
+  dl.style.transform=`translateY(${60-recDrumOffset}px)`;
   dl.querySelectorAll('.drum-item').forEach((el,i)=>{
     el.classList.remove('sel','near');
     if(i===recDrumIdx) el.classList.add('sel');
@@ -1341,7 +1341,7 @@ function cfgDrumApply(animate){
   cfgDrumOffset=Math.max(0,Math.min(cfgDrumOffset,max));
   cfgDrumIdx=Math.round(cfgDrumOffset/DRUM_H);
   dl.style.transition=animate?'transform .15s ease':'none';
-  dl.style.transform=`translateY(${54-cfgDrumOffset}px)`;
+  dl.style.transform=`translateY(${60-cfgDrumOffset}px)`;
   dl.querySelectorAll('.drum-item').forEach((el,i)=>{
     el.classList.remove('sel','near');
     if(i===cfgDrumIdx) el.classList.add('sel');
