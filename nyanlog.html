@@ -60,53 +60,67 @@ body{
   background:var(--brand);
   padding:env(safe-area-inset-top,0) 0 0;
   position:sticky;top:0;z-index:100;
+  cursor:pointer;
+  -webkit-tap-highlight-color:rgba(255,255,255,.15);
 }
 .hd-inner{
-  padding:16px 16px 10px;
+  padding:10px 16px;
   display:flex;
-  flex-direction:column;
   align-items:center;
-  cursor:pointer;
-  gap:8px;
-  width:100%;
-  background:none;
-  border:none;
-  font-family:inherit;
-  text-decoration:none;
-  color:inherit;
-  -webkit-tap-highlight-color:rgba(255,255,255,.2);
-}
-.hd-top-row{
-  display:flex;align-items:center;gap:12px;
+  gap:12px;
 }
 .logo-icon{
-  width:40px;height:40px;
+  width:36px;height:36px;
   background:rgba(255,255,255,.22);
-  border-radius:12px;
+  border-radius:10px;
   display:flex;align-items:center;justify-content:center;
-  font-size:24px;flex-shrink:0;
-  box-shadow:0 2px 10px rgba(0,0,0,.15);
+  font-size:20px;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.hd-center{
+  display:flex;flex-direction:column;gap:1px;
 }
 .logo-text{
-  font-size:24px;font-weight:900;color:#fff;
-  letter-spacing:.04em;
-  text-shadow:0 2px 8px rgba(0,0,0,.18);
+  font-size:16px;font-weight:900;color:#fff;
+  letter-spacing:.04em;line-height:1;
 }
 .logo-date{
-  font-size:clamp(22px,6vw,30px);
-  color:#fff;
-  font-weight:900;
-  letter-spacing:.02em;
-  line-height:1.2;
-  text-align:center;
-  width:100%;
-  text-shadow:0 2px 6px rgba(0,0,0,.2);
-  background:rgba(0,0,0,.08);
-  border-radius:10px;
-  padding:4px 10px;
+  font-size:13px;color:rgba(255,255,255,.85);
+  font-weight:700;line-height:1;
 }
 
-/* タブ */
+/* ===== ボトムナビ ===== */
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:200;
+  background:#fff;
+  border-top:1.5px solid var(--line);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding-bottom:env(safe-area-inset-bottom,0);
+  box-shadow:0 -4px 20px rgba(44,33,24,.10);
+}
+.bnav-btn{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:3px;
+  padding:10px 4px 8px;
+  background:none;border:none;
+  cursor:pointer;
+  font-family:inherit;
+  color:var(--muted);
+  transition:.15s;
+  -webkit-tap-highlight-color:rgba(0,0,0,.05);
+}
+.bnav-icon{font-size:22px;line-height:1;}
+.bnav-label{font-size:11px;font-weight:900;letter-spacing:.02em;}
+.bnav-btn.on{color:var(--brand);}
+.bnav-btn.on .bnav-icon{
+  transform:scale(1.12);
+}
+
+/* タブ（旧・非表示） */
 .tabs{
   display:flex;
   margin-top:14px;
@@ -138,7 +152,7 @@ body{
 }
 
 /* ===== VIEWS ===== */
-.view{display:none;padding:20px 16px 48px;max-width:480px;margin:0 auto}
+.view{display:none;padding:20px 16px 90px;max-width:480px;margin:0 auto}
 .view.on{display:block}
 
 /* ===== カード ===== */
@@ -308,7 +322,131 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
 .nurse-label{font-size:15px;font-weight:900;color:var(--warn);letter-spacing:.06em;margin-bottom:4px}
 .nurse-text{font-size:17px;font-weight:900;line-height:1.7;color:#7c3d12}
 
-/* ===== 履歴リスト ===== */
+/* ===== アコーディオンカード ===== */
+.acc-card{
+  background:#fff;
+  border-radius:18px;
+  border:1.5px solid var(--line);
+  margin-bottom:12px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(44,33,24,.06);
+}
+.acc-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;cursor:pointer;
+  -webkit-tap-highlight-color:rgba(0,0,0,.04);
+}
+.acc-ttl{font-size:15px;font-weight:900;color:var(--ink);}
+.acc-right{display:flex;align-items:center;gap:8px;}
+.acc-badge{
+  font-size:12px;font-weight:700;
+  background:var(--brand-light);color:var(--brand);
+  border-radius:999px;padding:3px 10px;
+}
+.acc-badge.warn{background:var(--warn-bg);color:var(--warn);}
+.acc-arr{font-size:11px;color:var(--muted);transition:transform .2s;}
+.acc-arr.open{transform:rotate(180deg);}
+.acc-body{
+  display:none;
+  padding:0 16px 16px;
+  border-top:1.5px solid var(--line);
+  animation:fadeIn .15s ease;
+}
+.acc-body.open{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+/* ===== ドラムピッカー ===== */
+.drum-wrap{
+  position:relative;height:150px;overflow:hidden;
+  cursor:grab;user-select:none;
+  border-radius:12px;background:var(--sand);
+  margin-top:12px;
+}
+.drum-wrap:active{cursor:grabbing;}
+.drum-list{position:absolute;top:0;left:0;right:0;}
+.drum-item{
+  height:42px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#c4b49a;
+  transition:color .1s,font-size .1s;
+  padding:0 12px;text-align:center;
+}
+.drum-item.sel{color:var(--ink);font-size:16px;}
+.drum-item.near{color:var(--muted);font-size:15px;}
+.drum-ov-top{
+  position:absolute;top:0;left:0;right:0;height:54px;
+  background:linear-gradient(to bottom,var(--sand) 20%,transparent);
+  pointer-events:none;z-index:2;
+}
+.drum-ov-bot{
+  position:absolute;bottom:0;left:0;right:0;height:54px;
+  background:linear-gradient(to top,var(--sand) 20%,transparent);
+  pointer-events:none;z-index:2;
+}
+.drum-sel-line{
+  position:absolute;top:54px;left:10px;right:10px;height:42px;
+  border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);
+  border-radius:8px;pointer-events:none;z-index:1;
+}
+.drum-hint{
+  font-size:12px;color:var(--muted);font-weight:700;
+  text-align:center;margin-top:6px;
+}
+.drum-add-btn{
+  width:100%;margin-top:8px;
+  background:var(--brand);color:#fff;
+  border:none;border-radius:12px;
+  padding:11px;font-size:14px;font-weight:900;
+  cursor:pointer;font-family:inherit;
+  transition:.15s;
+}
+.drum-add-btn:active{transform:scale(.97);}
+.sel-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;min-height:10px;}
+.sel-tag{
+  background:var(--warn-bg);border:1.5px solid #f0c090;
+  border-radius:999px;padding:5px 12px;
+  font-size:13px;font-weight:700;color:var(--warn);
+  cursor:pointer;
+}
+
+/* ===== 設定ドラム用 ===== */
+.cfg-cur{
+  font-size:13px;font-weight:700;color:var(--muted);
+  text-align:center;margin:10px 0 0;line-height:1.6;
+}
+.cfg-actions{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;
+}
+.cfg-tog-btn{
+  border:1.5px solid var(--brand);border-radius:12px;
+  padding:10px;font-size:13px;font-weight:900;
+  cursor:pointer;font-family:inherit;
+  background:var(--brand-light);color:var(--brand);
+  transition:.15s;
+}
+.cfg-tog-btn.off{
+  background:var(--sand);color:var(--muted);
+  border-color:var(--line);
+}
+.cfg-del-btn{
+  border:1.5px solid #f5b7b1;border-radius:12px;
+  padding:10px;font-size:13px;font-weight:900;
+  cursor:pointer;font-family:inherit;
+  background:var(--danger-bg);color:var(--danger);
+  transition:.15s;
+}
+.add-form{display:flex;gap:8px;margin-top:10px;}
+
+/* ===== 履歴アイテム（新） ===== */
+.hist-row{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 0;border-bottom:1px solid var(--line);
+}
+.hist-row:last-child{border-bottom:none;}
+.hist-day{font-size:13px;font-weight:900;color:var(--brand);min-width:56px;}
+.hist-info{flex:1;font-size:12px;font-weight:700;color:var(--muted);}
+.hist-mi{font-size:18px;}
+
+/* ===== 旧カード（後方互換で残す） ===== */
 .hist-item{
   display:flex;
   justify-content:space-between;
@@ -516,7 +654,7 @@ textarea::placeholder{color:#9e8d74;font-weight:700}
 
 @media(max-width:480px){
   body{background:var(--cream)}
-  .view{padding:16px 12px 48px}
+  .view{padding:16px 12px 90px}
 }
 
 /* ===== readability optimization patch ===== */
@@ -617,7 +755,7 @@ input, button, textarea, select {
 }
 
 @media(max-width:480px){
-  .view{padding:16px 14px 52px}
+  .view{padding:16px 14px 90px}
   .card{
     padding:18px;
     border-radius:18px;
@@ -738,55 +876,107 @@ input, button, textarea, select {
 </head>
 <body id="top">
 
-<div class="hd">
-  <a class="hd-inner" href="#top" id="toTopBtn" title="TOPへ戻る ↑">
-    <div class="hd-top-row">
-      <div class="logo-icon">🐱</div>
+<div class="hd" id="toTopBtn">
+  <div class="hd-inner">
+    <div class="logo-icon">🐱</div>
+    <div class="hd-center">
       <div class="logo-text">にゃんログ</div>
+      <div class="logo-date" id="dateEl"></div>
     </div>
-    <div class="logo-date" id="dateEl"></div>
-  </a>
-  <div class="tabs">
-    <button class="tab on" data-tab="rec">📝 記録</button>
-    <button class="tab" data-tab="hist">📅 履歴</button>
-    <button class="tab" data-tab="sum">📊 まとめ</button>
-    <button class="tab" data-tab="cfg">⚙️ 設定</button>
   </div>
 </div>
+
+<!-- ボトムナビ -->
+<nav class="bottom-nav">
+  <button class="bnav-btn on" data-tab="rec">
+    <span class="bnav-icon">📝</span>
+    <span class="bnav-label">記録</span>
+  </button>
+  <button class="bnav-btn" data-tab="hist">
+    <span class="bnav-icon">📅</span>
+    <span class="bnav-label">履歴</span>
+  </button>
+  <button class="bnav-btn" data-tab="sum">
+    <span class="bnav-icon">📊</span>
+    <span class="bnav-label">まとめ</span>
+  </button>
+  <button class="bnav-btn" data-tab="cfg">
+    <span class="bnav-icon">⚙️</span>
+    <span class="bnav-label">設定</span>
+  </button>
+</nav>
 
 <!-- 記録 -->
 <div class="view on" id="view-rec">
 
-  <div class="card">
-    <div class="card-title">😊 今日の気分</div>
-    <div class="mood-row">
-      <button class="mood-btn" data-mood="元気" onclick="setMood(this)">
-        <span class="mood-emoji">😄</span>
-        <span class="mood-label">元気</span>
-      </button>
-      <button class="mood-btn" data-mood="普通" onclick="setMood(this)">
-        <span class="mood-emoji">😐</span>
-        <span class="mood-label">普通</span>
-      </button>
-      <button class="mood-btn" data-mood="しんどい" onclick="setMood(this)">
-        <span class="mood-emoji">😔</span>
-        <span class="mood-label">しんどい</span>
-      </button>
+  <!-- アコーディオン：気分 -->
+  <div class="acc-card" id="acc-mood">
+    <div class="acc-hd" onclick="accToggle('mood')">
+      <div class="acc-ttl">😊 今日の気分</div>
+      <div class="acc-right">
+        <span class="acc-badge" id="badge-mood">未選択</span>
+        <span class="acc-arr" id="arr-mood">▼</span>
+      </div>
+    </div>
+    <div class="acc-body" id="body-mood">
+      <div class="mood-row">
+        <button class="mood-btn" data-mood="元気" onclick="setMood(this)">
+          <span class="mood-emoji">😄</span>
+          <span class="mood-label">元気</span>
+        </button>
+        <button class="mood-btn" data-mood="普通" onclick="setMood(this)">
+          <span class="mood-emoji">😐</span>
+          <span class="mood-label">普通</span>
+        </button>
+        <button class="mood-btn" data-mood="しんどい" onclick="setMood(this)">
+          <span class="mood-emoji">😔</span>
+          <span class="mood-label">しんどい</span>
+        </button>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">💊 お薬</div>
-    <div class="drug-row">
-      <button class="drug-btn" id="medYes" onclick="setMed('yes')">✅ 飲んだ</button>
-      <button class="drug-btn" id="medNo"  onclick="setMed('no')">❌ 飲んでない</button>
+  <!-- アコーディオン：お薬 -->
+  <div class="acc-card" id="acc-med">
+    <div class="acc-hd" onclick="accToggle('med')">
+      <div class="acc-ttl">💊 お薬</div>
+      <div class="acc-right">
+        <span class="acc-badge" id="badge-med">未選択</span>
+        <span class="acc-arr" id="arr-med">▼</span>
+      </div>
+    </div>
+    <div class="acc-body" id="body-med">
+      <div class="drug-row">
+        <button class="drug-btn" id="medYes" onclick="setMed('yes')">✅ 飲んだ</button>
+        <button class="drug-btn" id="medNo"  onclick="setMed('no')">❌ 飲んでない</button>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">📌 気になったこと <span style="font-size:14px;font-weight:700;color:#c4b49a">なくてもOK</span></div>
-    <div class="sign-grid" id="signGrid"></div>
-    <textarea id="memo" rows="2" placeholder="その他、気になったことがあれば…"></textarea>
+  <!-- アコーディオン：気になったこと（ドラムピッカー） -->
+  <div class="acc-card" id="acc-sign">
+    <div class="acc-hd" onclick="accToggle('sign')">
+      <div class="acc-ttl">📌 気になったこと</div>
+      <div class="acc-right">
+        <span class="acc-badge warn" id="badge-sign">なくてもOK</span>
+        <span class="acc-arr" id="arr-sign">▼</span>
+      </div>
+    </div>
+    <div class="acc-body open" id="body-sign">
+      <!-- ドラムピッカー -->
+      <div class="drum-wrap" id="recDrum">
+        <div class="drum-ov-top"></div>
+        <div class="drum-ov-bot"></div>
+        <div class="drum-sel-line"></div>
+        <div class="drum-list" id="recDrumList"></div>
+      </div>
+      <div class="drum-hint">↕ スクロールして選ぶ</div>
+      <button class="drum-add-btn" id="drumAddBtn" onclick="drumAddSign()">＋ 追加</button>
+      <!-- 選択済みタグ -->
+      <div class="sel-tags" id="selSignTags"></div>
+      <!-- メモ -->
+      <textarea id="memo" rows="2" placeholder="その他、気になったことがあれば…" style="margin-top:10px;"></textarea>
+    </div>
   </div>
 
   <button class="save-btn" onclick="saveRecord()">
@@ -857,9 +1047,14 @@ input, button, textarea, select {
 
 <!-- 履歴 -->
 <div class="view" id="view-hist">
-  <div class="card">
-    <div class="card-title">📅 最近の記録</div>
-    <div id="histList"></div>
+  <div class="acc-card">
+    <div class="acc-hd" onclick="accToggle('hist7')">
+      <div class="acc-ttl">📅 最近の記録</div>
+      <div class="acc-right"><span class="acc-arr open" id="arr-hist7">▼</span></div>
+    </div>
+    <div class="acc-body open" id="body-hist7">
+      <div id="histList"></div>
+    </div>
   </div>
 </div>
 
@@ -870,54 +1065,91 @@ input, button, textarea, select {
     <button class="range-btn" data-range="14" onclick="setRange(this)">直近14日</button>
     <button class="range-btn" data-range="30" onclick="setRange(this)">直近30日</button>
   </div>
-  <div class="kpi">
-    <div class="kpi-box"><div class="kpi-label">記録日数</div><div class="kpi-val" id="kpiTotal">－</div></div>
-    <div class="kpi-box"><div class="kpi-label">服薬できた日</div><div class="kpi-val" id="kpiDrug">－</div></div>
-    <div class="kpi-box"><div class="kpi-label">しんどい日</div><div class="kpi-val" id="kpiShindoi">－</div></div>
-    <div class="kpi-box"><div class="kpi-label">元気な日</div><div class="kpi-val" id="kpiGenki">－</div></div>
-  </div>
-  <div class="card">
-    <div class="card-title">📌 よく出た気になったこと</div>
-    <div id="topSigns"></div>
-  </div>
-  <div class="doctor-box">
-    <div class="doctor-label">🩺 診察向けメモ</div>
-    <div class="doctor-text" id="doctorText">記録が増えると自動でまとめが出るにゃ📋</div>
-  </div>
 
-  <div class="sum-nurse-box">
-    <div class="sum-nurse-header">
-      <div class="sum-nurse-icon">🩺</div>
-      <div>
-        <div class="sum-nurse-title">医療従事者・ケアスタッフへ</div>
-        <div class="sum-nurse-subtitle">記録をもとにした自動コメントです</div>
+  <div class="acc-card">
+    <div class="acc-hd" onclick="accToggle('kpi')">
+      <div class="acc-ttl">📊 期間まとめ</div>
+      <div class="acc-right"><span class="acc-arr open" id="arr-kpi">▼</span></div>
+    </div>
+    <div class="acc-body open" id="body-kpi">
+      <div class="kpi">
+        <div class="kpi-box"><div class="kpi-label">記録日数</div><div class="kpi-val" id="kpiTotal">－</div></div>
+        <div class="kpi-box"><div class="kpi-label">服薬できた日</div><div class="kpi-val" id="kpiDrug">－</div></div>
+        <div class="kpi-box"><div class="kpi-label">しんどい日</div><div class="kpi-val" id="kpiShindoi">－</div></div>
+        <div class="kpi-box"><div class="kpi-label">元気な日</div><div class="kpi-val" id="kpiGenki">－</div></div>
       </div>
     </div>
-    <div id="sumNurseMsgs"><div class="sum-nurse-msg empty"><span class="sum-nurse-msg-icon">📋</span><span class="sum-nurse-msg-text">記録が3件以上になると表示されます</span></div></div>
+  </div>
+
+  <div class="acc-card">
+    <div class="acc-hd" onclick="accToggle('topsign')">
+      <div class="acc-ttl">📌 よく出た気になったこと</div>
+      <div class="acc-right"><span class="acc-arr open" id="arr-topsign">▼</span></div>
+    </div>
+    <div class="acc-body open" id="body-topsign">
+      <div id="topSigns"></div>
+    </div>
+  </div>
+
+  <div class="acc-card">
+    <div class="acc-hd" onclick="accToggle('docmemo')">
+      <div class="acc-ttl">🩺 診察向けメモ</div>
+      <div class="acc-right"><span class="acc-arr open" id="arr-docmemo">▼</span></div>
+    </div>
+    <div class="acc-body open" id="body-docmemo">
+      <div class="doctor-text" id="doctorText">記録が増えると自動でまとめが出るにゃ📋</div>
+    </div>
+  </div>
+
+  <div class="acc-card">
+    <div class="acc-hd" onclick="accToggle('nurse')">
+      <div class="acc-ttl">🩺 医療従事者・ケアスタッフへ</div>
+      <div class="acc-right"><span class="acc-arr open" id="arr-nurse">▼</span></div>
+    </div>
+    <div class="acc-body open" id="body-nurse">
+      <div id="sumNurseMsgs"><div class="sum-nurse-msg empty"><span class="sum-nurse-msg-icon">📋</span><span class="sum-nurse-msg-text">記録が3件以上になると表示されます</span></div></div>
+    </div>
   </div>
 </div>
 
 <!-- 設定 -->
 <div class="view" id="view-cfg">
-  <div class="card">
-    <div class="card-title">📌 気になったことの候補</div>
-    <div class="input-row">
-      <input class="text-input" id="newSign" placeholder="例：食欲がない"/>
-      <button class="add-btn" onclick="addSign()">追加</button>
+  <div class="acc-card">
+    <div class="acc-hd" onclick="accToggle('cfgsign')">
+      <div class="acc-ttl">📌 気になったことの候補を管理</div>
+      <div class="acc-right"><span class="acc-arr open" id="arr-cfgsign">▼</span></div>
     </div>
-    <div style="font-size:15px;color:var(--muted);font-weight:700;margin-bottom:12px;line-height:1.75">
-      🔘 トグルで表示／非表示を切り替えられます。非表示にしても候補は残ります。<br>
-      🗑 ゴミ箱で完全に削除できます。
+    <div class="acc-body open" id="body-cfgsign">
+      <div class="cfg-cur" id="cfgCurLabel">← ドラムを動かして選ぶにゃ</div>
+      <div class="drum-wrap" id="cfgDrum">
+        <div class="drum-ov-top"></div>
+        <div class="drum-ov-bot"></div>
+        <div class="drum-sel-line"></div>
+        <div class="drum-list" id="cfgDrumList"></div>
+      </div>
+      <div class="cfg-actions">
+        <button class="cfg-tog-btn" id="cfgTogBtn" onclick="cfgToggle()">👁 表示中</button>
+        <button class="cfg-del-btn" onclick="cfgDelete()">🗑 削除</button>
+      </div>
+      <div class="add-form">
+        <input class="text-input" id="newSign" placeholder="新しい候補を追加…"/>
+        <button class="add-btn" onclick="addSign()">追加</button>
+      </div>
     </div>
-    <div id="signTags"></div>
   </div>
-  <div class="card">
-    <div class="card-title">📂 データ・レポート</div>
-    <button class="export-btn" onclick="exportPdf()">🖨️ みんなへのまとめ（印刷・PDF保存）</button>
-    <button class="clear-btn" onclick="clearRecords()" style="background:#e07b39;border-color:#e07b39;">🗑 記録だけ削除（設定は残る）</button>
-  </div>
-  <div style="font-size:16px;color:var(--muted);font-weight:700;line-height:1.7;padding:0 4px">
-    データはこのブラウザのみに保存されます。外部に送信しません。
+
+  <div class="acc-card">
+    <div class="acc-hd" onclick="accToggle('cfgdata')">
+      <div class="acc-ttl">📂 データ・レポート</div>
+      <div class="acc-right"><span class="acc-arr open" id="arr-cfgdata">▼</span></div>
+    </div>
+    <div class="acc-body open" id="body-cfgdata">
+      <button class="export-btn" onclick="exportPdf()">🖨️ みんなへのまとめ（印刷・PDF保存）</button>
+      <button class="clear-btn" onclick="clearRecords()" style="background:#e07b39;border-color:#e07b39;">🗑 記録だけ削除（設定は残る）</button>
+      <div style="font-size:13px;color:var(--muted);font-weight:700;line-height:1.7;margin-top:10px;">
+        データはこのブラウザのみに保存されます。外部に送信しません。
+      </div>
+    </div>
   </div>
 </div>
 
@@ -951,21 +1183,198 @@ function esc(str){
 })();
 
 // TOPへ戻るボタン
-document.getElementById('toTopBtn').addEventListener('click',function(e){
-  e.preventDefault();
-  e.stopPropagation();
+document.getElementById('toTopBtn').addEventListener('click',function(){
   window.scrollTo(0,0);
-  document.documentElement.scrollTop=0;
-  document.body.scrollTop=0;
 });
 
-// タブ
-document.querySelectorAll('.tab').forEach(t=>{
+// ===== アコーディオン =====
+function accToggle(id){
+  const body=document.getElementById('body-'+id);
+  const arr=document.getElementById('arr-'+id);
+  if(!body)return;
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  if(arr) arr.classList.toggle('open',!open);
+}
+
+// ===== 記録画面ドラムピッカー =====
+const DRUM_H=42;
+let recDrumIdx=0,recDrumOffset=0,recDrumDrag=false,recDrumStartY=0,recDrumStartOff=0;
+let recSelected=new Set();
+
+function initRecDrum(){
+  const signs=loadSigns();
+  const dl=document.getElementById('recDrumList');
+  if(!dl)return;
+  dl.innerHTML=signs.map((s,i)=>`<div class="drum-item" data-i="${i}">${s}</div>`).join('');
+  recDrumApply(false);
+}
+
+function recDrumApply(animate){
+  const signs=loadSigns();
+  if(!signs.length)return;
+  const dl=document.getElementById('recDrumList');
+  if(!dl)return;
+  const max=(signs.length-1)*DRUM_H;
+  recDrumOffset=Math.max(0,Math.min(recDrumOffset,max));
+  recDrumIdx=Math.round(recDrumOffset/DRUM_H);
+  dl.style.transition=animate?'transform .15s ease':'none';
+  dl.style.transform=`translateY(${54-recDrumOffset}px)`;
+  dl.querySelectorAll('.drum-item').forEach((el,i)=>{
+    el.classList.remove('sel','near');
+    if(i===recDrumIdx) el.classList.add('sel');
+    else if(Math.abs(i-recDrumIdx)===1) el.classList.add('near');
+  });
+  const btn=document.getElementById('drumAddBtn');
+  if(btn) btn.textContent=`＋「${signs[recDrumIdx]}」を追加`;
+}
+
+function drumAddSign(){
+  const signs=loadSigns();
+  if(!signs.length)return;
+  const name=signs[recDrumIdx];
+  if(recSelected.has(name)){recSelected.delete(name);}
+  else{recSelected.add(name);}
+  renderSelTags();
+  const btn=document.getElementById('drumAddBtn');
+  if(btn) btn.textContent=`＋「${name}」を追加`;
+}
+
+function renderSelTags(){
+  const el=document.getElementById('selSignTags');
+  if(!el)return;
+  const badge=document.getElementById('badge-sign');
+  if(badge) badge.textContent=recSelected.size?`${recSelected.size}件`:'なくてもOK';
+  el.innerHTML=[...recSelected].map(s=>`<span class="sel-tag" onclick="removeSelTag('${s.replace(/'/g,"\\'")}')">● ${s} ✕</span>`).join('');
+}
+
+function removeSelTag(name){
+  recSelected.delete(name);
+  renderSelTags();
+}
+
+function setupRecDrum(){
+  const wrap=document.getElementById('recDrum');
+  if(!wrap)return;
+  wrap.addEventListener('pointerdown',e=>{
+    recDrumDrag=true;recDrumStartY=e.clientY;recDrumStartOff=recDrumOffset;
+    wrap.setPointerCapture(e.pointerId);
+  });
+  wrap.addEventListener('pointermove',e=>{
+    if(!recDrumDrag)return;
+    recDrumOffset=recDrumStartOff+(recDrumStartY-e.clientY);
+    recDrumApply(false);
+  });
+  wrap.addEventListener('pointerup',()=>{
+    recDrumDrag=false;
+    recDrumOffset=Math.round(recDrumOffset/DRUM_H)*DRUM_H;
+    recDrumApply(true);
+  });
+  wrap.addEventListener('wheel',e=>{
+    e.preventDefault();
+    recDrumOffset+=e.deltaY*0.5;
+    clearTimeout(wrap._t);
+    wrap._t=setTimeout(()=>{recDrumOffset=Math.round(recDrumOffset/DRUM_H)*DRUM_H;recDrumApply(true);},120);
+    recDrumApply(false);
+  },{passive:false});
+}
+
+// ===== 設定ドラムピッカー =====
+let cfgDrumIdx=0,cfgDrumOffset=0,cfgDrumDrag=false,cfgDrumStartY=0,cfgDrumStartOff=0;
+
+function renderCfgDrum(){
+  const master=loadMaster();
+  const enabled=new Set(loadSigns());
+  const dl=document.getElementById('cfgDrumList');
+  if(!dl)return;
+  dl.innerHTML=master.map((s,i)=>`<div class="drum-item" data-i="${i}">${enabled.has(s)?'●':'○'} ${s}</div>`).join('');
+  cfgDrumApply(false);
+}
+
+function cfgDrumApply(animate){
+  const master=loadMaster();
+  if(!master.length)return;
+  const dl=document.getElementById('cfgDrumList');
+  if(!dl)return;
+  const max=(master.length-1)*DRUM_H;
+  cfgDrumOffset=Math.max(0,Math.min(cfgDrumOffset,max));
+  cfgDrumIdx=Math.round(cfgDrumOffset/DRUM_H);
+  dl.style.transition=animate?'transform .15s ease':'none';
+  dl.style.transform=`translateY(${54-cfgDrumOffset}px)`;
+  dl.querySelectorAll('.drum-item').forEach((el,i)=>{
+    el.classList.remove('sel','near');
+    if(i===cfgDrumIdx) el.classList.add('sel');
+    else if(Math.abs(i-cfgDrumIdx)===1) el.classList.add('near');
+  });
+  const it=master[cfgDrumIdx];
+  const enabled=new Set(loadSigns());
+  const on=enabled.has(it);
+  const lbl=document.getElementById('cfgCurLabel');
+  if(lbl) lbl.innerHTML=`選択中：<strong>${it}</strong>（${on?'<span style="color:var(--brand)">表示中</span>':'<span style="color:var(--muted)">非表示</span>'}）`;
+  const tb=document.getElementById('cfgTogBtn');
+  if(tb){tb.textContent=on?'👁 表示中':'🙈 非表示';tb.className='cfg-tog-btn'+(on?'':' off');}
+}
+
+function cfgToggle(){
+  const master=loadMaster();
+  if(!master.length)return;
+  const name=master[cfgDrumIdx];
+  const cur=loadSigns();
+  const newEnabled=cur.includes(name)?cur.filter(s=>s!==name):[...cur,name];
+  storeSigns(newEnabled);
+  renderCfgDrum();
+  initRecDrum();
+}
+
+function cfgDelete(){
+  const master=loadMaster();
+  if(!master.length)return;
+  const name=master[cfgDrumIdx];
+  if(!confirm(`「${name}」を完全に削除するにゃ？`))return;
+  const newMaster=master.filter((_,i)=>i!==cfgDrumIdx);
+  storeMaster(newMaster);
+  storeSigns(loadSigns().filter(s=>s!==name));
+  if(cfgDrumIdx>=newMaster.length) cfgDrumIdx=Math.max(0,newMaster.length-1);
+  cfgDrumOffset=cfgDrumIdx*DRUM_H;
+  renderCfgDrum();
+  initRecDrum();
+}
+
+function setupCfgDrum(){
+  const wrap=document.getElementById('cfgDrum');
+  if(!wrap)return;
+  wrap.addEventListener('pointerdown',e=>{
+    cfgDrumDrag=true;cfgDrumStartY=e.clientY;cfgDrumStartOff=cfgDrumOffset;
+    wrap.setPointerCapture(e.pointerId);
+  });
+  wrap.addEventListener('pointermove',e=>{
+    if(!cfgDrumDrag)return;
+    cfgDrumOffset=cfgDrumStartOff+(cfgDrumStartY-e.clientY);
+    cfgDrumApply(false);
+  });
+  wrap.addEventListener('pointerup',()=>{
+    cfgDrumDrag=false;
+    cfgDrumOffset=Math.round(cfgDrumOffset/DRUM_H)*DRUM_H;
+    cfgDrumApply(true);
+  });
+  wrap.addEventListener('wheel',e=>{
+    e.preventDefault();
+    cfgDrumOffset+=e.deltaY*0.5;
+    clearTimeout(wrap._t);
+    wrap._t=setTimeout(()=>{cfgDrumOffset=Math.round(cfgDrumOffset/DRUM_H)*DRUM_H;cfgDrumApply(true);},120);
+    cfgDrumApply(false);
+  },{passive:false});
+}
+
+// ===== アコーディオン =====
+function accToggle(id){
+document.querySelectorAll('.bnav-btn').forEach(t=>{
   t.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.bnav-btn').forEach(x=>x.classList.remove('on'));
     document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
     t.classList.add('on');
     document.getElementById('view-'+t.dataset.tab).classList.add('on');
+    window.scrollTo(0,0);
     if(t.dataset.tab==='hist') renderHist();
     if(t.dataset.tab==='sum') renderSum();
     if(t.dataset.tab==='cfg') renderCfg();
@@ -1043,29 +1452,11 @@ function localDayKey(d){
   return `${y}-${m}-${day}`;
 }
 
-// 気になったことグリッド描画
-const SIGN_FOLD=6; // 初期表示数
-let signExpanded=false;
-
+// 気になったことグリッド描画（ドラム初期化に変更）
 function renderSignGrid(clearAll=false){
-  const signs=loadSigns();
-  const grid=document.getElementById('signGrid');
-  const visible=signExpanded?signs:signs.slice(0,SIGN_FOLD);
-  const hasMore=signs.length>SIGN_FOLD;
-
-  // clearAll=trueのときは全クリア、それ以外は現在のON状態を保持
-  const onSet=clearAll ? new Set() : new Set([...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim().replace(/^● /,'')));
-
-  grid.innerHTML=visible.map(s=>`<button class="sign-btn${onSet.has(s)?' on':''}" onclick="this.classList.toggle('on')">● ${esc(s)}</button>`).join('');
-
-  // もっと見る／閉じるボタン
-  if(hasMore){
-    const more=document.createElement('button');
-    more.className='sign-more-btn';
-    more.textContent=signExpanded?`▲ 閉じる`:`＋ もっと見る（残り${signs.length-SIGN_FOLD}件）`;
-    more.onclick=()=>{signExpanded=!signExpanded;renderSignGrid();};
-    grid.appendChild(more);
-  }
+  if(clearAll) recSelected=new Set();
+  initRecDrum();
+  renderSelTags();
 }
 
 // 薬・気分
@@ -1073,10 +1464,14 @@ function setMed(v){
   med=v;
   document.getElementById('medYes').className='drug-btn'+(v==='yes'?' on':'');
   document.getElementById('medNo').className='drug-btn'+(v==='no'?' on':'');
+  const badge=document.getElementById('badge-med');
+  if(badge) badge.textContent=v==='yes'?'飲んだ ✅':'飲んでない ❌';
 }
 function setMood(el){
   document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
+  const badge=document.getElementById('badge-mood');
+  if(badge) badge.textContent=el.dataset.mood+' '+({'元気':'😄','普通':'😐','しんどい':'😔'}[el.dataset.mood]||'');
 }
 
 // 猫コメント
@@ -1117,7 +1512,7 @@ function saveRecord(){
   if(!med){catEl.textContent='お薬の記録を選んでにゃ💊';return;}
   const mood=document.querySelector('.mood-btn.on')?.dataset.mood||'';
   if(!mood){catEl.textContent='今日の気分を選んでにゃ😊';return;}
-  const signs=[...document.querySelectorAll('.sign-btn.on')].map(b=>b.textContent.trim().replace(/^● /,''));
+  const signs=[...recSelected];
   const memo=document.getElementById('memo').value.trim();
   const now=new Date();
   const dayKey=localDayKey(now);
@@ -1143,14 +1538,15 @@ function saveRecord(){
   // AIリンク生成
   buildAiLink(today);
 
-  // リセット（renderSignGrid前に確実にクリア）
+  // リセット
   med=null;
   document.getElementById('medYes').className='drug-btn';
   document.getElementById('medNo').className='drug-btn';
+  document.getElementById('badge-med').textContent='未選択';
   document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('on'));
-  signExpanded=false;
+  document.getElementById('badge-mood').textContent='未選択';
   document.getElementById('memo').value='';
-  renderSignGrid(true); // サインはrenderSignGrid内で全クリア
+  renderSignGrid(true);
 
   // 診察サポート誘導バナー表示
   document.getElementById('doctorBanner').style.display = 'block';
@@ -1166,13 +1562,14 @@ function renderHist(){
   const records=load();
   const w=['日','月','火','水','木','金','土'];
   const el=document.getElementById('histList');
-  if(!records.length){el.innerHTML='<div style="color:var(--muted);font-weight:700;font-size:15px">まだ記録なし。最初の1件を記録してにゃ🐱</div>';return;}
-  el.innerHTML=records.slice(0,10).map(r=>{
+  if(!records.length){el.innerHTML='<div style="color:var(--muted);font-weight:700;font-size:14px;padding:8px 0;">まだ記録なし。最初の1件を記録してにゃ🐱</div>';return;}
+  el.innerHTML=records.slice(0,14).map(r=>{
     const dt=new Date(r.at);
     const label=`${dt.getMonth()+1}/${dt.getDate()}（${w[dt.getDay()]}）`;
     const drug=r.drug==='yes'?'💊✅':'💊❌';
     const moodIcon={'元気':'😄','普通':'😐','しんどい':'😔'}[r.mood]||'';
-    return`<div class="hist-item"><span class="hist-day">${esc(label)} ${moodIcon}</span><span class="hist-meta">${drug} ${esc(r.signs[0]||'－')}</span></div>`;
+    const sign=r.signs[0]?`・${r.signs[0]}`:'';
+    return`<div class="hist-row"><span class="hist-day">${esc(label)}</span><span class="hist-info">${drug}${esc(sign)}</span><span class="hist-mi">${moodIcon}</span></div>`;
   }).join('');
 }
 
@@ -1360,76 +1757,21 @@ function renderSum(){
   }
 }
 
-// 設定
 function renderCfg(){
-  const master=loadMaster();
-  const enabled=loadSigns();
-  const enabledSet=new Set(enabled);
-  const container=document.getElementById('signTags');
-
-  // 有効・無効それぞれ描画
-  container.innerHTML=master.map((s,i)=>{
-    const on=enabledSet.has(s);
-    const safe=s.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return `<div class="sign-manage-row${on?'':' off'}" data-name="${safe}">
-      <span class="sign-manage-name">● ${safe}</span>
-      <label class="tog" title="${on?'非表示にする':'表示する'}">
-        <input type="checkbox" ${on?'checked':''} data-sign-index="${i}">
-        <span class="tog-track"></span>
-      </label>
-      <button class="sign-manage-del" data-del-index="${i}" title="完全に削除">🗑</button>
-    </div>`;
-  }).join('');
-
-  // トグル：有効/無効切り替え
-  container.querySelectorAll('.tog input').forEach(inp=>{
-    inp.addEventListener('change',function(){
-      const idx=Number(this.dataset.signIndex);
-      const m=loadMaster();
-      const name=m[idx];
-      const cur=loadSigns();
-      const newEnabled=this.checked?[...cur,name]:cur.filter(s=>s!==name);
-      storeSigns(newEnabled);
-      renderSignGrid();
-      renderCfg();
-    });
-  });
-
-  // 完全削除ボタン（マスターからも消す）
-  container.querySelectorAll('.sign-manage-del').forEach(btn=>{
-    btn.addEventListener('click',function(){
-      const idx=Number(this.dataset.delIndex);
-      const m=loadMaster();
-      const name=m[idx];
-      if(!confirm(`「${name}」を完全に削除しますにゃ。よろしい？`))return;
-      m.splice(idx,1);
-      storeMaster(m);
-      const cur=loadSigns().filter(s=>s!==name);
-      storeSigns(cur);
-      renderSignGrid();
-      renderCfg();
-    });
-  });
+  renderCfgDrum();
 }
 function addSign(){
   const val=document.getElementById('newSign').value.trim();
   if(!val) return;
   const master=loadMaster();
   const enabled=loadSigns();
-  if(!master.includes(val)){
-    master.push(val);
-    storeMaster(master);
-  }
-  if(!enabled.includes(val)){
-    enabled.push(val);
-    storeSigns(enabled);
-    renderSignGrid();
-  }
+  if(!master.includes(val)){master.push(val);storeMaster(master);}
+  if(!enabled.includes(val)){enabled.push(val);storeSigns(enabled);}
   document.getElementById('newSign').value='';
-  renderCfg();
+  cfgDrumIdx=master.length-1;cfgDrumOffset=cfgDrumIdx*DRUM_H;
+  renderCfgDrum();initRecDrum();
 }
 function removeSign(name){
-  // 後方互換用（現在は使われないが残す）
   const signs=loadSigns().filter(s=>s!==name);
   storeSigns(signs);renderSignGrid();renderCfg();
 }
@@ -1666,9 +2008,10 @@ function clearRecords(){
   med=null;
   document.getElementById('medYes').className='drug-btn';
   document.getElementById('medNo').className='drug-btn';
-  document.querySelectorAll('.mood-btn,.sign-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('on'));
   document.getElementById('memo').value='';
-  signExpanded=false;
+  recSelected=new Set();
+  renderSelTags();
   document.getElementById('nurseCard').classList.remove('show');
   document.getElementById('aiLinkCard').classList.remove('show');
   document.getElementById('doctorText').textContent='記録が増えると自動でまとめが出るにゃ📋';
@@ -1695,9 +2038,10 @@ function clearAll(){
   med=null;
   document.getElementById('medYes').className='drug-btn';
   document.getElementById('medNo').className='drug-btn';
-  document.querySelectorAll('.mood-btn,.sign-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('on'));
   document.getElementById('memo').value='';
-  signExpanded=false;
+  recSelected=new Set();
+  renderSelTags();
   document.getElementById('nurseCard').classList.remove('show');
   document.getElementById('aiLinkCard').classList.remove('show');
   document.getElementById('doctorText').textContent='記録が増えると自動でまとめが出るにゃ📋';
@@ -1705,6 +2049,9 @@ function clearAll(){
 }
 
 renderSignGrid();
+setupRecDrum();
+setupCfgDrum();
+initRecDrum();
 </script>
 </body>
 </html>
