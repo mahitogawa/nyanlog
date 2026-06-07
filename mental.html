@@ -125,12 +125,12 @@ body{
 .cat-4 .sym-btn.on{background:#5b54c7;border-color:#5b54c7;color:#fff;}
 
 /* 選択済みタグ */
-.selected-wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:32px;margin-bottom:14px;}
+.selected-wrap{display:flex;flex-direction:column;gap:8px;min-height:32px;margin-bottom:14px;}
 .selected-tag{
   background:var(--purple);color:#fff;
-  border-radius:999px;padding:6px 14px;
+  border-radius:12px;padding:10px 16px;
   font-size:14px;font-weight:900;
-  display:flex;align-items:center;gap:6px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;
 }
 .selected-tag .rm{font-size:16px;opacity:.7;}
 
@@ -280,16 +280,22 @@ body{
 /* ===== ドラムピッカー（にゃんログ方式） ===== */
 .drum-layout { display: flex; gap: 10px; margin-bottom: 8px; }
 .drum-col { flex: 1; display: flex; flex-direction: column; }
-.drum-col-label { font-size: 12px; font-weight: 900; color: var(--muted); text-align: center; margin-bottom: 6px; letter-spacing: .05em; }
+.drum-col-label { font-size: 16px; font-weight: 900; color: var(--ink); text-align: center; margin-bottom: 8px; letter-spacing: .05em; }
+.drum-outer-wrap {
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
 .drum-wrap {
-  position: relative; height: 168px; overflow: hidden;
+  position: relative; height: 180px; overflow: hidden;
   cursor: grab; user-select: none;
-  border-radius: 12px; background: #f0e8dc;
+  background: #f0e8dc;
 }
 .drum-wrap:active { cursor: grabbing; }
 .drum-list { position: absolute; top: 0; left: 0; right: 0; }
 .drum-item {
-  height: 48px; display: flex; align-items: center; justify-content: center;
+  height: 52px; display: flex; align-items: center; justify-content: center;
   font-size: 15px; font-weight: 700; color: #c4b49a;
   transition: color .1s, font-size .1s;
   padding: 0 10px; text-align: center; line-height: 1.3;
@@ -299,21 +305,21 @@ body{
 .drum-item.sel { color: #2c2118; font-size: 17px; font-weight: 900; }
 .drum-item.near { color: #8b7355; font-size: 16px; }
 .drum-ov-top {
-  position: absolute; top: 0; left: 0; right: 0; height: 60px;
+  position: absolute; top: 0; left: 0; right: 0; height: 64px;
   background: linear-gradient(to bottom, #f0e8dc 20%, rgba(240,232,220,0));
   pointer-events: none; z-index: 2;
 }
 .drum-ov-bot {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+  position: absolute; bottom: 0; left: 0; right: 0; height: 64px;
   background: linear-gradient(to top, #f0e8dc 20%, rgba(240,232,220,0));
   pointer-events: none; z-index: 2;
 }
 .drum-sel-line {
-  position: absolute; top: 60px; left: 10px; right: 10px; height: 48px;
+  position: absolute; top: 64px; left: 10px; right: 10px; height: 52px;
   border-top: 1.5px solid var(--purple); border-bottom: 1.5px solid var(--purple);
   border-radius: 8px; pointer-events: none; z-index: 1;
 }
-.drum-hint { font-size: 12px; color: var(--muted); font-weight: 700; text-align: center; margin: 4px 0 8px; }
+.drum-hint { font-size: 15px; color: var(--muted); font-weight: 700; text-align: center; margin: 6px 0 10px; }
 .drum-add-btn {
   display: block; width: 100%; padding: 14px;
   background: var(--purple); color: #fff;
@@ -359,21 +365,25 @@ body{
       <!-- カテゴリドラム -->
       <div class="drum-col">
         <div class="drum-col-label">カテゴリ</div>
-        <div class="drum-wrap" id="drum-cat">
-          <div class="drum-ov-top"></div>
-          <div class="drum-ov-bot"></div>
-          <div class="drum-sel-line"></div>
-          <div class="drum-list" id="drum-cat-list"></div>
+        <div class="drum-outer-wrap">
+          <div class="drum-wrap" id="drum-cat">
+            <div class="drum-ov-top"></div>
+            <div class="drum-ov-bot"></div>
+            <div class="drum-sel-line"></div>
+            <div class="drum-list" id="drum-cat-list"></div>
+          </div>
         </div>
       </div>
       <!-- 症状ドラム -->
       <div class="drum-col">
         <div class="drum-col-label">症状</div>
-        <div class="drum-wrap" id="drum-sym">
-          <div class="drum-ov-top"></div>
-          <div class="drum-ov-bot"></div>
-          <div class="drum-sel-line"></div>
-          <div class="drum-list" id="drum-sym-list"></div>
+        <div class="drum-outer-wrap">
+          <div class="drum-wrap" id="drum-sym">
+            <div class="drum-ov-top"></div>
+            <div class="drum-ov-bot"></div>
+            <div class="drum-sel-line"></div>
+            <div class="drum-list" id="drum-sym-list"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -446,6 +456,14 @@ body{
 
 <script>
 // ===== 症状データベース =====
+const CAT_COLORS = [
+  { bg:'#fde8f0', sel:'#c0392b', near:'#e07090' }, // 気分・感情（ピンク）
+  { bg:'#fff3cd', sel:'#d97706', near:'#e0a040' }, // 不安・恐怖（黄）
+  { bg:'#e8f5ef', sel:'#2d6a4f', near:'#5aaa80' }, // 思考・認知（緑）
+  { bg:'#e8f1fb', sel:'#1d6db5', near:'#4a90d0' }, // 睡眠・身体（青）
+  { bg:'#eef0ff', sel:'#5b54c7', near:'#8880d8' }, // 生活・行動（紫）
+];
+
 const SYMPTOM_CATS = [
   {
     cat: '😔 気分・感情',
@@ -632,7 +650,7 @@ const DISEASES = [
 
 // ===== 選択状態 =====
 let selected = new Set();
-const DRUM_H = 48;
+const DRUM_H = 52;
 
 // ===== ドラム共通セットアップ（にゃんログ方式・慣性付き）=====
 function setupDrum(wrapId, listId, onSnap) {
@@ -648,7 +666,7 @@ function setupDrum(wrapId, listId, onSnap) {
     offset = Math.max(0, Math.min(offset, max));
     const idx = Math.round(offset / DRUM_H);
     list.style.transition = animate ? 'transform .15s ease' : 'none';
-    list.style.transform = 'translateY(' + (60 - offset) + 'px)';
+    list.style.transform = 'translateY(' + (64 - offset) + 'px)';
     Array.from(list.children).forEach((el, i) => {
       el.classList.remove('sel', 'near');
       if (i === idx) el.classList.add('sel');
@@ -721,9 +739,38 @@ function applySymColors() {
   });
 }
 
+function applyCatColors(idx) {
+  const list = document.getElementById('drum-cat-list');
+  if (!list) return;
+  const wrap = document.getElementById('drum-cat');
+  const c = CAT_COLORS[idx] || CAT_COLORS[0];
+  wrap.style.background = c.bg;
+  // ov-topとov-botの色も合わせる
+  const ovTop = wrap.querySelector('.drum-ov-top');
+  const ovBot = wrap.querySelector('.drum-ov-bot');
+  if (ovTop) ovTop.style.background = 'linear-gradient(to bottom, ' + c.bg + ' 20%, rgba(0,0,0,0))';
+  if (ovBot) ovBot.style.background = 'linear-gradient(to top, ' + c.bg + ' 20%, rgba(0,0,0,0))';
+  Array.from(list.children).forEach((el, i) => {
+    const cc = CAT_COLORS[i] || CAT_COLORS[0];
+    if (el.classList.contains('sel')) el.style.color = cc.sel;
+    else if (el.classList.contains('near')) el.style.color = cc.near;
+    else el.style.color = '#c4b49a';
+  });
+}
+
 function updateSymDrum(catIdx) {
   drumCatIdx = catIdx;
   const syms = SYMPTOM_CATS[catIdx] ? SYMPTOM_CATS[catIdx].syms : [];
+  // 症状ドラムの背景色もカテゴリに合わせる
+  const symWrap = document.getElementById('drum-sym');
+  const cc = CAT_COLORS[catIdx] || CAT_COLORS[0];
+  if (symWrap) {
+    symWrap.style.background = cc.bg;
+    const ot = symWrap.querySelector('.drum-ov-top');
+    const ob = symWrap.querySelector('.drum-ov-bot');
+    if (ot) ot.style.background = 'linear-gradient(to bottom, ' + cc.bg + ' 20%, rgba(0,0,0,0))';
+    if (ob) ob.style.background = 'linear-gradient(to top, ' + cc.bg + ' 20%, rgba(0,0,0,0))';
+  }
   const sl = document.getElementById('drum-sym-list');
   sl.innerHTML = syms.map(s => '<div class="drum-item">' + s + '</div>').join('');
   drumSymIdx = 0;
@@ -740,8 +787,10 @@ function initDrums() {
   const cl = document.getElementById('drum-cat-list');
   cl.innerHTML = SYMPTOM_CATS.map(c => '<div class="drum-item">' + c.cat + '</div>').join('');
   catDrumCtrl = setupDrum('drum-cat', 'drum-cat-list', idx => {
+    applyCatColors(idx);
     if (idx !== drumCatIdx) updateSymDrum(idx);
   });
+  applyCatColors(0);
   updateSymDrum(0);
 }
 
@@ -761,16 +810,25 @@ function drumAdd() {
   btn.textContent = selected.size ? ('🔍 ' + selected.size + '個の症状でチェックする') : '🔍 チェックする（症状を選んでにゃ）';
 }
 
+function getCatColor(sym) {
+  for (let i = 0; i < SYMPTOM_CATS.length; i++) {
+    if (SYMPTOM_CATS[i].syms.includes(sym)) return CAT_COLORS[i] || CAT_COLORS[0];
+  }
+  return CAT_COLORS[0];
+}
+
 function renderSelected() {
   const wrap = document.getElementById('selectedWrap');
   if (!selected.size) {
     wrap.innerHTML = '<span style="font-size:14px;font-weight:700;color:var(--muted);">まだ選んでないにゃ</span>';
     return;
   }
-  wrap.innerHTML = Array.from(selected).map(s =>
-    '<div class="selected-tag" onclick="removeTag(\'' + s.replace(/'/g, "\\'") + '\')">' + s + '<span class="rm">×</span></div>'
-  ).join('');
+  wrap.innerHTML = Array.from(selected).map(s => {
+    const c = getCatColor(s);
+    return '<div class="selected-tag" onclick="removeTag(\'' + s.replace(/'/g, "\\'") + '\')" style="background:' + c.sel + ';">' + s + '<span class="rm">×</span></div>';
+  }).join('');
 }
+
 
 function removeTag(s) {
   selected.delete(s); renderSelected(); applySymColors(); updateAddBtn();
