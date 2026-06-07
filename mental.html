@@ -660,6 +660,7 @@ function setupDrum(wrapId, listId, onSnap) {
   if (!wrap || !list) return;
   let offset = 0, drag = false, startY = 0, startOff = 0;
   let vel = 0, lastY = 0, lastT = 0, raf = null;
+  let tapLock = false; // 二重タップ防止
 
   function apply(animate) {
     const count = list.children.length;
@@ -688,28 +689,41 @@ function setupDrum(wrapId, listId, onSnap) {
     raf = requestAnimationFrame(momentum);
   }
 
-  wrap.addEventListener('pointerdown', e => {
+  function fireTap() {
+    if (tapLock) return;
+    tapLock = true;
+    setTimeout(() => tapLock = false, 400);
+    onTap(wrapId);
+  }
+
+  // touchイベントのみ使う（pointerはiPhoneで二重発火するため除外）
+  wrap.addEventListener('touchstart', e => {
+    e.preventDefault();
     if (raf) { cancelAnimationFrame(raf); raf = null; }
     drag = true; vel = 0;
-    startY = e.clientY; startOff = offset;
-    lastY = e.clientY; lastT = Date.now();
-    wrap.setPointerCapture(e.pointerId);
-  });
-  wrap.addEventListener('pointermove', e => {
+    startY = e.touches[0].clientY; startOff = offset;
+    lastY = startY; lastT = Date.now();
+  }, { passive: false });
+
+  wrap.addEventListener('touchmove', e => {
+    e.preventDefault();
     if (!drag) return;
     const now = Date.now(), dt = Math.max(1, now - lastT);
-    vel = (lastY - e.clientY) / dt * 16;
-    lastY = e.clientY; lastT = now;
-    offset = startOff + (startY - e.clientY);
+    const cy = e.touches[0].clientY;
+    vel = (lastY - cy) / dt * 16;
+    lastY = cy; lastT = now;
+    offset = startOff + (startY - cy);
     apply(false);
-  });
-  wrap.addEventListener('pointerup', e => {
+  }, { passive: false });
+
+  wrap.addEventListener('touchend', e => {
+    e.preventDefault();
     drag = false;
-    const moved = Math.abs(e.clientY - startY);
-    if (moved < 6) { snap(true); onTap(wrapId); }
+    const moved = Math.abs(e.changedTouches[0].clientY - startY);
+    if (moved < 8) { snap(true); fireTap(); }
     else { raf = requestAnimationFrame(momentum); }
-  });
-  wrap.addEventListener('pointercancel', () => { drag = false; snap(true); });
+  }, { passive: false });
+
   wrap.addEventListener('wheel', e => {
     e.preventDefault();
     offset += e.deltaY > 0 ? DRUM_H : -DRUM_H;
