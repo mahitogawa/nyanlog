@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>こころのセルフチェック | にゃんログ</title>
+<title>こころのセルフチェック（PC版） | にゃんログ</title>
 <meta name="description" content="症状から気になる病気を参考表示。AIがやさしく解説します。診断ではありません。">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <script>
-// PCアクセス時は自動でPC版にリダイレクト
-if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) {
-  location.replace('./mental-pc.html');
+// スマホアクセス時は自動でスマホ版にリダイレクト
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+  location.replace('./mental.html');
 }
 </script>
 <meta name="theme-color" content="#5b54c7">
