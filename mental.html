@@ -36,7 +36,46 @@ html{scroll-behavior:smooth}
 
 body{
   font-family:'Zen Maru Gothic',-apple-system,'Hiragino Sans',sans-serif;
-  background:var(--cream);color:var(--ink);min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 15% -10%, rgba(91,84,199,.25), transparent 60%),
+    linear-gradient(160deg, #1f1a2e 0%, #120e1c 100%);
+  color:var(--ink);
+  min-height:100vh; min-height:100dvh;
+  display:flex; align-items:flex-start; justify-content:center;
+}
+
+.phone-frame{
+  width:428px; max-width:100vw;
+  margin:26px auto;
+  background:#0a0a0a;
+  border-radius:52px;
+  padding:14px;
+  box-shadow:0 40px 80px rgba(0,0,0,.55), 0 0 0 1.5px rgba(255,255,255,.08) inset;
+  position:relative;
+}
+.phone-notch{
+  position:absolute; top:26px; left:50%; transform:translateX(-50%);
+  width:120px; height:28px; background:#0a0a0a; border-radius:20px;
+  z-index:20;
+}
+.phone-screen{
+  background:var(--cream);
+  border-radius:38px;
+  overflow-y:auto; overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  height:min(890px, 92vh);
+  position:relative;
+  scrollbar-width:none;
+}
+.phone-screen::-webkit-scrollbar{ display:none; }
+.phone-screen > .hd{ border-radius:38px 38px 0 0; padding-top:40px; }
+
+@media (max-width:480px){
+  body{ display:block; }
+  .phone-frame{ width:100%; margin:0; padding:0; border-radius:0; box-shadow:none; background:transparent; }
+  .phone-notch{ display:none; }
+  .phone-screen{ height:100dvh; border-radius:0; }
+  .phone-screen > .hd{ border-radius:0; padding-top:env(safe-area-inset-top,0); }
 }
 
 /* ヘッダー */
@@ -255,6 +294,9 @@ body{
 </style>
 </head>
 <body>
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-screen">
 
 <div class="hd">
   <div class="hd-inner">
@@ -335,7 +377,8 @@ body{
   </div>
 
 </div>
-
+</div>
+</div>
 
 <script>
 // ===== 症状データベース =====
