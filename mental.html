@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>こころのセルフチェック | にゃんログ</title>
+<title>こころのセルフチェック（PC版） | にゃんログ</title>
 <meta name="description" content="症状から気になる病気を参考表示。AIがやさしく解説します。診断ではありません。">
 <link rel="icon" type="image/png" href="favicon.png">
-<link rel="manifest" href="manifest-mental.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="こころチェック">
-<link rel="apple-touch-icon" href="favicon.png">
+<script>
+// スマホアクセス時は自動でスマホ版にリダイレクト
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+  location.replace('./mental.html');
+}
+</script>
 <meta name="theme-color" content="#5b54c7">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
@@ -36,46 +38,7 @@ html{scroll-behavior:smooth}
 
 body{
   font-family:'Zen Maru Gothic',-apple-system,'Hiragino Sans',sans-serif;
-  background:
-    radial-gradient(1200px 700px at 15% -10%, rgba(91,84,199,.25), transparent 60%),
-    linear-gradient(160deg, #1f1a2e 0%, #120e1c 100%);
-  color:var(--ink);
-  min-height:100vh; min-height:100dvh;
-  display:flex; align-items:flex-start; justify-content:center;
-}
-
-.phone-frame{
-  width:428px; max-width:100vw;
-  margin:26px auto;
-  background:#0a0a0a;
-  border-radius:52px;
-  padding:14px;
-  box-shadow:0 40px 80px rgba(0,0,0,.55), 0 0 0 1.5px rgba(255,255,255,.08) inset;
-  position:relative;
-}
-.phone-notch{
-  position:absolute; top:26px; left:50%; transform:translateX(-50%);
-  width:120px; height:28px; background:#0a0a0a; border-radius:20px;
-  z-index:20;
-}
-.phone-screen{
-  background:var(--cream);
-  border-radius:38px;
-  overflow-y:auto; overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  height:min(890px, 92vh);
-  position:relative;
-  scrollbar-width:none;
-}
-.phone-screen::-webkit-scrollbar{ display:none; }
-.phone-screen > .hd{ border-radius:38px 38px 0 0; padding-top:40px; }
-
-@media (max-width:480px){
-  body{ display:block; }
-  .phone-frame{ width:100%; margin:0; padding:0; border-radius:0; box-shadow:none; background:transparent; }
-  .phone-notch{ display:none; }
-  .phone-screen{ height:100dvh; border-radius:0; }
-  .phone-screen > .hd{ border-radius:0; padding-top:env(safe-area-inset-top,0); }
+  background:var(--cream);color:var(--ink);min-height:100vh;
 }
 
 /* ヘッダー */
@@ -106,7 +69,7 @@ body{
 .sym-cat-header{
   display:flex;align-items:center;justify-content:space-between;
   padding:14px 16px;cursor:pointer;
-  background:var(--brand-light);border:none;width:100%;font-family:inherit;
+  background:#fff;border:none;width:100%;font-family:inherit;
   transition:.15s;
 }
 .sym-cat-header:active{background:var(--sand);}
@@ -119,21 +82,26 @@ body{
 .sym-cat-wrap.open .sym-cat-body{display:block;}
 .sym-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
 .sym-btn{
-  position:relative;
   background:var(--sand);border:2px solid var(--line);
-  border-radius:12px;padding:12px 34px 12px 10px;
+  border-radius:12px;padding:12px 10px;
   font-family:inherit;font-size:14px;font-weight:900;
-  color:var(--ink);cursor:pointer;
-  transition:background .2s,border-color .2s,box-shadow .2s,transform .15s;
+  color:var(--ink);cursor:pointer;transition:.15s;
   text-align:left;line-height:1.4;
 }
-.sym-btn:hover{background:var(--brand-light);border-color:var(--brand);box-shadow:0 4px 12px rgba(91,84,199,.16);transform:translateY(-2px);}
-.sym-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:0 4px 14px rgba(91,84,199,.38);}
-.sym-btn.on:hover{background:var(--brand);border-color:var(--brand);transform:translateY(-2px);box-shadow:0 6px 16px rgba(91,84,199,.45);}
-.sym-btn.on::after{content:'✓';position:absolute;top:8px;right:10px;font-size:13px;font-weight:900;color:#fff;}
+.sym-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);}
 .sym-btn:active{transform:scale(.97);}
 
-/* ボタン色はサイト共通のブランドカラーに統一（.sym-btn / .sym-btn.on の基本色をそのまま使用） */
+/* カテゴリ別ボタン色 */
+.cat-0 .sym-btn{background:#fde8f0;border-color:#f5b8d0;}
+.cat-0 .sym-btn.on{background:#c0392b;border-color:#c0392b;color:#fff;}
+.cat-1 .sym-btn{background:#fff3cd;border-color:#f0c040;}
+.cat-1 .sym-btn.on{background:#d97706;border-color:#d97706;color:#fff;}
+.cat-2 .sym-btn{background:#e8f5ef;border-color:#b7dfc9;}
+.cat-2 .sym-btn.on{background:#2d6a4f;border-color:#2d6a4f;color:#fff;}
+.cat-3 .sym-btn{background:#e8f1fb;border-color:#a8c8f0;}
+.cat-3 .sym-btn.on{background:#1d6db5;border-color:#1d6db5;color:#fff;}
+.cat-4 .sym-btn{background:#eef0ff;border-color:#c4c0f0;}
+.cat-4 .sym-btn.on{background:#5b54c7;border-color:#5b54c7;color:#fff;}
 
 /* 選択済み */
 .selected-wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:32px;margin-bottom:14px;}
@@ -294,9 +262,6 @@ body{
 </style>
 </head>
 <body>
-<div class="phone-frame">
-<div class="phone-notch"></div>
-<div class="phone-screen">
 
 <div class="hd">
   <div class="hd-inner">
@@ -313,11 +278,6 @@ body{
 
   <div class="warn-bar">
     ⚠️ これは医療診断ではありません。あくまで「参考情報」として活用してください。症状が気になる場合は必ず医師にご相談ください。
-  </div>
-
-  <div style="background:var(--brand-light);border-radius:16px;padding:14px 16px;margin-bottom:14px;font-size:14px;font-weight:700;color:var(--ink);line-height:1.75;display:flex;gap:10px;align-items:flex-start;">
-    <span style="font-size:20px">💙</span>
-    <div>こころの病気は、性格の弱さや意志の問題ではありません。うつ病・不安症・発達障害など、誰にでも起こりえます。適切な治療とサポートで、多くの人が回復しています。</div>
   </div>
 
   <!-- 症状選択 -->
@@ -377,8 +337,7 @@ body{
   </div>
 
 </div>
-</div>
-</div>
+
 
 <script>
 // ===== 症状データベース =====
@@ -564,36 +523,6 @@ const DISEASES = [
       ヒント:'😴 就寝・起床時間の記録 / 🌙 睡眠の質・目覚め感'
     }
   },
-  {
-    name:'解離性障害', icon:'🌀',
-    syms:['感情が麻痺している感じ','記憶が悪い','考えがまとまらない'],
-    desc:'記憶・意識・アイデンティティなどの連続性が断絶する状態。強いストレスやトラウマが背景にあることが多いです。',
-    detail:{
-      症状:'記憶がとぎれる（健忘）、自分が自分でない感覚（離人感）、別の人格が現れる（解離性同一性障害）など。',
-      困りごと:'気づいたら時間が飛んでいる。集中できない。周りに説明しづらく孤立しやすい。',
-      ヒント:'🌀 解離が起きた状況 / 😔 気分・安心感の変化'
-    }
-  },
-  {
-    name:'パーソナリティ障害', icon:'🎭',
-    syms:['感情の波が激しい','人間関係でいつも困る','怒りっぽい・イライラ'],
-    desc:'持続的な思考・感情・行動パターンの偏りにより生活に支障をきたす状態。本人も生きづらさを強く感じています。',
-    detail:{
-      症状:'境界性パーソナリティ障害（感情の不安定さ・見捨てられ恐怖）、回避性、依存性など、種類はさまざま。',
-      困りごと:'人間関係が不安定になりやすい。感情の波に本人も周りも振り回されやすい。',
-      ヒント:'😤 感情の波 / 👥 人間関係のトラブル / 😔 気分・安定感'
-    }
-  },
-  {
-    name:'認知症', icon:'🧓',
-    syms:['記憶が悪い','考えがまとまらない','疲れやすい・だるい'],
-    desc:'記憶・判断・言語などの認知機能が低下し、日常生活に支障をきたす状態。高次脳機能障害とは原因・経過が異なります。',
-    detail:{
-      症状:'物忘れが増える、判断や段取りが難しくなる、言葉が出てこない、日付や場所が分からなくなるなど。',
-      困りごと:'家事や手続きでのミスが増える。同じ話を繰り返す。本人も周りも不安を感じやすい。',
-      ヒント:'🧠 物忘れの変化 / 💊 服薬の継続 / 😔 気分・様子の変化'
-    }
-  },
 ];
 
 // ===== 選択状態 =====
@@ -604,7 +533,7 @@ function renderSyms(){
   const container = document.getElementById('symCats');
   container.innerHTML = SYMPTOM_CATS.map((cat, i)=>{
     const selectedCount = cat.syms.filter(s=>selected.has(s)).length;
-    const isOpen = selectedCount > 0;
+    const isOpen = i < 2 || selectedCount > 0;
     return `
     <div class="sym-cat-wrap${isOpen?' open':''}" id="cat-${i}">
       <button class="sym-cat-header" onclick="toggleCat(${i})">
