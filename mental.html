@@ -6,7 +6,11 @@
 <title>こころのセルフチェック | にゃんログ</title>
 <meta name="description" content="症状から気になる病気を参考表示。AIがやさしく解説します。診断ではありません。">
 <link rel="icon" type="image/png" href="favicon.png">
+<link rel="manifest" href="manifest-mental.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="こころチェック">
+<link rel="apple-touch-icon" href="favicon.png">
 <meta name="theme-color" content="#5b54c7">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
@@ -76,13 +80,18 @@ body{
 .sym-cat-wrap.open .sym-cat-body{display:block;}
 .sym-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
 .sym-btn{
+  position:relative;
   background:var(--sand);border:2px solid var(--line);
-  border-radius:12px;padding:12px 10px;
+  border-radius:12px;padding:12px 34px 12px 10px;
   font-family:inherit;font-size:14px;font-weight:900;
-  color:var(--ink);cursor:pointer;transition:.15s;
+  color:var(--ink);cursor:pointer;
+  transition:background .2s,border-color .2s,box-shadow .2s,transform .15s;
   text-align:left;line-height:1.4;
 }
-.sym-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);}
+.sym-btn:hover{background:var(--brand-light);border-color:var(--brand);box-shadow:0 4px 12px rgba(91,84,199,.16);transform:translateY(-2px);}
+.sym-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:0 4px 14px rgba(91,84,199,.38);}
+.sym-btn.on:hover{background:var(--brand);border-color:var(--brand);transform:translateY(-2px);box-shadow:0 6px 16px rgba(91,84,199,.45);}
+.sym-btn.on::after{content:'✓';position:absolute;top:8px;right:10px;font-size:13px;font-weight:900;color:#fff;}
 .sym-btn:active{transform:scale(.97);}
 
 /* ボタン色はサイト共通のブランドカラーに統一（.sym-btn / .sym-btn.on の基本色をそのまま使用） */
