@@ -1,0 +1,20 @@
+{
+  "name": "こころのセルフチェック | にゃんログ",
+  "short_name": "こころチェック",
+  "description": "症状から気になる病気を参考表示。AIがやさしく解説します。診断ではありません。",
+  "start_url": "/nyanlog/mental.html",
+  "scope": "/nyanlog/mental.html",
+  "display": "standalone",
+  "background_color": "#fdf8f3",
+  "theme_color": "#5b54c7",
+  "lang": "ja",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
