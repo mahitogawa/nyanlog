@@ -9,94 +9,101 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#5b54c7">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
-
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 
 :root{
-  --cream:#fdf8f3;
-  --sand:#f5ede0;
-  --brand:#5b54c7;
-  --brand-light:#eef0ff;
-  --green:#2d6a4f;
-  --ink:#2c2118;
-  --muted:#8b7355;
-  --line:#e8ddd0;
-  --warn:#e07b39;
-  --amber:#d97706;
-  --amber-bg:#fff8e7;
-  --danger:#c0392b;
-  --danger-bg:#fdecea;
+  --bg:#050d18;
+  --bg2:#0a1a2e;
+  --card:#0e1f35;
+  --card2:#0c1930;
+  --brand:#8b7cf6;
+  --brand-strong:#a78bfa;
+  --brand-light:rgba(139,124,246,.14);
+  --brand-border:rgba(139,124,246,.4);
+  --green:#34d399;
+  --green-bg:rgba(52,211,153,.12);
+  --ink:#eef2ff;
+  --muted:#8fa0bd;
+  --line:rgba(148,163,184,.2);
+  --warn:#fbbf24;
+  --amber:#fbbf24;
+  --amber-bg:rgba(251,191,36,.12);
+  --danger:#f87171;
+  --danger-bg:rgba(248,113,113,.12);
 }
 
 body{
-  font-family:'Zen Maru Gothic',-apple-system,'Hiragino Sans',sans-serif;
-  background:var(--cream);color:var(--ink);min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP',sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(139,124,246,.16) 0%, transparent 60%),
+    linear-gradient(170deg, var(--bg2) 0%, var(--bg) 45%);
+  background-attachment:fixed;
+  color:var(--ink);min-height:100vh;
 }
 
 /* ヘッダー */
-.hd{background:var(--brand);padding:env(safe-area-inset-top,0) 0 0;position:sticky;top:0;z-index:100;}
+.hd{background:linear-gradient(135deg,#13254a,#0a1526);padding:env(safe-area-inset-top,0) 0 0;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--brand-border);box-shadow:0 4px 20px rgba(0,0,0,.35);}
 .hd-inner{display:flex;align-items:center;gap:12px;padding:14px 16px;}
-.hd-icon{width:42px;height:42px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.hd-icon{width:42px;height:42px;background:var(--brand-light);border:1px solid var(--brand-border);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 16px rgba(139,124,246,.35) inset;}
 .hd-title{font-size:18px;font-weight:900;color:#fff;}
-.hd-sub{font-size:13px;font-weight:700;color:rgba(255,255,255,.75);}
-.hd-back{margin-left:auto;background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:12px;padding:8px 14px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;}
+.hd-sub{font-size:13px;font-weight:700;color:rgba(255,255,255,.6);}
+.hd-back{margin-left:auto;background:var(--brand-light);color:var(--brand-strong);border:1px solid var(--brand-border);border-radius:12px;padding:8px 14px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;}
 
 .main{max-width:680px;margin:0 auto;padding:20px 14px 80px;}
 
 /* 警告バナー */
 .warn-bar{
-  background:var(--amber-bg);border:1.5px solid var(--amber);
+  background:var(--amber-bg);border:1.5px solid rgba(251,191,36,.5);
   border-radius:16px;padding:14px 16px;
-  font-size:14px;font-weight:700;color:#78350f;
+  font-size:14px;font-weight:700;color:#fde68a;
   line-height:1.75;margin-bottom:18px;
 }
 
 /* カード */
-.card{background:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(44,33,24,.07);border:1px solid var(--line);}
+.card{background:var(--card);border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.35);border:1px solid var(--line);}
 .card-title{font-size:16px;font-weight:900;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 
 /* 症状グリッド */
 .sym-cats{display:flex;flex-direction:column;gap:8px;}
-.sym-cat-wrap{border:1.5px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;}
+.sym-cat-wrap{border:1.5px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card2);}
 .sym-cat-header{
   display:flex;align-items:center;justify-content:space-between;
   padding:14px 16px;cursor:pointer;
-  background:#fff;border:none;width:100%;font-family:inherit;
+  background:transparent;border:none;width:100%;font-family:inherit;
   transition:.15s;
 }
-.sym-cat-header:active{background:var(--sand);}
+.sym-cat-header:active{background:rgba(139,124,246,.08);}
 .sym-cat-title{font-size:15px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:8px;}
 .sym-cat-meta{display:flex;align-items:center;gap:8px;}
-.sym-cat-count{font-size:13px;font-weight:900;color:var(--brand);background:var(--brand-light);border-radius:999px;padding:3px 10px;}
+.sym-cat-count{font-size:13px;font-weight:900;color:var(--brand-strong);background:var(--brand-light);border-radius:999px;padding:3px 10px;}
 .sym-cat-arrow{font-size:14px;color:var(--muted);transition:.25s;}
 .sym-cat-wrap.open .sym-cat-arrow{transform:rotate(180deg);}
 .sym-cat-body{display:none;padding:0 14px 14px;}
 .sym-cat-wrap.open .sym-cat-body{display:block;}
 .sym-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
 .sym-btn{
-  background:var(--sand);border:2px solid var(--line);
+  background:rgba(255,255,255,.04);border:2px solid var(--line);
   border-radius:12px;padding:12px 10px;
   font-family:inherit;font-size:14px;font-weight:900;
   color:var(--ink);cursor:pointer;transition:.15s;
   text-align:left;line-height:1.4;
 }
-.sym-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);}
+.sym-btn.on{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:0 0 16px rgba(139,124,246,.5);}
 .sym-btn:active{transform:scale(.97);}
-.sym-btn:hover:not(.on){filter:brightness(.95);border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-light);}
+.sym-btn:hover:not(.on){filter:brightness(1.15);border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-light);}
 
 /* カテゴリ別ボタン色 */
-.cat-0 .sym-btn{background:#fde8f0;border-color:#f5b8d0;}
-.cat-0 .sym-btn.on{background:#c0392b;border-color:#c0392b;color:#fff;}
-.cat-1 .sym-btn{background:#fff3cd;border-color:#f0c040;}
-.cat-1 .sym-btn.on{background:#d97706;border-color:#d97706;color:#fff;}
-.cat-2 .sym-btn{background:#e8f5ef;border-color:#b7dfc9;}
-.cat-2 .sym-btn.on{background:#2d6a4f;border-color:#2d6a4f;color:#fff;}
-.cat-3 .sym-btn{background:#e8f1fb;border-color:#a8c8f0;}
-.cat-3 .sym-btn.on{background:#1d6db5;border-color:#1d6db5;color:#fff;}
-.cat-4 .sym-btn{background:#eef0ff;border-color:#c4c0f0;}
-.cat-4 .sym-btn.on{background:#5b54c7;border-color:#5b54c7;color:#fff;}
+.cat-0 .sym-btn{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.4);}
+.cat-0 .sym-btn.on{background:#f43f5e;border-color:#f43f5e;color:#fff;box-shadow:0 0 16px rgba(244,63,94,.5);}
+.cat-1 .sym-btn{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.4);}
+.cat-1 .sym-btn.on{background:#f59e0b;border-color:#f59e0b;color:#1a1206;box-shadow:0 0 16px rgba(245,158,11,.5);}
+.cat-2 .sym-btn{background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.4);}
+.cat-2 .sym-btn.on{background:#14b8a6;border-color:#14b8a6;color:#04211c;box-shadow:0 0 16px rgba(20,184,166,.5);}
+.cat-3 .sym-btn{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.4);}
+.cat-3 .sym-btn.on{background:#0ea5e9;border-color:#0ea5e9;color:#04212f;box-shadow:0 0 16px rgba(14,165,233,.5);}
+.cat-4 .sym-btn{background:var(--brand-light);border-color:var(--brand-border);}
+.cat-4 .sym-btn.on{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 0 16px rgba(139,124,246,.5);}
 
 /* 選択済み */
 .selected-wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:32px;margin-bottom:14px;}
@@ -105,18 +112,20 @@ body{
   border-radius:999px;padding:6px 14px;
   font-size:14px;font-weight:900;
   display:flex;align-items:center;gap:6px;cursor:pointer;
+  box-shadow:0 0 12px rgba(139,124,246,.4);
 }
 .selected-tag .rm{font-size:16px;opacity:.7;}
 
 /* 分析ボタン */
 .analyze-btn{
   display:block;width:100%;padding:18px;
-  background:var(--brand);color:#fff;
+  background:linear-gradient(135deg,var(--brand),#6d5fd8);color:#fff;
   border:none;border-radius:16px;
   font-family:inherit;font-size:17px;font-weight:900;
   cursor:pointer;transition:.15s;
+  box-shadow:0 8px 24px rgba(139,124,246,.4);
 }
-.analyze-btn:disabled{opacity:.5;cursor:not-allowed;}
+.analyze-btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;}
 .analyze-btn:not(:disabled):active{transform:scale(.98);}
 
 /* 結果エリア */
@@ -126,7 +135,7 @@ body{
 /* 疾患マッチカード */
 .match-list{display:flex;flex-direction:column;gap:10px;}
 .match-item{
-  background:#fff;border-radius:16px;
+  background:var(--card2);border-radius:16px;
   border:1.5px solid var(--line);
   padding:16px;
 }
@@ -134,46 +143,46 @@ body{
 .match-name{font-size:16px;font-weight:900;color:var(--ink);flex:1;}
 .match-score{
   font-size:14px;font-weight:900;
-  background:var(--brand-light);color:var(--brand);
+  background:var(--brand-light);color:var(--brand-strong);
   border-radius:999px;padding:4px 12px;
 }
-.match-bar-wrap{height:8px;background:var(--sand);border-radius:999px;overflow:hidden;margin-bottom:10px;}
-.match-bar{height:100%;background:linear-gradient(to right,var(--brand),#8b85e0);border-radius:999px;transition:.5s ease;}
+.match-bar-wrap{height:8px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-bottom:10px;}
+.match-bar{height:100%;background:linear-gradient(to right,var(--brand),#c4b5fd);border-radius:999px;transition:.5s ease;box-shadow:0 0 8px rgba(139,124,246,.6);}
 .match-syms{display:flex;flex-wrap:wrap;gap:6px;}
-.match-sym{font-size:14px;font-weight:700;background:var(--brand-light);color:var(--brand);border-radius:999px;padding:4px 10px;}
+.match-sym{font-size:14px;font-weight:700;background:var(--brand-light);color:var(--brand-strong);border-radius:999px;padding:4px 10px;}
 
 /* 詳細展開 */
 .match-detail{
   display:none;margin-top:12px;
-  background:var(--sand);border-radius:14px;padding:14px;
+  background:rgba(255,255,255,.04);border-radius:14px;padding:14px;border:1px solid var(--line);
 }
 .match-item.open .match-detail{display:block;}
 .match-detail-row{margin-bottom:10px;}
 .match-detail-row:last-child{margin-bottom:0;}
 .match-detail-label{font-size:13px;font-weight:900;color:var(--muted);letter-spacing:.06em;margin-bottom:4px;}
-.match-detail-body{font-size:14px;font-weight:700;color:#3d2f20;line-height:1.75;}
-.match-detail-hint{font-size:14px;font-weight:700;color:var(--brand);}
+.match-detail-body{font-size:14px;font-weight:700;color:#dbe4f5;line-height:1.75;}
+.match-detail-hint{font-size:14px;font-weight:700;color:var(--brand-strong);}
 .match-toggle{
   display:block;width:100%;margin-top:10px;
   background:none;border:1.5px solid var(--line);border-radius:10px;
   padding:8px;font-family:inherit;font-size:14px;font-weight:900;
   color:var(--muted);cursor:pointer;transition:.15s;
 }
-.match-toggle:hover{background:var(--sand);}
+.match-toggle:hover{background:rgba(139,124,246,.08);border-color:var(--brand-border);color:var(--brand-strong);}
 
 /* 参考メッセージ */
 .msg-box{
-  background:linear-gradient(135deg,#f0eeff,#e8f5ef);
-  border:1.5px solid var(--brand);
+  background:linear-gradient(135deg,rgba(139,124,246,.14),rgba(52,211,153,.1));
+  border:1.5px solid var(--brand-border);
   border-radius:20px;padding:20px;
   font-size:15px;font-weight:700;
-  color:#1a1560;line-height:1.9;
+  color:#e6e3ff;line-height:1.9;
   white-space:pre-wrap;word-break:break-word;
 }
 
 /* AIに相談カード */
 .ai-consult-card{
-  background:var(--sand);border-radius:16px;
+  background:var(--card2);border-radius:16px;
   padding:16px;margin-top:14px;
   border:1.5px solid var(--line);
 }
@@ -190,7 +199,7 @@ body{
   display:flex;flex-direction:column;align-items:center;
   gap:5px;padding:14px 6px;
   border-radius:14px;border:1.5px solid var(--line);
-  background:#fff;font-family:inherit;
+  background:rgba(255,255,255,.04);font-family:inherit;
   font-size:15px;font-weight:900;color:var(--ink);
   cursor:pointer;text-decoration:none;transition:.15s;
 }
@@ -198,7 +207,7 @@ body{
 .ai-btn-icon{font-size:26px;line-height:1;}
 .ai-copy-msg{
   text-align:center;font-size:14px;font-weight:900;
-  color:var(--brand);min-height:18px;margin-top:8px;
+  color:var(--brand-strong);min-height:18px;margin-top:8px;
 }
 
 /* コピー・印刷 */
@@ -211,14 +220,14 @@ body{
   cursor:pointer;transition:.15s;
 }
 .act-btn:active{transform:scale(.97);}
-.act-copy{background:var(--green);color:#fff;}
-.act-print{background:var(--amber);color:#fff;}
+.act-copy{background:var(--green);color:#04211c;}
+.act-print{background:var(--amber);color:#1a1206;}
 .copy-msg{text-align:center;font-size:14px;font-weight:900;color:var(--green);min-height:20px;margin-top:8px;}
 
 /* もう一度 */
 .reset-btn{
   display:block;width:100%;margin-top:14px;
-  padding:14px;background:var(--sand);
+  padding:14px;background:rgba(255,255,255,.04);
   border:1.5px solid var(--line);border-radius:14px;
   font-family:inherit;font-size:15px;font-weight:900;
   color:var(--muted);cursor:pointer;
@@ -227,8 +236,8 @@ body{
 /* 相互リンクカード */
 .cross-link-card{
   display:flex;align-items:center;gap:14px;
-  background:linear-gradient(135deg,#e8f5ef,#eef0ff);
-  border:1.5px solid var(--green);border-radius:18px;
+  background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(139,124,246,.12));
+  border:1.5px solid rgba(52,211,153,.5);border-radius:18px;
   padding:16px 18px;margin:0 20px 14px;
   text-decoration:none;color:var(--ink);
   transition:.15s;
@@ -244,15 +253,17 @@ body{
 @media print{
   .hd,.warn-bar,.sym-cats,.analyze-btn,.action-row,.reset-btn{display:none!important;}
   .result-section{display:block!important;}
-  body{background:#fff;}
-  .card{box-shadow:none;border:1px solid #ddd;}
+  body{background:#fff;color:#111;}
+  .card,.match-item,.match-detail,.ai-consult-card{background:#fff;box-shadow:none;border:1px solid #ddd;color:#111;}
+  .card-title,.match-name,.match-detail-body,.ai-consult-title{color:#111;}
+  .msg-box{background:#fff;border:1px solid #ccc;color:#111;}
 }
 
 /* フッター */
-.site-footer{border-top:1px solid var(--line);background:var(--cream);}
+.site-footer{border-top:1px solid var(--line);background:var(--bg);}
 .site-footer-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 16px;flex-wrap:wrap;color:var(--muted);font-size:13px;font-weight:700;}
 .footer-links{display:flex;gap:16px;flex-wrap:wrap;}
-.footer-links a{color:var(--muted);text-decoration:none;}
+.footer-links a{color:var(--brand-strong);text-decoration:none;}
 .footer-note{width:100%;font-size:13px;line-height:1.8;color:var(--muted);}
 </style>
 </head>
@@ -303,13 +314,13 @@ body{
         <div class="ai-consult-title">🐱 AI先生に聞く</div>
         <div class="ai-consult-note">気になることをそのまま聞いてにゃ✨</div>
         <textarea id="mentalAiQuestion" placeholder="例：うつ病とはどんな症状ですか？"
-          style="width:100%;font-size:16px;padding:10px;border-radius:10px;border:1px solid #ccc;height:220px;box-sizing:border-box;margin-top:8px;"></textarea>
+          style="width:100%;font-size:16px;padding:10px;border-radius:10px;border:1.5px solid rgba(148,163,184,.3);background:rgba(255,255,255,.04);color:#eef2ff;height:220px;box-sizing:border-box;margin-top:8px;font-family:inherit;"></textarea>
         <button onclick="askMentalAI()"
           style="background:#10b981;color:#fff;font-size:18px;font-weight:bold;padding:14px;width:100%;border:none;border-radius:12px;margin-top:8px;cursor:pointer;">
           AI先生に聞く！
         </button>
         <div id="mentalAiAnswer"
-          style="display:none;margin-top:12px;background:#f0f8ff;border:1.5px solid #bfdbfe;color:#1a2e4a;font-size:17px;font-weight:600;line-height:1.9;padding:16px 18px;border-radius:12px;word-break:break-word;"></div>
+          style="display:none;margin-top:12px;background:rgba(139,124,246,.1);border:1.5px solid rgba(139,124,246,.4);color:#eef2ff;font-size:17px;font-weight:600;line-height:1.9;padding:16px 18px;border-radius:12px;word-break:break-word;"></div>
         <div class="action-row">
           <button class="act-btn act-copy" onclick="copyResult()">📋 コピー</button>
           <button class="act-btn act-print" onclick="window.print()">🖨️ 印刷・PDF</button>
