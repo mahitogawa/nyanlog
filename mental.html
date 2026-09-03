@@ -235,7 +235,7 @@ body{
   display:flex;align-items:center;gap:14px;
   background:linear-gradient(135deg,#e8f5ef,#eef0ff);
   border:1.5px solid var(--green);border-radius:18px;
-  padding:16px 18px;margin-bottom:14px;
+  padding:16px 18px;margin:0 20px 14px;
   text-decoration:none;color:var(--ink);
   transition:.15s;
 }
@@ -316,24 +316,15 @@ body{
         </button>
         <div id="mentalAiAnswer"
           style="display:none;margin-top:12px;background:#f0f8ff;border:1.5px solid #bfdbfe;color:#1a2e4a;font-size:17px;font-weight:600;line-height:1.9;padding:16px 18px;border-radius:12px;word-break:break-word;"></div>
+        <div class="action-row">
+          <button class="act-btn act-copy" onclick="copyResult()">📋 コピー</button>
+          <button class="act-btn act-print" onclick="window.print()">🖨️ 印刷・PDF</button>
+        </div>
+        <div class="copy-msg" id="copyMsg"></div>
       </div>
-      <div class="action-row">
-        <button class="act-btn act-copy" onclick="copyResult()">📋 コピー</button>
-        <button class="act-btn act-print" onclick="window.print()">🖨️ 印刷・PDF</button>
-      </div>
-      <div class="copy-msg" id="copyMsg"></div>
     </div>
 
     <button class="reset-btn" onclick="reset()">🔄 もう一度チェックする</button>
-
-    <a href="./nyanlog.html" class="cross-link-card">
-      <div class="cross-link-icon">📋</div>
-      <div class="cross-link-body">
-        <div class="cross-link-title">にゃんログで毎日の記録もできるにゃ</div>
-        <div class="cross-link-note">気分・お薬・症状を記録して受診時に活用しよう</div>
-      </div>
-      <div class="cross-link-arrow">›</div>
-    </a>
 
   </div>
 
@@ -667,7 +658,7 @@ function buildMessage(syms, scored){
     msg += `参考情報として「${top.name}」との関連が見られました。\nただし、これは医療診断ではありません。\n正確なことは必ず医師にご相談ください。\n\n`;
   }
 
-  msg += 'にゃんログで日々の症状を記録し続けることで、受診時に役立てることができます。\nあなたのことを心配している人は必ずいます。🐱';
+  msg += '日々の症状を記録し続けることで、受診時に役立てることができます。\nあなたのことを心配している人は必ずいます。🐱';
 
   return msg;
 }
