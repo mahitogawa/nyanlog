@@ -734,8 +734,10 @@ renderSyms();
 renderSelected();
 
 async function askMentalAI() {
-  const q = document.getElementById('mentalAiQuestion').value.trim();
-  if (!q) return;
+  const raw = document.getElementById('mentalAiQuestion').value.trim();
+  if (!raw) return;
+  // 入力欄の中身が短く欠けていても、必ず「こころのセルフチェック」の文脈で答えてもらうための前置き
+  const q = 'あなたは「にゃんログ・こころのセルフチェック」というメンタルヘルスの自己チェックアプリのAI先生です。以下はメンタルヘルスに関する相談内容です。医療診断ではなく、気づきや励ましのコメントをください。パスポートや資格試験など、メンタルヘルスと関係のない話題には触れないでください。\n\n【相談内容】\n' + raw;
   const ans = document.getElementById('mentalAiAnswer');
   ans.style.display = 'block';
   ans.textContent = '🐱 考え中にゃ…';
