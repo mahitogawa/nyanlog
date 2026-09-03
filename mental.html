@@ -309,7 +309,7 @@ body{
         <div class="ai-consult-title">🐱 AI先生に聞く</div>
         <div class="ai-consult-note">気になることをそのまま聞いてにゃ✨</div>
         <textarea id="mentalAiQuestion" placeholder="例：うつ病とはどんな症状ですか？"
-          style="width:100%;font-size:16px;padding:10px;border-radius:10px;border:1px solid #ccc;height:80px;box-sizing:border-box;margin-top:8px;"></textarea>
+          style="width:100%;font-size:16px;padding:10px;border-radius:10px;border:1px solid #ccc;height:220px;box-sizing:border-box;margin-top:8px;"></textarea>
         <button onclick="askMentalAI()"
           style="background:#10b981;color:#fff;font-size:18px;font-weight:bold;padding:14px;width:100%;border:none;border-radius:12px;margin-top:8px;cursor:pointer;">
           AI先生に聞く！
@@ -635,6 +635,10 @@ function analyze(){
   const refMsg = buildMessage(syms, scored);
   aiArea.innerHTML = `<div class="msg-box">${refMsg}</div>`;
   aiPromptText = buildPrompt(syms, scored, refMsg);
+
+  // 選んだ症状＋参考結果をAI先生の入力欄に自動で貼り付け（手入力しなくても状況が伝わるように）
+  const aiQ = document.getElementById('mentalAiQuestion');
+  if(aiQ) aiQ.value = aiPromptText;
 }
 
 // プロンプトテキスト
